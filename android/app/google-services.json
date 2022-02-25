@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "313444535491",
+    "project_id": "sim1-ac95f",
+    "storage_bucket": "sim1-ac95f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313444535491:android:9a73ab6cd1bfb7becbe676",
+        "android_client_info": {
+          "package_name": "com.example.sim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313444535491-3d84bhulm6t0a4qp2tdgs3hhl9n8hncj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sim",
+            "certificate_hash": "ab9bca47554d0c934ef7afc15cd55f10a80869fb"
+          }
+        },
+        {
+          "client_id": "313444535491-9vusqtbbioa3nhq9oh9bpbr72oc279tg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU1OFTly07KPcUC42GED6aDMAiHHvUQa8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313444535491-9vusqtbbioa3nhq9oh9bpbr72oc279tg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
