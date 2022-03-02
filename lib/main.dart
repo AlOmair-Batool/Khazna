@@ -1,6 +1,8 @@
 import 'package:sim/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -8,6 +10,7 @@ Future<void> main() async {
 
   runApp(MyApp());
 }
+
 
 
 class MyApp extends StatelessWidget {

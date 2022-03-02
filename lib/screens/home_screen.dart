@@ -3,7 +3,13 @@ import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
+import 'package:telephony/telephony.dart';
+import 'dart:async';
+import 'dart:developer';
 
+onBackgroundMessage(SmsMessage message) {
+  debugPrint("onBackgroundMessage called");
+}
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -14,7 +20,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-
+//hailah
+  String _message = "";
+  final telephony = Telephony.instance;
+  List<SmsMessage> messages = <SmsMessage>[];
   @override
   void initState() {
     super.initState();
@@ -26,8 +35,27 @@ class _HomeScreenState extends State<HomeScreen> {
       this.loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
+    getAllSMS();
+
+  }
+//hailah
+  getAllSMS() async{
+     messages = await telephony.getInboxSms(
+         // filter: SmsFilter.where(SmsColumn.ADDRESS)
+         //     .equals("6505551213")
+     );
+
+
+    for (var element in messages) {
+      print(element.address);
+      print(element.body);
+      print(element.subject);
+
+    }
+
   }
 
+//end
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,12 +73,19 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               SizedBox(
                 height: 150,
-                child: Image.asset("assets/logo.png", fit: BoxFit.contain),
+                //child: Image.asset("assets/logo.png", fit: BoxFit.contain),
               ),
-              Text(
+              /*Text(
                 "Welcome",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              ),*/
+
+              Center(child: Text("Last 5 SMS:")),
+              Center(child: Text(messages[0].body!)),
+              Center(child: Text(messages[1].body!)),
+              Center(child: Text(messages[2].body!)),
+              Center(child: Text(messages[3].body!)),
+
               SizedBox(
                 height: 20,
               ),
