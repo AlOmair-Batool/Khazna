@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'package:telephony/telephony.dart';
 import 'dart:async';
-import 'dart:developer';
 
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -64,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.brown.shade200,
         centerTitle: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
