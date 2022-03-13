@@ -5,7 +5,6 @@ import 'package:sim/theme/colors.dart';
 
 import '../json/daily_json.dart';
 import '../json/day_month.dart';
-
 class DailyPage extends StatefulWidget {
   @override
   _DailyPageState createState() => _DailyPageState();
@@ -196,8 +195,7 @@ class _DailyPageState extends State<DailyPage> {
                   );
                 })),
           ),
-        ],
-      ),
-    );
+              ],
+            ));
   }
 }
