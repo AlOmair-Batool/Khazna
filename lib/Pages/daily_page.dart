@@ -30,7 +30,7 @@ class _DailyPageState extends State<DailyPage> {
   List<SmsMessage> messages = <SmsMessage>[];
 
   //variables needed for printing contents of the messages on the transactions list
-  String? message1 = "";
+  String message1 = "";
   String? message2 = "";
   String? transactionType = "";
   String? amount="";
@@ -52,8 +52,7 @@ class _DailyPageState extends State<DailyPage> {
   }
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-      // filter: SmsFilter.where(SmsColumn.ADDRESS)
-      //     .equals("alinmabank")
+      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")
     );
 
     for (var element in messages) {
@@ -63,8 +62,17 @@ class _DailyPageState extends State<DailyPage> {
     }
 
     //identification of Alinma messages
-    String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
+    //String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
+     message1 = messages[1].body!;
+
+
+
     String message2 = message1.toLowerCase();
+
+
+
+
+
 
     if (message2.contains("withdrawal") || message2.contains("purchase") ||
         message2.contains("debit transfer internal")) {
