@@ -4,6 +4,17 @@ import 'package:sim/theme/colors.dart';
 
 import '../json/daily_json.dart';
 import '../json/day_month.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sim/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'login_screen.dart';
+import 'package:telephony/telephony.dart';
+import 'dart:async';
+
+onBackgroundMessage(SmsMessage message) {
+  debugPrint("onBackgroundMessage called");
+}
 class DailyPage extends StatefulWidget {
   @override
   _DailyPageState createState() => _DailyPageState();
