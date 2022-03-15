@@ -78,8 +78,24 @@ class _DailyPageState extends State<DailyPage> {
 
     //amount regex
     // var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
-    var amountReg = RegExp(r'(?<=amount:)(.*)(?=sar)');
-    var amountMatch = amountReg.firstMatch(message2);
+    var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
+    var amountBeforeMatch = amountReg.firstMatch(message2);
+    String amountBefore = "";
+
+    if(amountBeforeMatch != null) {
+       amountBefore = amountBeforeMatch.group(0).toString();
+    }
+    var amountNumReg = RegExp(r'[0-9]+');
+    var amountAfterMatch = amountNumReg.firstMatch(amountBefore);
+
+    if(amountAfterMatch != null) {
+      amount = amountAfterMatch.group(0).toString();
+    }
+
+
+
+
+
 
     //date extraction
     RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
@@ -89,8 +105,8 @@ class _DailyPageState extends State<DailyPage> {
     RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
     var timeMatch = timeReg.firstMatch(message2);
 
-    if (amountMatch != null && dateMatch != null && timeMatch != null) {
-      amount = amountMatch.group(0);
+    if (dateMatch != null && timeMatch != null) {
+
       date = dateMatch.group(0);
       time = timeMatch.group(0);
     }
@@ -269,6 +285,8 @@ class _DailyPageState extends State<DailyPage> {
                                 children: [
                                   Text(
                                     //daily[index]['price'],
+
+
                                     amount.toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
