@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:sim/Pages/daily_page.dart';
 import 'package:sim/Pages/profile_page.dart';
+import 'package:sim/Pages/stats_page.dart';
 import 'package:sim/theme/colors.dart';
 
 class RootApp extends StatefulWidget {
@@ -24,9 +24,7 @@ class _RootAppState extends State<RootApp> {
       index: pageIndex,
       children:[
         DailyPage(),
-        Center(
-            child: Text("States Page"),
-        ),
+        StatsPage(),
         Center(
             child: Text("Plan Page"),
         ),
@@ -37,15 +35,15 @@ class _RootAppState extends State<RootApp> {
 
   Widget getFooter() {
     List<IconData> iconItems = [
-      Ionicons.md_swap,
-      Ionicons.md_stats,
-      Ionicons.md_calculator,
-      Ionicons.md_person,
+      Icons.compare_arrows_rounded,
+      Icons.bar_chart_rounded,
+      Icons.receipt_long_rounded,
+      Icons.person_outline,
     ];
     return AnimatedBottomNavigationBar(
       activeColor: primary,
       splashColor: secondary,
-      inactiveColor: Colors.black.withOpacity(0.5),
+      inactiveColor: Colors.black.withOpacity(0.3),
       icons: iconItems,
       activeIndex: pageIndex,
       gapLocation: GapLocation.none,

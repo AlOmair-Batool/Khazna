@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:sim/Pages/settings.dart';
 import 'package:sim/theme/colors.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -10,14 +11,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController _email =
-  TextEditingController(text: "abbie_wilson@gmail.com");
-  TextEditingController dateOfBirth = TextEditingController(text: "04-19-1992");
+  TextEditingController _email = TextEditingController(text: "JohnDoe@gmail.com");
   TextEditingController password = TextEditingController(text: "123456");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: grey.withOpacity(0.05),
+      backgroundColor: grey.withOpacity(0.02),
       body: getBody(),
     );
   }
@@ -51,7 +50,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold,
                             color: black),
                       ),
-                      Icon(AntDesign.setting)
+                      IconButton(
+                        icon: Icon(
+                          AntDesign.setting,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => SettingsPage()));
+                        },
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -97,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Abbie Wilson",
+                              "John Doe",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -194,24 +202,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 17, fontWeight: FontWeight.bold, color: black),
                   decoration: InputDecoration(
                       hintText: "Email", border: InputBorder.none),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Date of birth",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Color(0xff67727d)),
-                ),
-                TextField(
-                  controller: dateOfBirth,
-                  cursorColor: black,
-                  style: TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.bold, color: black),
-                  decoration: InputDecoration(
-                      hintText: "Date of birth", border: InputBorder.none),
                 ),
                 SizedBox(
                   height: 20,

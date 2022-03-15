@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sim/theme/colors.dart';
 
 import '../json/daily_json.dart';
@@ -48,7 +47,6 @@ class _DailyPageState extends State<DailyPage> {
                             fontWeight: FontWeight.bold,
                             color: black),
                       ),
-                      Icon(AntDesign.search1)
                     ],
                   ),
                   SizedBox(
@@ -155,6 +153,7 @@ class _DailyPageState extends State<DailyPage> {
                                       ),
                                       SizedBox(height: 5),
                                       Text(
+                                        //put the date instead of daily[index]['date']
                                         daily[index]['date'],
                                         style: TextStyle(
                                             fontSize: 12,
@@ -174,6 +173,7 @@ class _DailyPageState extends State<DailyPage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
+                                  //put the price instead of daily[index]['price']
                                   daily[index]['price'],
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
