@@ -32,10 +32,12 @@ class _DailyPageState extends State<DailyPage> {
   //variables needed for printing contents of the messages on the transactions list
   String message1 = "";
   String? message2 = "";
-  String? transactionType = "";
-  String? amount="";
-  String? date="";
-  String? time="";
+  List <String> transactionType = [];
+  List <String> amount=[];
+  List <String> date=[];
+  List <String> time=[];
+  List <String> icon=[];
+
 
   void initState() {
     super.initState();
@@ -52,18 +54,17 @@ class _DailyPageState extends State<DailyPage> {
   }
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")
+      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("STCPAY")
+        /*filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")*/
+
     );
 
-    for (var element in messages) {
-      print(element.address);
-      print(element.body);
-      print(element.subject);
-    }
+    for (var message in messages) {
+
 
     //identification of Alinma messages
     //String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
-     message1 = messages[1].body!;
+     message1 = message.body!;
 
 
 
@@ -76,12 +77,14 @@ class _DailyPageState extends State<DailyPage> {
 
     if (message2.contains("withdrawal") || message2.contains("purchase") ||
         message2.contains("debit transfer internal")) {
-      transactionType = "Withdrawal";
+      transactionType.insert(0, "Withdrawal");
+      icon.insert(0,"assets/images/Withdrawl.png");
     }
 
     else if (message2.contains("deposit") || message2.contains("refund") ||
         message2.contains("credit transfer internal")) {
-      transactionType = "Deposit";
+      transactionType.insert(0,"Deposit");
+      icon.insert(0,"assets/images/Deposit.png");
     }
 
     //amount regex
@@ -97,7 +100,7 @@ class _DailyPageState extends State<DailyPage> {
     var amountAfterMatch = amountNumReg.firstMatch(amountBefore);
 
     if(amountAfterMatch != null) {
-      amount = amountAfterMatch.group(0).toString();
+      amount.insert(0,amountAfterMatch.group(0).toString());
     }
 
 
@@ -115,11 +118,11 @@ class _DailyPageState extends State<DailyPage> {
 
     if (dateMatch != null && timeMatch != null) {
 
-      date = dateMatch.group(0);
-      time = timeMatch.group(0);
+      date.insert(0,dateMatch.group(0).toString());
+      time.insert(0,timeMatch.group(0).toString());
     }
   }
-
+  }//end of loop
 
 
 
@@ -245,7 +248,7 @@ class _DailyPageState extends State<DailyPage> {
                                     ),
                                     child: Center(
                                       child: Image.asset(
-                                        daily[index]['icon'],
+                                        icon[index],
                                         width: 30,
                                         height: 30,
                                       ),
@@ -260,7 +263,7 @@ class _DailyPageState extends State<DailyPage> {
                                       children: [
                                         Text(
                                           //daily[index]['name'],
-                                          transactionType.toString(),
+                                          transactionType[index],
                                           style: TextStyle(
                                               fontSize: 15,
                                               color: black,
@@ -270,7 +273,7 @@ class _DailyPageState extends State<DailyPage> {
                                         SizedBox(height: 5),
                                         Text(
                                           // daily[index]['date'],
-                                          date.toString()+" "+time.toString(),
+                                          date[index]+" "+time[index],
                                           style: TextStyle(
                                               fontSize: 12,
                                               color: black.withOpacity(0.5),
@@ -293,9 +296,7 @@ class _DailyPageState extends State<DailyPage> {
                                 children: [
                                   Text(
                                     //daily[index]['price'],
-
-
-                                    amount.toString(),
+                                    amount[index],
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
