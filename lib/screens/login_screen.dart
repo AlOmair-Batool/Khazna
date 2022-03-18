@@ -1,5 +1,7 @@
 import 'package:sim/screens/home_screen.dart';
 import 'package:sim/screens/registration_screen.dart';
+import 'package:sim/screens/verify_screen.dart';
+import 'package:sim/screens/reset_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -155,6 +157,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     ),
+                  ),
+              Text('Forgot Password?'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ResetScreen()));
+                    },
+                    child: Text(
+                      "Reset",
+                      style: TextStyle(
+                          color: Colors.brown.shade200,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
                   )
                 ])
     ],
@@ -175,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
           Fluttertoast.showToast(msg: "Login Successful"),
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen())),
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyScreen())),
         })
             .catchError((e)
         {
@@ -183,4 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
         });
 
 }
-  }}
+
+  }
+
+
+}
