@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-import 'package:sim/screens/home_screen.dart';
-=======
 import 'package:sim/Pages/home_screen.dart';
->>>>>>> origin/main
+import 'package:sim/Pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -93,35 +90,6 @@ class _ResetScreenState extends State<ResetScreen> {
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(
-<<<<<<< HEAD
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 200,
-                        child: Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                        )),
-                    SizedBox(height: 90),
-                    emailField,
-                    SizedBox(height: 25),
-                    resetButton,
-                    SizedBox(height: 15),
-
-
-                        ])
-
-                ),
-              ),
-            ),
-
-          ),
-        ),
-      );
-=======
                   key: _formKey,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -149,6 +117,5 @@ class _ResetScreenState extends State<ResetScreen> {
         ),
       ),
     );
->>>>>>> origin/main
   }
 }
