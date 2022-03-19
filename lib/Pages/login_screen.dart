@@ -1,5 +1,6 @@
 import 'package:sim/Pages/home_screen.dart';
 import 'package:sim/Pages/registration_screen.dart';
+import 'package:sim/Pages/root_app.dart';
 import 'package:sim/Pages/ver_screen.dart';
 import 'package:sim/Pages/reset_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -198,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
         Fluttertoast.showToast(msg: "Login Successful"),
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen())),
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp())),
       })
           .catchError((e)
       {

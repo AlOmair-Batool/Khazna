@@ -54,7 +54,7 @@ class _DailyPageState extends State<DailyPage> {
   }
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("STCPAY")
+      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")
         /*filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")*/
 
     );
