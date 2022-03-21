@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/Pages/daily_page.dart';
 import 'package:sim/Pages/root_app.dart';
+import 'package:sim/Pages/ver_screen.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -291,7 +292,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => RootApp()),
+        MaterialPageRoute(builder: (context) => VerifyScreen()),
             (route) => false);
   }
 }

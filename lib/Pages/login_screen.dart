@@ -1,6 +1,8 @@
-import 'package:sim/Pages/daily_page.dart';
+import 'package:sim/Pages/home_screen.dart';
+import 'package:sim/Pages/registration_screen.dart';
 import 'package:sim/Pages/root_app.dart';
-import 'package:sim/pages/registration_screen.dart';
+import 'package:sim/Pages/ver_screen.dart';
+import 'package:sim/Pages/reset_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,23 +51,23 @@ class _LoginScreenState extends State<LoginScreen> {
           emailController.text = value!;
         },
         textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.mail),
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Email",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      )
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.mail),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Email",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        )
     );
 
     //password
     final passwordField = TextFormField(
-      autofocus: false,
-      controller: passwordController,
-      obscureText: true,
+        autofocus: false,
+        controller: passwordController,
+        obscureText: true,
 
-      //validator: (){},
+        //validator: (){},
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
@@ -76,10 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
 
-      onSaved: (value) {
-        passwordController.text = value!;
-      },
-      textInputAction: TextInputAction.done,
+        onSaved: (value) {
+          passwordController.text = value!;
+        },
+        textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.vpn_key),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -91,19 +93,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     final loginButton = Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(30),
+      elevation: 5,
+      borderRadius: BorderRadius.circular(30),
       color: Colors.brown.shade200,
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
-    signIn(emailController.text, passwordController.text);
+            signIn(emailController.text, passwordController.text);
           },
           child: Text("Login", textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-    )),
+          )),
 
     );
 
@@ -111,77 +113,102 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-        body: Center(
+      body: Center(
         child: SingleChildScrollView(
-        child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(36.0),
-          child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-                height: 200,
-                child: Image.asset(
-                  "assets/images/logo.png",
-                  fit: BoxFit.contain,
-                )),
-            SizedBox(height: 90),
-            emailField,
-            SizedBox(height: 25),
-            passwordField,
-            SizedBox(height: 35),
-            loginButton,
-            SizedBox(height: 15),
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        height: 200,
+                        child: Image.asset(
+                          "assets/logo.png",
+                          fit: BoxFit.contain,
+                        )),
+                    SizedBox(height: 90),
+                    emailField,
+                    SizedBox(height: 25),
+                    passwordField,
+                    SizedBox(height: 35),
+                    loginButton,
+                    SizedBox(height: 15),
 
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Don't have an account? "),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                          RegistrationScreen()));
-                    },
-                    child: Text(
-                      "SignUp",
-                      style: TextStyle(
-                          color: Colors.brown.shade200,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
-                  )
-                ])
-    ],
-    ),
-    ),
-    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Don't have an account? "),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          RegistrationScreen()));
+                            },
+                            child: Text(
+                              "SignUp",
+                              style: TextStyle(
+                                  color: Colors.brown.shade200,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
+                            ),
+                          ),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Forget password? "),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ResetScreen()));
+                            },
+                            child: Text(
+                              "Reset",
+                              style: TextStyle(
+                                  color: Colors.brown.shade200,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
+                            ),
+                          ),
+                        ])
+                  ],
+                ),
+              ),
+            ),
 
-    ),
-    ),
-    ),
+          ),
+        ),
+      ),
     );
   }
   // login function
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
 
-        await _auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-          Fluttertoast.showToast(msg: "Login Successful"),
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((uid) => {
+        Fluttertoast.showToast(msg: "Login Successful"),
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp())),
-        })
-            .catchError((e)
-        {
-          Fluttertoast.showToast(msg: e!.message);
-        });
+      })
+          .catchError((e)
+      {
+        Fluttertoast.showToast(msg: e!.message);
+      });
+
+    }
+
+  }
+
 
 }
-  }}
