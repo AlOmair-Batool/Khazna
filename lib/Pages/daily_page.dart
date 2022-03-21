@@ -54,8 +54,8 @@ class _DailyPageState extends State<DailyPage> {
   }
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("STCPAY")
-        /*filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")*/
+      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")
+        /*filter: SmsFilter.where(SmsColumn.ADDRESS).equals("SNB-AlAhli")*/
 
     );
 
@@ -82,7 +82,7 @@ class _DailyPageState extends State<DailyPage> {
     }
 
     else if (message2.contains("deposit") || message2.contains("refund") ||
-        message2.contains("credit transfer internal")) {
+        message2.contains("credit transfer internal") || message2.contains("reverse transaction")) {
       transactionType.insert(0,"Deposit");
       icon.insert(0,"assets/images/Deposit.png");
     }
@@ -110,10 +110,16 @@ class _DailyPageState extends State<DailyPage> {
 
     //date extraction
     RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
+
+    //date extraction for AlAhli
+     // When try it on alahli please remove the comment the comment alinma regex
+     // RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
     var dateMatch = dateReg.firstMatch(message2);
 
-    //time extraction
+    //time extraction (also works for alahli since it's the same structure
     RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
+
+
     var timeMatch = timeReg.firstMatch(message2);
 
     if (dateMatch != null && timeMatch != null) {
@@ -296,7 +302,7 @@ class _DailyPageState extends State<DailyPage> {
                                 children: [
                                   Text(
                                     //daily[index]['price'],
-                                    amount[index],
+                                    amount[index]+" SAR",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
