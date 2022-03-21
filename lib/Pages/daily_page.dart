@@ -1,17 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sim/theme/colors.dart';
-
-import '../json/daily_json.dart';
-import '../json/day_month.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'login_screen.dart';
 import 'package:telephony/telephony.dart';
-import 'dart:async';
 
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -54,8 +47,8 @@ class _DailyPageState extends State<DailyPage> {
   }
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-      filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")
-        /*filter: SmsFilter.where(SmsColumn.ADDRESS).equals("SNB-AlAhli")*/
+      /*filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank")*/
+        filter: SmsFilter.where(SmsColumn.ADDRESS).equals("SNB-AlAhli")
 
     );
 
@@ -88,8 +81,8 @@ class _DailyPageState extends State<DailyPage> {
     }
 
     //amount regex
-    // var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
     var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
+    //var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
     var amountBeforeMatch = amountReg.firstMatch(message2);
     String amountBefore = "";
 
@@ -109,11 +102,11 @@ class _DailyPageState extends State<DailyPage> {
 
 
     //date extraction
-    RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
+    //RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
 
     //date extraction for AlAhli
      // When try it on alahli please remove the comment the comment alinma regex
-     // RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
+     RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
     var dateMatch = dateReg.firstMatch(message2);
 
     //time extraction (also works for alahli since it's the same structure
@@ -129,7 +122,6 @@ class _DailyPageState extends State<DailyPage> {
     }
   }
   }//end of loop
-
 
 
     int activeDay = 3;
@@ -170,61 +162,9 @@ class _DailyPageState extends State<DailyPage> {
                               fontWeight: FontWeight.bold,
                               color: black),
                         ),
-                        Icon(AntDesign.search1)
                       ],
                     ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(days.length, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                activeDay = index;
-                              });
-                            },
-                            child: Container(
-                              width: (MediaQuery.of(context).size.width - 40) / 7,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    days[index]['label'],
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        color: activeDay == index
-                                            ? primary
-                                            : Colors.transparent,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                            color: activeDay == index
-                                                ? primary
-                                                : black.withOpacity(0.1))),
-                                    child: Center(
-                                      child: Text(
-                                        days[index]['day'],
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w600,
-                                            color: activeDay == index
-                                                ? white
-                                                : black),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        }))
+
                   ],
                 ),
               ),
@@ -232,10 +172,51 @@ class _DailyPageState extends State<DailyPage> {
             SizedBox(
               height: 30,
             ),
+            // tell batool
             Padding(
+    padding: const EdgeInsets.only(left: 20, right: 20),
+    child: Column(
+    children: [
+    Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      if (date.length == 0)
+    Container(
+    width: (size.width - 40) * 0.7,
+    child: Row(
+    children: [
+    Container(
+    child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Text(
+    "No Message has been found..",
+    style: TextStyle(
+    fontSize: 15,
+    color: black,
+    fontWeight: FontWeight.w500),
+    overflow: TextOverflow.ellipsis,
+    ),
+    SizedBox(height: 5),
+
+    ],
+    ),
+    )
+    ],
+    ),
+
+    ),]
+    ),
+    ],
+    ),
+            ),
+
+    Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
-                  children: List.generate(daily.length, (index) {
+                //tell batool date.length
+                  children: List.generate(date.length, (index) {
                     return Column(
                       children: [
                         Row(
@@ -291,8 +272,8 @@ class _DailyPageState extends State<DailyPage> {
                                   )
                                 ],
                               ),
-                            ),
 
+                            ),
 
                             //money container
                             Container(
@@ -324,6 +305,14 @@ class _DailyPageState extends State<DailyPage> {
                   })),
             ),
           ],
-        ));
+        )
+      //No message
+
+
+
+
+
+    );
+
   }
 }
