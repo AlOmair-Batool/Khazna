@@ -50,11 +50,13 @@ class _ResetScreenState extends State<ResetScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
+          prefixIcon: Icon(
+              Icons.mail,
+              color: Colors.teal.shade200),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         )
     );
@@ -62,7 +64,7 @@ class _ResetScreenState extends State<ResetScreen> {
     final resetButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.brown.shade200,
+      color: Colors.teal.shade300,
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
@@ -81,27 +83,52 @@ class _ResetScreenState extends State<ResetScreen> {
 
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: Text("Reset Password"),
+        titleTextStyle: TextStyle(color: Colors.black ,
+            fontSize: 20,
+            fontWeight: FontWeight.bold ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.teal.shade200),
+          onPressed: () {
+            //passing this to our root
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
 
       body: Center(
+
         child: SingleChildScrollView(
+
           child: Container(
-            color: Colors.white,
+
+            color: Colors.grey.shade100,
             child: Padding(
-              padding: const EdgeInsets.all(36.0),
+              padding: const EdgeInsets.all(40.0),
               child: Form(
                   key: _formKey,
                   child: Column(
+
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        Text('Trouble logging in?', style: TextStyle( color: Colors.black,
+                            fontSize:28,
+                            fontWeight: FontWeight.w500,
+                            height:4,
+                        )),
+                        Text('Enter your email and we will send you a link to get back into your account.',textAlign: TextAlign.center, style: TextStyle( color: Colors.grey,
+                          fontSize:15,
+                          height: 1.5,
+
+                        )),
                         SizedBox(
-                            height: 200,
-                            child: Image.asset(
-                              "assets/logo.png",
-                              fit: BoxFit.contain,
-                            )),
-                        SizedBox(height: 90),
+                          ),
+                        SizedBox(height: 40),
                         emailField,
                         SizedBox(height: 25),
                         resetButton,

@@ -2,7 +2,6 @@ import 'package:sim/Pages/daily_page.dart';
 import 'package:sim/pages/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'Pages/root_app.dart';
 
   void main() async {
@@ -12,6 +11,7 @@ import 'Pages/root_app.dart';
     debugShowCheckedModeBanner: false,
     home: LoginScreen(),
   ));
+
   }
 
 

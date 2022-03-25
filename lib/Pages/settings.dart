@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sim/theme/colors.dart';
-
 import '../pages/login_screen.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -11,6 +12,16 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final _auth = FirebaseAuth.instance;
+
+  final _formKey = GlobalKey<FormState>();
+  // // editing Controller
+  // final firstNameEditingController = new TextEditingController();
+  // final secondNameEditingController = new TextEditingController();
+  // final emailEditingController = new TextEditingController();
+  final passwordEditingController = new TextEditingController();
+  // final confirmPasswordEditingController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +88,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 Text(
                   "Notifications",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500), //
                 ),
               ],
             ),
@@ -99,8 +110,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
                 child: Text("SIGN OUT",
                     style: TextStyle(
@@ -133,32 +144,76 @@ class _SettingsPageState extends State<SettingsPage> {
       ],
     );
   }
+  //change passward
+  Widget textForm(){
+    return TextFormField(
+      validator: (val){
+        if(val!.length <6){
+          return 'Please enter password with min 6 char length!';
+        }else{
+          return null;
+        }
+      },
+      key: _formKey,
+      controller: passwordEditingController, ///////////////////////////////////////////////////////////////////////////////
+      decoration: InputDecoration(
+          border: const OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 0.0),),
+          isDense: true,
+          label: Text("Reset password")
+      ),
+    );
+  }
+  // Button
+  // Widget alertDialog(String title, String message) {
+  //   return AlertDialog(
+  //     title: Text("$title") ,
+  //     content: Text("$message"),
+  //   );
+  // }
+  // void check() async{
+  //   DocumentReference ref = (await FirebaseFirestore.instance.collection('users')) as DocumentReference<Object?>;
+  //
+  //   setState(() {
+  //     ref.update(
+  //         { 'password': passwordEditingController.value.text}
+  //     );
+  //
+  //   });
+  //
+  // }
 
   GestureDetector buildAccountOptionRow(BuildContext context, String title) {
     return GestureDetector(
       onTap: () {
         showDialog(
             context: context,
-            builder: (BuildContext context) {
+            builder: (_){
               return AlertDialog(
-                title: Text(title),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("Option 1"),
-                    Text("Option 2"),
-                    Text("Option 3"),
-                  ],
+
+                title: Text("New Passward"),
+                content: Container(
+                  width: 250,
+                  height: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children:[
+                        textForm(),
+                        ElevatedButton(
+                            onPressed: (){
+                              setState(() {
+                                passwordEditingController.clear();
+                              });
+                              // Navigator.pop(context);
+                            },
+                            child: Text("Update"),
+                        )
+                      ]),
                 ),
-                actions: [
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("Close")),
-                ],
               );
             });
+
+
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),

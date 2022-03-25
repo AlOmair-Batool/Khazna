@@ -6,6 +6,7 @@ import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sim/theme/colors.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -51,11 +52,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
+          prefixIcon: Icon(
+              Icons.account_circle,
+              color: Colors.teal.shade200),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "First Name",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         )
     );
@@ -78,11 +81,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
+          prefixIcon: Icon(
+              Icons.account_circle,
+              color: Colors.teal.shade200),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Second Name",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         )
     );
@@ -110,11 +115,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
+          prefixIcon: Icon(
+              Icons.mail,
+              color: Colors.teal.shade200),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         )
     );
@@ -140,11 +147,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.vpn_key),
+          prefixIcon: Icon(
+              Icons.vpn_key,
+              color: Colors.teal.shade200),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         )
     );
@@ -168,11 +177,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.vpn_key),
+          prefixIcon: Icon(
+              Icons.vpn_key,
+              color: Colors.teal.shade200),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirm Password",
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         )
     );
@@ -182,9 +193,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final signUpButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.brown.shade200,
+      color: Colors.teal.shade300,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: EdgeInsets.fromLTRB(1, 20, 1, 20),
           minWidth: MediaQuery
               .of(context)
               .size
@@ -199,12 +210,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     );
     return Scaffold(
-      backgroundColor: Colors.white,
+
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        title: Text("Sign Up"),
+        titleTextStyle: TextStyle(color: Colors.black ,
+            fontSize: 20,
+            fontWeight: FontWeight.bold ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.brown.shade200),
+          icon: Icon(Icons.arrow_back, color: Colors.teal.shade200),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();
@@ -214,7 +230,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            color: Colors.white,
+            color: Colors.grey.shade100,
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(
@@ -223,12 +239,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    Text('Create your account', style: TextStyle( color: Colors.black,
+                      fontSize:28,
+                      fontWeight: FontWeight.w500,
+                      height:1,
+                    )),
                     SizedBox(
-                        height: 180,
-                        child: Image.asset(
-                          "assets/images/logo.png",
-                          fit: BoxFit.contain,
-                        )),
+                    ),
                     SizedBox(height: 60),
                     firstNameField,
 
@@ -284,6 +301,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     userModel.firstName = firstNameEditingController.text;
     userModel.secondName = secondNameEditingController.text;
 
+
     await firebaseFirestore
         .collection("users")
         .doc(user.uid)
@@ -296,3 +314,4 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             (route) => false);
   }
 }
+
