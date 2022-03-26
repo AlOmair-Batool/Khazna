@@ -1,16 +1,15 @@
 # Khazna
 
-A new Flutter project.
+Khazna is a smart income management app that helps to manage your spending & finances in one place!
 
-## Getting Started
+![khaznaphone](https://user-images.githubusercontent.com/90303853/160221293-70af8806-8885-466b-81b4-97a51a83c230.png)
 
-This project is a starting point for a Flutter application.
+## Features
+-	Automatic retrieval of financial transactions via SMS messages.
+-	Transaction categorization based on vendors information.
+-	Reports that visualize financials.
+-	Predicts the total amount of money at the user account on the 26th of the month.
+-	Create a saving plan that send a daily encouragements notification and show the daily allowance to the user.
+-	Real-Time financial transaction tracking where all information updated at receiving new financial SMS.
+-	The user can specify the optimal saving point instead of using the 20% default saving point based on 50/30/20 budging rule.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
