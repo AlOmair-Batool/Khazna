@@ -1,18 +1,22 @@
-import 'package:sim/Pages/daily_page.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:sim/pages/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'Pages/root_app.dart';
 
-  void main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: LoginScreen(),
-  ));
+      debugShowCheckedModeBanner: false,
+      home: AnimatedSplashScreen(
+        splash:
+        "assets/images/logo.png",
+        splashIconSize: 120,
+        splashTransition: SplashTransition.fadeTransition,
+        nextScreen:LoginScreen(),
+      )));
 
-  }
+}
 
 
 

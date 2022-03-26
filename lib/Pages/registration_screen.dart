@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sim/Pages/daily_page.dart';
 import 'package:sim/Pages/root_app.dart';
 import 'package:sim/Pages/ver_screen.dart';
 import 'package:sim/model/user_model.dart';
@@ -53,8 +52,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.account_circle,
-              color: Colors.teal.shade200),
+              Icons.account_circle_outlined,
+              size: 22,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "First Name",
           border: OutlineInputBorder(
@@ -82,8 +82,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.account_circle,
-              color: Colors.teal.shade200),
+              Icons.account_circle_outlined,
+              size: 22,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Second Name",
           border: OutlineInputBorder(
@@ -116,8 +117,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.mail,
-              color: Colors.teal.shade200),
+              Icons.mail_outlined,
+              size: 22,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -148,8 +150,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.vpn_key,
-              color: Colors.teal.shade200),
+              Icons.key_outlined,
+              size: 22,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -178,8 +181,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.vpn_key,
-              color: Colors.teal.shade200),
+              Icons.key_outlined,
+              size: 22,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirm Password",
           border: OutlineInputBorder(
@@ -191,11 +195,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     //sign up button
     final signUpButton = Material(
-      elevation: 5,
+      elevation: 2,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.teal.shade300,
+      color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(1, 20, 1, 20),
+          padding: EdgeInsets.fromLTRB(1, 10, 1, 10),
           minWidth: MediaQuery
               .of(context)
               .size
@@ -220,7 +224,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.teal.shade200),
+          icon: Icon(Icons.arrow_back, color: primary),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();
@@ -310,7 +314,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => VerifyScreen()),
+        MaterialPageRoute(builder: (context) => RootApp()),
             (route) => false);
   }
 }

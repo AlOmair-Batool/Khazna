@@ -1,4 +1,3 @@
-import 'package:sim/Pages/home_screen.dart';
 import 'package:sim/Pages/registration_screen.dart';
 import 'package:sim/Pages/root_app.dart';
 import 'package:sim/Pages/ver_screen.dart';
@@ -55,8 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.mail,
-            color: Colors.teal.shade200,
+            Icons.mail_outlined,
+            size: 22,
+            color: primary,
           ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
@@ -89,8 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.vpn_key,
-              color: Colors.teal.shade200),
+              Icons.key_outlined,
+              size: 22,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -100,18 +101,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     final loginButton = Material(
-      elevation: 5,
+      elevation: 2,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.teal.shade300,
+      color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
             signIn(emailController.text, passwordController.text);
           },
           child: Text("Login", textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
     );
@@ -120,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Sign In"),
+        title: Text("Login"),
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: Colors.black ,
             fontSize: 20,
@@ -150,19 +151,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('Welcome to Khazna', style: TextStyle( color: Colors.black,
-                        fontSize:28,
-                        fontWeight: FontWeight.w500,
+                    Text('Welcome back to Khazna!', style: TextStyle( color: Colors.black,
+                      fontSize:28,
+                      fontWeight: FontWeight.w500,
 
-                         )),
-                    Text('Sign in with your email and password', style: TextStyle( color: Colors.grey,
-                        fontSize:15,
+                    )),
+                    Text('Please fill the registered information below', style: TextStyle( color: Colors.grey,
+                      fontSize:15,
+                      fontWeight: FontWeight.w400,
                       height: 2,
-                     )
+                    )
                     ),
                     SizedBox(
-                        height: 0,
-                        ),
+                      height: 0,
+                    ),
                     SizedBox(height: 60),
                     emailField,
                     SizedBox(height: 20),
@@ -187,10 +189,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                           RegistrationScreen()));
                             },
                             child: Text(
-                              "SignUp",
+                              "Register",
                               style: TextStyle(
-                                  color: Colors.teal.shade200,
-                                  fontWeight: FontWeight.bold,
+                                  color: primary,
+                                  fontWeight: FontWeight.w500,
                                   height: 4,
                                   fontSize: 15),
                             ),
@@ -214,8 +216,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               "Reset",
                               style: TextStyle(
-                                  color: Colors.teal.shade200,
-                                  fontWeight: FontWeight.bold,
+                                  color: primary,
+                                  fontWeight: FontWeight.w500,
                                   height: 2,
                                   fontSize: 15),
                             ),
@@ -240,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
         Fluttertoast.showToast(msg: "Login Successful"),
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyScreen())),
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp())),
       })
           .catchError((e)
       {

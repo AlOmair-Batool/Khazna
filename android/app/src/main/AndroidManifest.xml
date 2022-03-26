@@ -10,7 +10,7 @@
 
 
     <application
-        android:label="sim"
+        android:label="Khazna"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
