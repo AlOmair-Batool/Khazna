@@ -1,3 +1,10 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:sim/Pages/auth_file.dart';
+
+UserController userController = Get.put(UserController());
+
+
 class UserModel {
   String? uid;
   String? email;

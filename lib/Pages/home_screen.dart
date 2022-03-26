@@ -39,10 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 //hailah
   getAllSMS() async{
-     messages = await telephony.getInboxSms(
-         // filter: SmsFilter.where(SmsColumn.ADDRESS)
-         //     .equals("6505551213")
-     );
+    messages = await telephony.getInboxSms(
+      // filter: SmsFilter.where(SmsColumn.ADDRESS)
+      //     .equals("6505551213")
+    );
 
 
     for (var element in messages) {

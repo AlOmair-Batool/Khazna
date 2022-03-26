@@ -43,6 +43,9 @@ dependencies:
   animated_bottom_navigation_bar: ^0.2.1
   fl_chart: ^0.12.2
   percent_indicator: "^2.1.7+2"
+  email_auth: ^1.0.0
+  reactive_forms: ^11.0.1
+  get: ^4.3.8
 
     # When depending on this package from a real application you should use:
     #   telephony: ^x.y.z

@@ -8,6 +8,25 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sim/theme/colors.dart';
 
 
+// import 'package:sim/Pages/home_screen.dart';
+// import 'package:sim/Pages/registration_screen.dart';
+// import 'package:sim/Pages/root_app.dart';
+// import 'package:sim/Pages/ver_screen.dart';
+import 'package:sim/Pages/reset_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+// import 'package:login/sign_up.dart';
+// import '../../client_projects/SmartIncomeManager/lib/Pages/sign_up.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sim/Pages/registration_screen.dart';
+
+import 'package:sim/pages/auth_file.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:sim/theme/colors.dart';
+
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -16,17 +35,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  UserController userController = Get.put(UserController());
+  final loginForm = FormGroup({
+    'email': FormControl(validators: [Validators.required]),
+    'password': FormControl(validators: [Validators.required]),
+  });
 
-  // form key
   final _formKey = GlobalKey<FormState>();
-  bool isEmailVerified = false;
+  // form key
 
   // editing controller
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  // final TextEditingController emailController = new TextEditingController();
+  // final TextEditingController passwordController = new TextEditingController();
 
   // firebase
-  final _auth = FirebaseAuth.instance;
+  // final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //email field
     final emailField = TextFormField(
         autofocus: false,
-        controller: emailController,
+        controller: userController.emailController,
         keyboardType: TextInputType.emailAddress,
         validator: (value) { //validator
           if (value!.isEmpty) {
@@ -48,15 +71,14 @@ class _LoginScreenState extends State<LoginScreen> {
           return null;
         },
 
-        onSaved: (value) {
-          emailController.text = value!;
-        },
+        // onSaved: (value) {
+        //   emailController.text = value!;
+        // },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-            Icons.mail_outlined,
-            size: 22,
-            color: primary,
+            Icons.mail,
+            color: Colors.teal.shade300,
           ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
@@ -69,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //password
     final passwordField = TextFormField(
         autofocus: false,
-        controller: passwordController,
+        controller: userController.passwordController,
         obscureText: true,
 
         //validator: (){},
@@ -83,15 +105,14 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
 
-        onSaved: (value) {
-          passwordController.text = value!;
-        },
+        // onSaved: (value) {
+        //   passwordController.text = value!;
+        // },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.key_outlined,
-              size: 22,
-              color: primary),
+              Icons.vpn_key,
+              color: Colors.teal.shade300),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -101,18 +122,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     final loginButton = Material(
-      elevation: 2,
+      elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: primary,
+      color: Colors.teal.shade300,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
-            signIn(emailController.text, passwordController.text);
+            Fluttertoast.showToast(msg: "Login Successful");
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp()));
           },
           child: Text("Login", textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
           )),
 
     );
@@ -121,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Sign In"),
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: Colors.black ,
             fontSize: 20,
@@ -129,11 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
         ),
 
-
         elevation: 0,
 
       ),
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
 
       body: Center(
 
@@ -141,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
 
           child: Container(
-            color: Colors.grey.shade100,
+            color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(
@@ -151,14 +172,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('Welcome back to Khazna!', style: TextStyle( color: Colors.black,
-                      fontSize:28,
-                      fontWeight: FontWeight.w500,
-
+                    Text('Welcome to Khazna', style: TextStyle( color: Colors.black,
+                        fontSize:28,
+                        fontWeight: FontWeight.w500
                     )),
-                    Text('Please fill the registered information below', style: TextStyle( color: Colors.grey,
+                    Text('Sign in with your email and password', style: TextStyle( color: Colors.grey,
                       fontSize:15,
-                      fontWeight: FontWeight.w400,
                       height: 2,
                     )
                     ),
@@ -178,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: <Widget>[
                           Text("Don't have an account? ", style: TextStyle( color: Colors.black,
                             fontSize:15,
-                            height: 4,
+                            height: 2,
                           )),
                           GestureDetector(
                             onTap: () {
@@ -189,11 +208,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                           RegistrationScreen()));
                             },
                             child: Text(
-                              "Register",
+                              "SignUp",
                               style: TextStyle(
-                                  color: primary,
-                                  fontWeight: FontWeight.w500,
-                                  height: 4,
+                                  color: Colors.teal.shade100,
+                                  fontWeight: FontWeight.bold,
+                                  height: 2,
                                   fontSize: 15),
                             ),
                           ),
@@ -216,8 +235,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               "Reset",
                               style: TextStyle(
-                                  color: primary,
-                                  fontWeight: FontWeight.w500,
+                                  color: Colors.teal.shade100,
+                                  fontWeight: FontWeight.bold,
                                   height: 2,
                                   fontSize: 15),
                             ),
@@ -233,25 +252,24 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  // login function
-  void signIn(String email, String password) async {
-    if (_formKey.currentState!.validate()) {
-
-      await _auth
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((uid) => {
-        Fluttertoast.showToast(msg: "Login Successful"),
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp())),
-      })
-          .catchError((e)
-      {
-        Fluttertoast.showToast(msg: e!.message);
-      });
-
-    }
-
-  }
+// login function
+// void signIn(String email, String password) async {
+//   if (_formKey.currentState!.validate()) {
+//
+//     await _auth
+//         .signInWithEmailAndPassword(email: email, password: password)
+//         .then((uid) => {
+//       // Fluttertoast.showToast(msg: "Login Successful"),
+//       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp())),
+//     })
+//         .catchError((e)
+//     {
+//       // Fluttertoast.showToast(msg: e!.message);
+//     });
+//
+//   }
+//
+// }
 
 
 }

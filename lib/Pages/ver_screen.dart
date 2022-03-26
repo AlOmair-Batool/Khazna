@@ -1,137 +1,245 @@
-import 'dart:async';
-import 'package:flutter/cupertino.dart';
-import 'package:sim/Pages/home_screen.dart';
-import 'package:sim/Pages/login_screen.dart';
-import 'package:sim/Pages/registration_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class VerifyScreen extends StatefulWidget {
+// import 'dart:ffi';
+
+import 'package:email_auth/email_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sim/pages/auth_file.dart';
+import 'login_screen.dart';
+import 'package:sim/Pages/login_screen.dart';
+
+
+
+
+class UserEmailAuth extends StatefulWidget {
+
   @override
-  _VerifyScreenState createState() => _VerifyScreenState();
+  _UserEmailAuthState createState() => _UserEmailAuthState();
 }
 
-class _VerifyScreenState extends State<VerifyScreen> {
-  bool isEmailVerified = false;
-  bool canResendEmail = false;
-  Timer? timer;
+class _UserEmailAuthState extends State<UserEmailAuth> {
+  UserController userController = Get.put(UserController());
+  final verificationForm = FormGroup({
+    'email': FormControl(validators: [Validators.required]),
+    'otp': FormControl(validators: [Validators.required]),
+  });
 
-  @override
-  void initState() {
-    super.initState();
+  final _formKey = GlobalKey<FormState>();
 
-    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    if(!isEmailVerified)
-      sendVerificationEmail();
 
-    timer = Timer.periodic(Duration(seconds: 30), (_) =>
-        checkEmailVerified(),
-    );
+  // Controllers
+  // TextEditingController _emailCotroller = TextEditingController();
+  // TextEditingController _otpController = TextEditingController();
+  // Methods for OTP
+  Future<bool> sendOTP()async{
+    EmailAuth  emailAuth = EmailAuth(sessionName: "khazna");
+    bool res= await emailAuth.sendOtp(recipientMail: userController.emailController.value.text);
+    if(res){
+      return res;
+    }
+    else{
+      return res;
+    }
   }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
-  Future checkEmailVerified() async{
-
-    await FirebaseAuth.instance.currentUser!.reload();
-
-    setState(() {
-      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    });
-    if(isEmailVerified) timer?.cancel();
-  }
-
-  Future sendVerificationEmail() async {
-
-    final user = FirebaseAuth.instance.currentUser!;
-    await user.sendEmailVerification();
-    setState(() => canResendEmail = false);
-    await Future.delayed(Duration(seconds: 30));
-    setState(() => canResendEmail = true);
-
+  Future<bool> verifyOTP()async{
+    EmailAuth  emailAuth = EmailAuth(sessionName: "Khazna");
+    bool res= await emailAuth.validateOtp(recipientMail: userController.emailController.value.text,
+        userOtp: userController.otpController.value.text);
+    return res;
   }
 
 
   @override
-  Widget build(BuildContext context) =>
+  Widget build(BuildContext context) {
 
-      isEmailVerified
-          ? HomeScreen()
-          : Scaffold(
-        appBar: AppBar(
-          title: Text('Verify Email'),
-          titleTextStyle: TextStyle(color: Colors.black ,
-              fontSize: 20,
-              fontWeight: FontWeight.bold ),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.teal.shade200),
-            onPressed: () {
-              //passing this to our root
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'A verification email has been sent to your Email',
-                style: TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
-
-              ),
-              SizedBox(height: 24
-              ),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.teal.shade300,
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  minimumSize: Size.fromHeight(50),
-
-                ),
-                icon: Icon(Icons.email, color: Colors.white, size:32 ),
-                label: Text(
-                  'Resent Email',
-                  style: TextStyle(fontSize:24),
-
-                ),
-                onPressed: canResendEmail ? sendVerificationEmail : null,
-
-              ),
-
-              SizedBox(height: 8),
-              ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.teal.shade300,
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
+    return SafeArea(
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.white,
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
                     ),
-                    minimumSize: Size.fromHeight(50),
                   ),
-                  icon: Icon(Icons.email, color: Colors.teal.shade300, size:1 ),
-                  label: Text(
-                    'Log in',
-                    style: TextStyle(fontSize:24),
+                  const Text(
+                    'Email Verification',
+                    style: TextStyle(
+                      // fontFamily: CustomFonts.sitkaFonts,
+                      color:Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-                  }
-              )
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+            ),
+            body:SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
 
-            ],
-          ),
-        ),
-      );
+                child:ReactiveForm(
+                  formGroup: verificationForm,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                height: 136,
+                                // width: Sizes.s136,
+                                // child: Image.asset('logo'.png),
+                              ),
+
+                              const SizedBox(height: 24),
+                              TextFormField(
+
+                                controller: userController.emailController,
+                                validator: (val){
+                                  String pattern = r'\w+@\w+\.\w+';
+                                  RegExp regex = RegExp(pattern);
+                                  if(val!.isEmpty){
+                                    return 'Email required.';
+                                  }else if(!regex.hasMatch(val)){
+                                    return 'Invalid Email Format';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    border: const OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.black, width: 0.0),
+                                    ),
+                                    suffixIcon: TextButton(
+                                      onPressed: (){
+                                        sendOTP();
+                                        showDialog(
+                                          context: context,
+                                          builder: (_){
+                                            return alertDialog("OTP sent !", "");
+                                          },
+                                        );
+                                        // userController.emailController.clear();
+                                      },
+                                      child: Text('Send OTP', style: TextStyle(fontSize: 15, color:Colors.black, fontWeight: FontWeight.w900 ),),
+                                    ),
+                                    isDense: true,
+                                    label: Text("Email")
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              TextFormField(
+                                obscureText: true,
+                                validator: (val){
+                                  // String pattern = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+                                  // RegExp regex = RegExp(pattern);
+                                  if(val!.isEmpty)
+                                    return "Otp required! ";
+                                  return null;
+                                },
+                                controller: userController.otpController,
+                                decoration: InputDecoration(
+                                    border: const OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.black, width: 0.0),
+                                    ),
+                                    isDense: true,
+                                    label: Text("Enter OTP ")
+                                ),
+                              ),
+
+
+                              const SizedBox(height: 24),
+                              ReactiveFormConsumer(
+                                builder: (context, formGroup, child) {
+                                  return ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(Colors.teal.shade100),
+                                    ),
+                                    child: Text("Verify", style: TextStyle(color: Colors.black),),
+                                    // title: 'Verify OTP',
+                                    onPressed: (){
+                                      // if(_formKey.currentState!.validate())
+                                      // {
+                                      //   userController.signInUser(context);
+                                      // }
+                                      verifyOTP().then((value){
+                                        if(_formKey.currentState!.validate()){
+                                          if(value== true){
+                                            userController.signUpUser(context);
+                                            showDialog(
+                                              context: context,
+                                              builder: (_){
+                                                return alertDialog("OTP Verified !", "Thanks for your patience");
+                                              },
+                                            );
+                                            setState(() {
+                                              Future.delayed(Duration(seconds: 3) , navigation); // do this
+
+                                            });
+                                            // userController.verified();
+                                          }else{
+                                            showDialog(
+                                              context: context,
+                                              builder: (_){
+                                                return alertDialog("Invalid OTP", "Please try again!");
+                                              },
+                                            );
+                                          }
+                                        }
+                                      }
+
+
+                                      );
+
+                                    },
+
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 16),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              ),
+            )
+        ));
+  }
+  void navigation(){
+    Navigator.push(context, MaterialPageRoute(builder: (_)=> LoginScreen()));
+  }
+  Widget alertDialog(String title, String message) {
+    return AlertDialog(
+      title: Text("$title") ,
+      content: Text("$message"),
+    );
+
+
+  }
+
+
 }
