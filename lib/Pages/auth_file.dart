@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sim/Pages/home_screen.dart';
+import 'package:sim/Pages/root_app.dart';
 // import 'home_page.dart';
 
 
@@ -37,7 +37,7 @@ class UserController extends GetxController{
       // passwordController.clear();
 
       // Get.to(HomeScreen());
-      Navigator.push(context, MaterialPageRoute(builder: (_)=>HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (_)=> RootApp()));
 
     }
     on FirebaseAuthException catch  (e) {

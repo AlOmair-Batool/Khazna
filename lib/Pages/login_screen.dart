@@ -129,9 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
-            Fluttertoast.showToast(msg: "Login Successful");
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp()));
+            userController.signInUser(context);
+            //Fluttertoast.showToast(msg: "Login Successful");
+            //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp()));
+
           },
+
           child: Text("Login", textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
