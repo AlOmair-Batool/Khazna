@@ -149,7 +149,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
-            return ("Password is required for login");
+            return ("Password is required!");
           }
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Password(Min. 6 Character)");
@@ -178,16 +178,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         controller: userController.confirmPasswordController,
         obscureText: true,
         //validator
-        // validator: (value) {
-        //   if (userController.confirmPasswordController.text !=
-        //       passwordEditingController.text) {
-        //     return "Password don't match";
-        //   }
-        //   return null;
-        // },
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Password is required!");
+          } else if (userController.confirmPasswordController.text !=
+              userController.confirmPasswordController.text) {
+            return "Password don't match";
+          }
+          return null;
+        },
 
         // onSaved: (value) {
-        //   confirmPasswordEditingController.text = value!;
+        //   userController.confirmPasswordController.text = value!;
         // },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(

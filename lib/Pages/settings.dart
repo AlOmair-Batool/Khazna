@@ -144,7 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ],
     );
   }
-  //change passward
+  //change password
   Widget textForm(){
     return TextFormField(
       validator: (val){

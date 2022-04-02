@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_auth/email_auth.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,14 +40,11 @@ class UserController extends GetxController{
       // Get.to(HomeScreen());
       Navigator.push(context, MaterialPageRoute(builder: (_)=> RootApp()));
 
-    }
-    on FirebaseAuthException catch  (e) {
+    }catch  (e) {
       emailController.clear();
       passwordController.clear();
-      showSnackBar("Incorrect username or Passward!", context);
-      onClose();
-      print('Failed with error code: ${e.code}');
-      print(e.message);
+      showSnackBar("Incorrect email or Passward!", context);
+
     }
   }
 
@@ -95,15 +93,24 @@ class UserController extends GetxController{
     emailController.clear();
   }
 
-  void showSnackBar(String message, scaffoldContext) {
+  void showSnackBar(String message, BuildContext context) {
     final snackBar = new SnackBar(
         content: new Text(message),
         backgroundColor: Colors.red
     );
 
     // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-    Scaffold.of(scaffoldContext).showSnackBar(snackBar);
+    // Scaffold.of(scaffoldContext).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+  // Widget alertDialog(String title, String message) {
+  //   return AlertDialog(
+  //     title: Text("$title") ,
+  //     content: Text("$message"),
+  //   );
+  //
+  //
+  // }
 
 
 

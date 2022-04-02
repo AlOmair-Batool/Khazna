@@ -129,7 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
-            userController.signInUser(context);
+            if(_formKey.currentState!.validate()){
+              userController.signInUser(context);
+            }else{
+              userController.showSnackBar("Enter email", context);
+            }
+            // userController.signInUser(context);
             //Fluttertoast.showToast(msg: "Login Successful");
             //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp()));
 

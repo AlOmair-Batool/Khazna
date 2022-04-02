@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // import 'dart:ffi';
-
+import 'package:email_auth/email_auth.dart';
 import 'package:email_auth/email_auth.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
