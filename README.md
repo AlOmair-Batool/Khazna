@@ -34,13 +34,13 @@ Or go to pubspec.yaml then under the taps bar click on:
 Pub get
 ```
 
-5. From Run/Debug configurations in Additional run args input add the following:
+5. From Config Selector click Edit Configurations then in Additional run args input add the following:
 
 ```
 --no-sound-null-safety
 ```
 6. Connect your Android device to the computer, a window will appear on the connected device to ask for allownce, press (Allow).
-7. From target selector select your device.
+7. From Target Selector select your device.
 
 8. Run the program:
 
