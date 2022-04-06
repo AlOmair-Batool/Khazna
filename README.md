@@ -34,7 +34,7 @@ Or go to pubspec.yaml then under the taps bar click on:
 Pub get
 ```
 
-5. From Config Selector click Edit Configurations then in Additional run args input add the following:
+5. From Config Selector click Edit Configurations, then in Additional run args input add the following:
 
 ```
 --no-sound-null-safety
