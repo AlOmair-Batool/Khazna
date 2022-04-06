@@ -23,10 +23,15 @@ File -> Settings -> Plugins -> Type Flutter -> Click Install
 https://github.com/AlOmair-Batool/Khazna.git
 ```
 
-4- Download dependencies from the terminal:
+4- Download dependencies from the Android Studio terminal:
 
 ```
 flutter pub get
+```
+
+Or go to pubspec.yaml then under the taps bar click on:
+```
+Pub get
 ```
 
 5- From Run/Debug configurations in Additional run args input add the following:
@@ -35,7 +40,7 @@ flutter pub get
 --no-sound-null-safety
 ```
 
-5- Run the program:
+6- Run the program:
 
 ![main-toolbar](https://user-images.githubusercontent.com/90303853/161403815-a752af48-5af6-4002-940e-14d262e1c830.png)
 
