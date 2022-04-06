@@ -8,25 +8,34 @@ Khazna is an android application that automatically retrieves all user’s relat
 
 ## Launching
 
-1- Install Khazna as zip file in your cumputer or clone Khazna repository on Android Studio:
+1- Install Android Studio:
+
+```
+https://developer.android.com/studio
+```
+2-Install Flutter extension to run the Flutter application:
+```
+File -> Settings -> Plugins -> Type Flutter -> Click Install
+```
+3- Install Khazna as zip file in your cumputer or clone Khazna repository on Android Studio:
 
 ```
 https://github.com/AlOmair-Batool/Khazna.git
 ```
 
-2- Download dependencies from the terminal:
+4- Download dependencies from the terminal:
 
 ```
 flutter pub get
 ```
 
-3- From Run/Debug configurations in Additional run args input add the following:
+5- From Run/Debug configurations in Additional run args input add the following:
 
 ```
 --no-sound-null-safety
 ```
 
-4- Run the program:
+5- Run the program:
 
 ![main-toolbar](https://user-images.githubusercontent.com/90303853/161403815-a752af48-5af6-4002-940e-14d262e1c830.png)
 
