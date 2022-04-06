@@ -6,7 +6,7 @@ Khazna is an android application that automatically retrieves all user’s relat
 ![khaznaphone](https://user-images.githubusercontent.com/90303853/160221293-70af8806-8885-466b-81b4-97a51a83c230.png)
 
 
-## Launching
+## Launching instructions:
 
 1- Install Android Studio:
 
