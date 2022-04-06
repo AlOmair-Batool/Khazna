@@ -8,22 +8,22 @@ Khazna is an android application that automatically retrieves all user’s relat
 
 ## Launching instructions:
 
-1- Install Android Studio:
+1. Install Android Studio:
 
 ```
 https://developer.android.com/studio
 ```
-2-Install Flutter extension to run the Flutter application:
+2. Install Flutter extension to run the Flutter application:
 ```
 File -> Settings -> Plugins -> Type Flutter -> Click Install
 ```
-3- Install Khazna as zip file in your cumputer or clone Khazna repository on Android Studio:
+3. Install Khazna as zip file in your cumputer or clone Khazna repository on Android Studio:
 
 ```
 https://github.com/AlOmair-Batool/Khazna.git
 ```
 
-4- Download dependencies from the Android Studio terminal:
+4. Download dependencies from the Android Studio terminal:
 
 ```
 flutter pub get
@@ -34,13 +34,15 @@ Or go to pubspec.yaml then under the taps bar click on:
 Pub get
 ```
 
-5- From Run/Debug configurations in Additional run args input add the following:
+5. From Run/Debug configurations in Additional run args input add the following:
 
 ```
 --no-sound-null-safety
 ```
+6. Connect your Android device to the computer, a window will appear on the connected device to ask for allownce, press (Allow).
+7. From target selector select your device.
 
-6- Run the program:
+8. Run the program:
 
 ![main-toolbar](https://user-images.githubusercontent.com/90303853/161403815-a752af48-5af6-4002-940e-14d262e1c830.png)
 
