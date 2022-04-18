@@ -71,7 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.account_circle,
-              color: Colors.teal.shade300),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "First Name",
           border: OutlineInputBorder(
@@ -97,7 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.account_circle,
-              color: Colors.teal.shade300),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Second Name",
           border: OutlineInputBorder(
@@ -131,7 +131,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.mail,
-              color: Colors.teal.shade300),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -163,7 +163,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.vpn_key,
-              color: Colors.teal.shade300),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -195,7 +195,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.vpn_key,
-              color: Colors.teal.shade300),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirm Password",
           border: OutlineInputBorder(
@@ -209,7 +209,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final signUpButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.teal.shade300,
+      color: Color(0xff43AA8B),
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery
@@ -253,7 +253,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.teal.shade200),
+          icon: Icon(Icons.arrow_back, color: Color(0xff43AA8B)),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();

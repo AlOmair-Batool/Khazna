@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
             Icons.mail,
-            color: Colors.teal.shade300,
+            color: Color(0xff43AA8B),
           ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.vpn_key,
-              color: Colors.teal.shade300),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.teal.shade300,
+      color: Color(0xff43AA8B),
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
             if(_formKey.currentState!.validate()){
               userController.signInUser(context);
             }else{
-              userController.showSnackBar("Enter email", context);
+              //userController.showSnackBar("Enter email", context);
             }
             // userController.signInUser(context);
             //Fluttertoast.showToast(msg: "Login Successful");

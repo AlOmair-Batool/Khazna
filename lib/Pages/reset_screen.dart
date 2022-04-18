@@ -52,7 +52,7 @@ class _ResetScreenState extends State<ResetScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(
               Icons.mail,
-              color: Colors.teal.shade200),
+              color: Color(0xff43AA8B)),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -64,7 +64,7 @@ class _ResetScreenState extends State<ResetScreen> {
     final resetButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.teal.shade300,
+      color: Color(0xff43AA8B),
       child: MaterialButton(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
@@ -92,7 +92,7 @@ class _ResetScreenState extends State<ResetScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.teal.shade200),
+          icon: Icon(Icons.arrow_back, color: Color(0xff43AA8B)),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();

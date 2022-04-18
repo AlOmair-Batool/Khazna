@@ -24,18 +24,7 @@ class _StatsPageState extends State<StatsPage> {
     var size = MediaQuery.of(context).size;
 
     List expenses = [
-      {
-        "icon": Icons.check,
-        "color": const Color(0xFF40A083),
-    "label": "Current balance",
-        "cost": "6500 SAR"
-      },
-      {
-        "icon": Icons.show_chart,
-        "color": const Color(0xFF0071BC),
-        "label": "Expected balance",
-        "cost": "2645 SAR"
-      }
+
     ];
     return SingleChildScrollView(
       child: Column(

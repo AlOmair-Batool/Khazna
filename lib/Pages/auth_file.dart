@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sim/Pages/root_app.dart';
+import 'package:sim/Pages/daily_page.dart';
 // import 'home_page.dart';
 
 
