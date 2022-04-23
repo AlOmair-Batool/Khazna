@@ -77,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-            Icons.mail,
-            color: Color(0xff43AA8B),
+            Icons.mail_outlined,
+            color: primary,
           ),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
@@ -111,8 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.vpn_key,
-              color: Color(0xff43AA8B)),
+              Icons.vpn_key_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -122,11 +122,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     final loginButton = Material(
-      elevation: 5,
+      elevation: 3,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xff43AA8B),
+      color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
             if(_formKey.currentState!.validate()){
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           child: Text("Login", textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
     );
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Sign In"),
+        title: Text("Login"),
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: Colors.black ,
             fontSize: 20,
@@ -180,11 +180,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('Welcome to Khazna', style: TextStyle( color: Colors.black,
+                    Text('Welcome Back to Khazna!', style: TextStyle( color: Colors.black,
                         fontSize:28,
                         fontWeight: FontWeight.w500
                     )),
-                    Text('Sign in with your email and password', style: TextStyle( color: Colors.grey,
+                    Text('Please fill your registered information below:', style: TextStyle( color: Colors.grey,
                       fontSize:15,
                       height: 2,
                     )
@@ -216,9 +216,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           RegistrationScreen()));
                             },
                             child: Text(
-                              "SignUp",
+                              "Register",
                               style: TextStyle(
-                                  color: Colors.teal.shade100,
+                                  color: primary,
                                   fontWeight: FontWeight.bold,
                                   height: 2,
                                   fontSize: 15),
@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               "Reset",
                               style: TextStyle(
-                                  color: Colors.teal.shade100,
+                                  color: primary,
                                   fontWeight: FontWeight.bold,
                                   height: 2,
                                   fontSize: 15),

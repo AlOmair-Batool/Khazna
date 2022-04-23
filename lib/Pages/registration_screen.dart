@@ -70,8 +70,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.account_circle,
-              color: Color(0xff43AA8B)),
+              Icons.account_circle_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "First Name",
           border: OutlineInputBorder(
@@ -96,8 +96,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.account_circle,
-              color: Color(0xff43AA8B)),
+              Icons.account_circle_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Second Name",
           border: OutlineInputBorder(
@@ -130,8 +130,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.mail,
-              color: Color(0xff43AA8B)),
+              Icons.mail_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -162,8 +162,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.vpn_key,
-              color: Color(0xff43AA8B)),
+              Icons.vpn_key_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
@@ -194,8 +194,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.vpn_key,
-              color: Color(0xff43AA8B)),
+              Icons.vpn_key_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirm Password",
           border: OutlineInputBorder(
@@ -207,11 +207,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     //sign up button
     final signUpButton = Material(
-      elevation: 5,
+      elevation: 3,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xff43AA8B),
+      color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           minWidth: MediaQuery
               .of(context)
               .size
@@ -236,9 +236,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             }
           },
 
-          child: Text("Sign up", textAlign: TextAlign.center,
+          child: Text("Register", textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
     );
@@ -246,14 +246,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: Text("Register"),
         titleTextStyle: TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xff43AA8B)),
+          icon: Icon(Icons.arrow_back, color: primary),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();
