@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
           },
           icon: Icon(
             Icons.arrow_back,
-            color: secondary,
+            color: primary,
           ),
         ),
       ),
@@ -53,7 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Icon(
                   AntDesign.user,
-                  color: secondary,
+                  color: primary,
                 ),
                 SizedBox(
                   width: 8,
@@ -81,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Icon(
                   Icons.notifications_none_rounded,
-                  color: secondary,
+                  color: primary,
                 ),
                 SizedBox(
                   width: 8,
@@ -113,9 +112,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
-                child: Text("SIGN OUT",
+                child: Text("Sign out",
                     style: TextStyle(
-                        fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
+                        fontSize: 16, letterSpacing: 1.5, color: black)),
               ),
             )
           ],

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:sim/widget/chart.dart';
+import 'dart:convert';
+import 'package:sim/Pages/function.dart';
 
 class StatsPage extends StatefulWidget {
   @override
@@ -11,8 +13,26 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   int activeDay = 3;
-
+  String url = 'http://159.223.227.189:3000/api';
+  var data;
+  String output = '0 SAR';
   bool showAvg = false;
+  predict() async {
+  data = await fetchdata(url);
+  var decoded = jsonDecode(data);
+  print(decoded['output']);
+  setState(() {
+  output = decoded['output'].substring(0, 6)+" SAR";
+  });
+}
+
+  @override
+  void initState() {
+
+    super.initState();
+    WidgetsBinding.instance
+        ?.addPostFrameCallback((_) =>predict());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +40,26 @@ class _StatsPageState extends State<StatsPage> {
       body: getBody(),
     );
   }
+
   Widget getBody() {
+
     var size = MediaQuery.of(context).size;
-
     List expenses = [
-
+      {
+        "icon": Icons.check,
+        "color": const Color(0xFF40A083),
+        "label": "Current balance",
+        "cost": "6500 SAR"
+      },
+      {
+        "icon": Icons.show_chart,
+        "color": const Color(0xFF0071BC),
+        "label": "Expected balance",
+        "cost": output
+      }
     ];
+
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -158,9 +192,10 @@ class _StatsPageState extends State<StatsPage> {
                               shape: BoxShape.circle,
                               color: expenses[index]['color']),
                           child: Center(
-                              child: Icon(
+
+                              child:  Icon(
                                 expenses[index]['icon'],
-                                color: white,
+                                color: Colors.white,
                               )),
                         ),
                         Column(
@@ -180,7 +215,7 @@ class _StatsPageState extends State<StatsPage> {
                               expenses[index]['cost'],
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 18,
                               ),
                             )
                           ],

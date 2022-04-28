@@ -1,8 +1,6 @@
-import 'package:sim/Pages/home_screen.dart';
-import 'package:sim/Pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sim/theme/colors.dart';
 
 
 class ResetScreen extends StatefulWidget {
@@ -51,8 +49,8 @@ class _ResetScreenState extends State<ResetScreen> {
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
-              Icons.mail,
-              color: Color(0xff43AA8B)),
+              Icons.mail_outlined,
+              color: primary),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
@@ -62,11 +60,11 @@ class _ResetScreenState extends State<ResetScreen> {
     );
 
     final resetButton = Material(
-      elevation: 5,
+      elevation: 3,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xff43AA8B),
+      color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
             _auth.sendPasswordResetEmail(email: emailController.text);
@@ -74,7 +72,7 @@ class _ResetScreenState extends State<ResetScreen> {
           },
           child: Text("Reset", textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
     );
@@ -83,7 +81,7 @@ class _ResetScreenState extends State<ResetScreen> {
 
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: white,
       appBar: AppBar(
         title: Text("Reset Password"),
         titleTextStyle: TextStyle(color: Colors.black ,
@@ -92,7 +90,7 @@ class _ResetScreenState extends State<ResetScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xff43AA8B)),
+          icon: Icon(Icons.arrow_back, color: primary),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();
@@ -106,7 +104,7 @@ class _ResetScreenState extends State<ResetScreen> {
 
           child: Container(
 
-            color: Colors.grey.shade100,
+            color: white,
             child: Padding(
               padding: const EdgeInsets.all(40.0),
               child: Form(

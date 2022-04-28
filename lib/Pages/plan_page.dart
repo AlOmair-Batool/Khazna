@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
-import 'package:sim/widget/chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PlanPage extends StatefulWidget {
@@ -21,11 +19,11 @@ class _PlanPageState extends State<PlanPage> {
   late List<TotalData> _chartData;
 
 
-
   @override
   void initState() {
 
       super.initState();
+
       FirebaseFirestore.instance
           .collection("users")
           .doc(user!.uid)
