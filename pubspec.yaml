@@ -46,7 +46,6 @@ dependencies:
   email_auth: ^1.0.0
   reactive_forms: ^11.0.1
   get: ^4.3.8
-  http:
 
     # When depending on this package from a real application you should use:
     #   telephony: ^x.y.z

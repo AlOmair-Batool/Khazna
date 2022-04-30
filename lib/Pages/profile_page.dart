@@ -4,6 +4,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sim/Pages/settings.dart';
 import 'package:sim/theme/colors.dart';
+import 'package:sim/core/global.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -105,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "John Doe",
+                              "${currentUser!.firstName} ${currentUser!.secondName}",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,

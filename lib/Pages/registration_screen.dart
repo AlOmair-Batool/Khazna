@@ -1,28 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sim/Pages/root_app.dart';
 import 'package:sim/Pages/ver_screen.dart';
-import 'package:sim/model/user_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sim/theme/colors.dart';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// // import 'package:sim/Pages/daily_page.dart';
-// // import 'package:sim/Pages/root_app.dart';
-// // import 'package:sim/Pages/ver_screen.dart';
-// // import 'package:sim/model/user_model.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-// import 'package:login/ver_screen.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sim/Pages/ver_screen.dart';
-
 import 'package:sim/pages/auth_file.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:sim/theme/colors.dart';
+
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -64,9 +47,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           return null;
         },
 
-        // onSaved: (value) {
-        //   firstNameEditingController.text = value!;
-        // },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -124,9 +104,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           return null;
         },
 
-        // onSaved: (value) {
-        //   firstNameEditingController.text = value!;
-        // },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -156,9 +133,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           }
         },
 
-        // onSaved: (value) {
-        //   firstNameEditingController.text = value!;
-        // },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -188,9 +162,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           return null;
         },
 
-        // onSaved: (value) {
-        //   userController.confirmPasswordController.text = value!;
-        // },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -221,9 +192,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             {
               if(userController.passwordController.text == userController.confirmPasswordController.text)
               {
-                // userController.showSnackBar("Please verify your email .", context);
-                // Future.delayed(Duration(seconds: 10));
-                // userController.signUpUser(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => UserEmailAuth()),
@@ -305,5 +273,4 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void signUp(){
     Navigator.push(context, MaterialPageRoute(builder: (_)=> UserEmailAuth()));
   }
-
 }

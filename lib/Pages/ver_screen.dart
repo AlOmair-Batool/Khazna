@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-
-// import 'dart:ffi';
 import 'package:email_auth/email_auth.dart';
-import 'package:email_auth/email_auth.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sim/pages/auth_file.dart';
 import 'login_screen.dart';
 import 'package:sim/Pages/login_screen.dart';
-
-
 
 
 class UserEmailAuth extends StatefulWidget {
@@ -30,10 +23,6 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
 
   final _formKey = GlobalKey<FormState>();
 
-
-  // Controllers
-  // TextEditingController _emailCotroller = TextEditingController();
-  // TextEditingController _otpController = TextEditingController();
   // Methods for OTP
   Future<bool> sendOTP()async{
     EmailAuth  emailAuth = EmailAuth(sessionName: "khazna");
@@ -77,7 +66,6 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                   const Text(
                     'Email Verification',
                     style: TextStyle(
-                      // fontFamily: CustomFonts.sitkaFonts,
                       color:Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -107,8 +95,6 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                               const SizedBox(height: 16),
                               SizedBox(
                                 height: 136,
-                                // width: Sizes.s136,
-                                // child: Image.asset('logo'.png),
                               ),
 
                               const SizedBox(height: 24),
@@ -150,8 +136,6 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                               TextFormField(
                                 obscureText: true,
                                 validator: (val){
-                                  // String pattern = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
-                                  // RegExp regex = RegExp(pattern);
                                   if(val!.isEmpty)
                                     return "Otp required! ";
                                   return null;
@@ -175,12 +159,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                       backgroundColor: MaterialStateProperty.all(Colors.teal.shade100),
                                     ),
                                     child: Text("Verify", style: TextStyle(color: Colors.black),),
-                                    // title: 'Verify OTP',
                                     onPressed: (){
-                                      // if(_formKey.currentState!.validate())
-                                      // {
-                                      //   userController.signInUser(context);
-                                      // }
                                       verifyOTP().then((value){
                                         if(_formKey.currentState!.validate()){
                                           if(value== true){
@@ -195,8 +174,8 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                               Future.delayed(Duration(seconds: 3) , navigation); // do this
 
                                             });
-                                            // userController.verified();
-                                          }else{
+                                          }
+                                          else{
                                             showDialog(
                                               context: context,
                                               builder: (_){
@@ -206,17 +185,12 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                           }
                                         }
                                       }
-
-
                                       );
-
                                     },
-
                                   );
                                 },
                               ),
                               const SizedBox(height: 16),
-
                             ],
                           ),
                         ),
@@ -224,7 +198,6 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                     ],
                   ),
                 ),
-
               ),
             )
         ));
@@ -237,9 +210,5 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
       title: Text("$title") ,
       content: Text("$message"),
     );
-
-
   }
-
-
 }

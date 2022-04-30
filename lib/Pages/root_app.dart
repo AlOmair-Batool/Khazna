@@ -16,7 +16,7 @@ class _RootAppState extends State<RootApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: getBody(),
+      body: getBody(),
       bottomNavigationBar: getFooter(),
     );
   }
@@ -61,4 +61,4 @@ class _RootAppState extends State<RootApp> {
       pageIndex = index;
     });
   }
-  }
+}

@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:email_auth/email_auth.dart';
-import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sim/Pages/root_app.dart';
-import 'package:sim/Pages/daily_page.dart';
-// import 'home_page.dart';
+import 'package:sim/core/global.dart';
+import 'package:sim/model/user_model.dart';
 
 
 class UserController extends GetxController{
@@ -35,13 +33,17 @@ class UserController extends GetxController{
     try{
       final User? user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password)).user;
       print(user!.email);
-      // emailController.clear();
-      // passwordController.clear();
-
-      // Get.to(HomeScreen());
+      Map<String,dynamic> userData = (await FirebaseFirestore.instance.collection('users').where('email',isEqualTo: emailController.text).get()).docs.first.data();
+      print('11111111111111');
+      print(userData);
+      print('22222222222222');
+      currentUser = UserModel.fromMap(userData);
       Navigator.push(context, MaterialPageRoute(builder: (_)=> RootApp()));
 
     }catch  (e) {
+      print(e);
+      print(emailController.text);
+      print(passwordController.text);
       emailController.clear();
       passwordController.clear();
       showSnackBar("Incorrect email or Passward!", context);
@@ -59,8 +61,6 @@ class UserController extends GetxController{
         'firstname': firstNameController.text,
         'secondname': secondNameController.text,
         'email': emailController.text,
-        // 'phone': phoneController.text,
-        // 'password': passwordController.text,
       });
 
       ref.update({
@@ -72,7 +72,6 @@ class UserController extends GetxController{
       firstNameController.clear();
       secondNameController.clear();
       emailController.clear();
-      // phoneController.clear();
       passwordController.clear();
       confirmPasswordController.clear();
       showSnackBar("Signup Success", context);
@@ -80,12 +79,6 @@ class UserController extends GetxController{
       showSnackBar("Email is already in use by another account! ", context);
 
     };
-    // await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text)
-    // .catchError((signUpError){
-    //   print(" The errrrrrrrrrrrooooooooooorrrrrrrrrrrrrr :$signUpError");
-    // });
-
-
   }
 
   void forgotPassword(context)async{
@@ -100,29 +93,7 @@ class UserController extends GetxController{
         backgroundColor: Colors.red
     );
 
-    // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-    // Scaffold.of(scaffoldContext).showSnackBar(snackBar);
+
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-  // Widget alertDialog(String title, String message) {
-  //   return AlertDialog(
-  //     title: Text("$title") ,
-  //     content: Text("$message"),
-  //   );
-  //
-  //
-  // }
-
-
-
-// void verified(){
-//   emailController.clear();
-//   otpController.clear();
-//   passwordController.clear();
-//   userNameController.clear();
-//   confirmPasswordController.clear();
-//   phoneController.clear();
-// }
-
-
 }

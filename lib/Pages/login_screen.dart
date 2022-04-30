@@ -1,30 +1,11 @@
 import 'package:sim/Pages/registration_screen.dart';
-import 'package:sim/Pages/root_app.dart';
-import 'package:sim/Pages/ver_screen.dart';
 import 'package:sim/Pages/reset_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sim/theme/colors.dart';
-
-
-// import 'package:sim/Pages/home_screen.dart';
-// import 'package:sim/Pages/registration_screen.dart';
-// import 'package:sim/Pages/root_app.dart';
-// import 'package:sim/Pages/ver_screen.dart';
-import 'package:sim/Pages/reset_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-// import 'package:login/sign_up.dart';
-// import '../../client_projects/SmartIncomeManager/lib/Pages/sign_up.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sim/Pages/registration_screen.dart';
-
 import 'package:sim/pages/auth_file.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:sim/theme/colors.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -44,12 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   // form key
 
-  // editing controller
-  // final TextEditingController emailController = new TextEditingController();
-  // final TextEditingController passwordController = new TextEditingController();
-
-  // firebase
-  // final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -132,11 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
             if(_formKey.currentState!.validate()){
               userController.signInUser(context);
             }else{
-              //userController.showSnackBar("Enter email", context);
+
             }
-            // userController.signInUser(context);
-            //Fluttertoast.showToast(msg: "Login Successful");
-            //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp()));
 
           },
 
@@ -158,6 +130,8 @@ class _LoginScreenState extends State<LoginScreen> {
             fontWeight: FontWeight.bold
 
         ),
+
+        automaticallyImplyLeading: false,
 
         elevation: 0,
 
@@ -260,24 +234,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-// login function
-// void signIn(String email, String password) async {
-//   if (_formKey.currentState!.validate()) {
-//
-//     await _auth
-//         .signInWithEmailAndPassword(email: email, password: password)
-//         .then((uid) => {
-//       // Fluttertoast.showToast(msg: "Login Successful"),
-//       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => RootApp())),
-//     })
-//         .catchError((e)
-//     {
-//       // Fluttertoast.showToast(msg: e!.message);
-//     });
-//
-//   }
-//
-// }
-
-
 }
