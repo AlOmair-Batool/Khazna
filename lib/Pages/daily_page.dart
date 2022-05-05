@@ -35,7 +35,9 @@ class _DailyPageState extends State<DailyPage> {
   List <String> date=[];
   List <String> time=[];
   List <String> icon=[];
-  int totalAmount = 0;
+  double totalAmount = 0;
+  double monthlyAllowance = 0;
+  double savingPoint = 0;
 
 
   void initState() {
@@ -139,6 +141,7 @@ class _DailyPageState extends State<DailyPage> {
     final uid = user?.uid;
     for (var i = 0; i < transactionType.length; i++) {
       totalAmount += int.parse(amount[i]);
+
       DocumentReference ref = await FirebaseFirestore.instance.collection(
           'Test')
           .add({
@@ -152,6 +155,9 @@ class _DailyPageState extends State<DailyPage> {
       });
 
           }
+
+    monthlyAllowance = totalAmount * 0.8;
+        savingPoint = totalAmount * 0.2;
 
   }
 
