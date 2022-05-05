@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 
+import 'dart:convert';
+
 import '../json/daily_json.dart';
 import 'dart:developer';
 onBackgroundMessage(SmsMessage message) {
@@ -33,6 +35,7 @@ class _DailyPageState extends State<DailyPage> {
   List <String> date=[];
   List <String> time=[];
   List <String> icon=[];
+  int totalAmount = 0;
 
 
   void initState() {
@@ -48,15 +51,7 @@ class _DailyPageState extends State<DailyPage> {
     getAllSMS();
 
   }
-  /*getAllSMS() async {
-    messages = await telephony.getInboxSms(
-        columns: [SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE],
-        filter: SmsFilter.where(SmsColumn.ADDRESS).equals("alinmabank"),
-        sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC),
-        OrderBy(SmsColumn.DATE)]
-      //filter: SmsFilter.where(SmsColumn.ADDRESS).equals("SNB-AlAhli")
 
-    );*/
 
   getAllSMS() async {
     messages = await telephony.getInboxSms(
@@ -72,10 +67,7 @@ class _DailyPageState extends State<DailyPage> {
       //identification of Alinma messages
       //String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
       message1 = message.body!;
-
-
       log(message1);
-
       String message2 = message1.toLowerCase();
 
       var msgDate = message.date!;
@@ -83,12 +75,6 @@ class _DailyPageState extends State<DailyPage> {
       var dt2 = DateFormat('dd/MM/yyyy').format(dt);
       //var d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
       bool flag = false;
-
-
-
-
-
-
       if (message2.contains("withdrawal") || message2.contains("purchase") ||
           message2.contains("mada atheer pos purchase") ||
           message2.contains("debit transfer internal")
@@ -102,7 +88,6 @@ class _DailyPageState extends State<DailyPage> {
         flag = true;
 
       }
-
       else if (message2.contains("deposit") || message2.contains("refund") ||
           message2.contains("credit transfer internal") ||
           message2.contains("reverse transaction")) {
@@ -119,8 +104,6 @@ class _DailyPageState extends State<DailyPage> {
       // When try it on alahli please remove the comment the comment alinma regex
 
       if (flag) {
-
-
         //time extraction (also works for alahli since it's the same structure
         RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
 
@@ -134,14 +117,6 @@ class _DailyPageState extends State<DailyPage> {
        if (dateMatch != null) {
           date.insert(0, msgDate.toString());*/
       }
-
-
-
-
-
-
-
-
       //amount regex
       var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
       //var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
@@ -159,6 +134,25 @@ class _DailyPageState extends State<DailyPage> {
 
 
     }
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    for (var i = 0; i < transactionType.length; i++) {
+      totalAmount += int.parse(amount[i]);
+      DocumentReference ref = await FirebaseFirestore.instance.collection(
+          'Test')
+          .add({
+        'Date': date[i],
+        'Time': time[i],
+        'Type': transactionType[i],
+        'Amount': amount[i],
+      });
+      ref.update({
+        'userID': uid
+      });
+
+          }
+
   }
 
 
