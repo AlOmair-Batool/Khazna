@@ -48,6 +48,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
 
     return SafeArea(
         child: Scaffold(
+
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
             extendBodyBehindAppBar: true,
@@ -64,19 +65,22 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                     ),
                   ),
                   const Text(
-                    'Email Verification',
+                    'Email Verification ',
+
                     style: TextStyle(
                       color:Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   SizedBox(width: MediaQuery.of(context).size.width * 0.1),
                 ],
               ),
               elevation: 0,
               backgroundColor: Colors.transparent,
             ),
+
             body:SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -85,8 +89,14 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                   formGroup: verificationForm,
                   child: Column(
                     children: [
+                      Text('To complete your registration, Please verify your email:', style: TextStyle( color: Colors.grey,
+                        fontSize:15,
+                        height: 12,
+                      )
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
+
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -94,7 +104,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                             children: <Widget>[
                               const SizedBox(height: 16),
                               SizedBox(
-                                height: 136,
+                                height: 10,
                               ),
 
                               const SizedBox(height: 24),
@@ -112,8 +122,9 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                    border: const OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black, width: 0.0),
+                                    hintText: "First Name",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
                                     suffixIcon: TextButton(
                                       onPressed: (){
@@ -121,7 +132,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                         showDialog(
                                           context: context,
                                           builder: (_){
-                                            return alertDialog("OTP sent !", "");
+                                            return alertDialog("OTP sent, please check your email !", "");
                                           },
                                         );
                                         // userController.emailController.clear();
@@ -129,7 +140,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                       child: Text('Send OTP', style: TextStyle(fontSize: 15, color:Colors.black, fontWeight: FontWeight.w900 ),),
                                     ),
                                     isDense: true,
-                                    label: Text("Email")
+                                    //label: Text("Email")
                                 ),
                               ),
                               const SizedBox(height: 24),
@@ -142,8 +153,9 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                 },
                                 controller: userController.otpController,
                                 decoration: InputDecoration(
-                                    border: const OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black, width: 0.0),
+                                    hintText: "Enter OTP",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
                                     isDense: true,
                                     label: Text("Enter OTP ")
@@ -151,14 +163,21 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                               ),
 
 
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 50),
+
                               ReactiveFormConsumer(
                                 builder: (context, formGroup, child) {
                                   return ElevatedButton(
+
                                     style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all(Colors.teal.shade100),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                        )
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all(Colors.teal.shade400),
                                     ),
-                                    child: Text("Verify", style: TextStyle(color: Colors.black),),
+                                    child: Text("Verify", style: TextStyle(color: Colors.white),),
                                     onPressed: (){
                                       verifyOTP().then((value){
                                         if(_formKey.currentState!.validate()){
@@ -167,7 +186,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                             showDialog(
                                               context: context,
                                               builder: (_){
-                                                return alertDialog("OTP Verified !", "Thanks for your patience");
+                                                return alertDialog("OTP Verified !", "You can log in to your account");
                                               },
                                             );
                                             setState(() {
