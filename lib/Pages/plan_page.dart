@@ -142,15 +142,15 @@ class _PlanPageState extends State<PlanPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: grey.withOpacity(0.05),
-
         appBar: AppBar(
           title: Text("My Plan"),
           backgroundColor: Colors.white,
-          toolbarHeight: 85,
-          titleTextStyle: TextStyle(color: Colors.black ,
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-            height: 3,
+          toolbarHeight: 75,
+          titleTextStyle: TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.bold,
+              color: black,
+            height: 1,
           ),
           titleSpacing: -35,
           elevation: 0,
@@ -163,6 +163,7 @@ class _PlanPageState extends State<PlanPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Wrap(
+                  direction: Axis.vertical,
                   spacing: -97,
                   //runSpacing: 50,
                   children: <Widget>[
@@ -177,11 +178,11 @@ class _PlanPageState extends State<PlanPage> {
                       ),
                     ),
                     Text(
-                      'To achieve your goals, We advice you to follow the plan below!',
+                      'To achieve your goals, we advice you to follow the plan below:',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                         fontSize: 12,
-                        height: 10,
+                        height: 11,
 
                         //textBaseline:
 
@@ -209,7 +210,7 @@ class _PlanPageState extends State<PlanPage> {
                   width: MediaQuery.of(context).size.width - 40,
                   height: 80,
                   decoration: BoxDecoration(
-                      color: Color(0xff43AA8B),
+                      color: primary,
                       //Color(0xff43AA8B),
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
@@ -230,8 +231,8 @@ class _PlanPageState extends State<PlanPage> {
                         textAlign: TextAlign.left,
                         //textDirection: TextDirection.rtl,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
                           color: Colors.white,
                           height: 1,
                         ),
@@ -250,7 +251,7 @@ class _PlanPageState extends State<PlanPage> {
               children: <Widget> [
                 Container(
                   //padding: const EdgeInsets.all(13.0),
-                  margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 40.0),
+                  margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
                   child: SfCircularChart(
                     legend: Legend(
                         isVisible: true,
@@ -302,7 +303,7 @@ class _PlanPageState extends State<PlanPage> {
 
   List<TotalData> getChartData(){
     final List<TotalData> chartData = [
-      TotalData('Savings',savingPoint.toInt(),Color(0xff43AA8B)),
+      TotalData('Savings',savingPoint.toInt(),Color(0xFF4D908E)),
       TotalData('Monthly Allowance',monthlyAllowance.toInt(), Colors.grey.shade300),
     ];
 
