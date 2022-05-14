@@ -72,21 +72,21 @@ class _NewPlanPageState extends State<NewPlanPage> {
      List budget_json = [
       {
         "name": "Daily Allowance",
-        "price": totalAmount.toString(),
+        "price": totalAmount.toString() + " SAR",
         "label_percentage": "50%",
         "percentage": 0.50,
         "color": green
       },
       {
         "name": "Monthly Allowance",
-        "price": monthlyAllowance.toString(),
+        "price": monthlyAllowance.toString() + " SAR",
         "label_percentage": "30%",
         "percentage": 0.3,
         "color": red
       },
       {
         "name": "Savings",
-        "price": savingPoint.toString(),
+        "price": savingPoint.toString()+ " SAR",
         "label_percentage": "20%",
         "percentage": 0.2,
         "color": blue
