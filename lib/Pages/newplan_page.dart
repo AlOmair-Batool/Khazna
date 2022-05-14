@@ -1,28 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:sim/json/budget_json.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:telephony/telephony.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:sim/theme/colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sim/model/user_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:telephony/telephony.dart';
-import 'package:intl/intl.dart';
 
-import 'dart:convert';
-
-import '../json/daily_json.dart';
-import 'dart:developer';
 
 class NewPlanPage extends StatefulWidget {
   @override
@@ -73,8 +55,6 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,10 +66,36 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
+     List budget_json = [
+      {
+        "name": "Daily Allowance",
+        "price": totalAmount.toString(),
+        "label_percentage": "50%",
+        "percentage": 0.50,
+        "color": green
+      },
+      {
+        "name": "Monthly Allowance",
+        "price": monthlyAllowance.toString(),
+        "label_percentage": "30%",
+        "percentage": 0.3,
+        "color": red
+      },
+      {
+        "name": "Savings",
+        "price": savingPoint.toString(),
+        "label_percentage": "20%",
+        "percentage": 0.2,
+        "color": blue
+      }
+    ];
+
 
 
     return SingleChildScrollView(
       child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             decoration: BoxDecoration(color: white, boxShadow: [
@@ -109,7 +115,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Plan",
+                        "My Plan",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -127,7 +133,6 @@ class _NewPlanPageState extends State<NewPlanPage> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Column(
-
                 children: List.generate(budget_json.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20),
@@ -151,9 +156,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              //budget_json[index]['name'],
-                        totalAmount.toString(),
-
+                              budget_json[index]['name'],
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13,
@@ -168,8 +171,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      //budget_json[index]['price'],
-                            monthlyAllowance.toString(),
+                                      budget_json[index]['price'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -178,23 +180,12 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                     SizedBox(
                                       width: 8,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        budget_json[index]['label_percentage'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 13,
-                                            color:
-                                            Color(0xff67727d).withOpacity(0.6)),
-                                      ),
-                                    ),
                                   ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 3),
                                   child: Text(
-                                    "\$5000.00",
+                                    budget_json[index]['label_percentage'],
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 13,
