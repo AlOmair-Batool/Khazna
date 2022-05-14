@@ -1,26 +1,30 @@
+//@dart=2.8
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sim/Pages/root_app.dart';
+import 'package:sim/core/functions/validation.dart';
 import 'package:sim/core/global.dart';
 import 'package:sim/model/user_model.dart';
 
 
 class UserController extends GetxController{
 
-  TextEditingController emailController = new TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
-  TextEditingController passwordController = new TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  TextEditingController firstNameController = new TextEditingController();
-  TextEditingController secondNameController = new TextEditingController();
-  TextEditingController phoneController = new TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController secondNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
-  TextEditingController confirmPasswordController = new TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
-  TextEditingController otpController = new TextEditingController();
+  TextEditingController otpController = TextEditingController();
 
 
 
@@ -31,13 +35,13 @@ class UserController extends GetxController{
     String password = passwordController.text;
 
     try{
-      final User? user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password)).user;
-      print(user!.email);
+      final User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password)).user;
+      print(user.email);
       Map<String,dynamic> userData = (await FirebaseFirestore.instance.collection('users').where('email',isEqualTo: emailController.text).get()).docs.first.data();
-      print('11111111111111');
       print(userData);
-      print('22222222222222');
       currentUser = UserModel.fromMap(userData);
+      emailController.clear();
+      passwordController.clear();
       Navigator.push(context, MaterialPageRoute(builder: (_)=> RootApp()));
 
     }catch  (e) {
@@ -78,7 +82,7 @@ class UserController extends GetxController{
     }catch(error){
       showSnackBar("Email is already in use by another account! ", context);
 
-    };
+    }
   }
 
   void forgotPassword(context)async{
@@ -88,12 +92,33 @@ class UserController extends GetxController{
   }
 
   void showSnackBar(String message, BuildContext context) {
-    final snackBar = new SnackBar(
-        content: new Text(message),
+    final snackBar = SnackBar(
+        content: Text(message),
         backgroundColor: Colors.red
     );
 
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<bool> updatePassword(String oldPassword,String newPassword,BuildContext context) async{
+    try {
+      User currentUser = FirebaseAuth.instance.currentUser;
+      var aurhCredential = EmailAuthProvider.credential(
+          email: currentUser.email.toString(), password: oldPassword);
+      var authResult = await currentUser.reauthenticateWithCredential(
+          aurhCredential);
+      authResult.user.updatePassword(newPassword);
+
+
+
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+      //   return Login();
+      // }));
+      return true;
+    }catch(e){
+      showAlertDialog(context,'Wrong password', false);
+      return false;
+    }
   }
 }

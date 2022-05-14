@@ -35,6 +35,9 @@ dependencies:
   syncfusion_flutter_charts: ^20.1.48
   mailer: ^5.1.0
   animated_splash_screen: ^1.2.0
+  font_awesome_flutter: ^9.2.0
+  shared_preferences: ^2.0.13
+
 
   flutter:
     sdk: flutter
@@ -46,6 +49,17 @@ dependencies:
   email_auth: ^1.0.0
   reactive_forms: ^11.0.1
   get: ^4.3.8
+  onesignal_flutter: ^3.0.0
+
+  firebase_messaging: ^11.2.8
+  flutter_local_notifications: ^9.4.1
+  rxdart: ^0.27.3
+  flutter_datetime_picker: ^1.5.1
+  android_alarm_manager_plus: ^2.0.5
+
+
+
+
 
     # When depending on this package from a real application you should use:
     #   telephony: ^x.y.z

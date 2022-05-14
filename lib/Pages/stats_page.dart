@@ -13,7 +13,7 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   int activeDay = 3;
-  String url = 'http://159.223.227.189:7000/api';
+  String url = 'http://159.223.227.189:3000/api';
   var data;
   String output = '0 SAR';
   bool showAvg = false;
@@ -81,7 +81,7 @@ class _StatsPageState extends State<StatsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Statistics",
+                        "Stats",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
