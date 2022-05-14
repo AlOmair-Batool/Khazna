@@ -63,25 +63,35 @@ class _NewPlanPageState extends State<NewPlanPage> {
     return Scaffold(
       backgroundColor: grey.withOpacity(0.05),
       body: getBody(),
+      appBar: AppBar(
+        title: Text("My Plan"),
+        backgroundColor: Colors.white,
+        titleTextStyle: TextStyle(color: Colors.black ,
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+
+        ),
+
+        automaticallyImplyLeading: false,
+
+        elevation: 0,
+
+      ),
+
     );
+
 
   }
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
      List budget_json = [
-      {
-        "name": "Daily Allowance",
-        "price": totalAmount.toString(),
-        "label_percentage": "50%",
-        "percentage": 0.50,
-        "color": green
-      },
+
       {
         "name": "Monthly Allowance",
         "price": monthlyAllowance.toString(),
-        "label_percentage": "30%",
-        "percentage": 0.3,
+        "label_percentage": "80%",
+        "percentage": 0.8,
         "color": red
       },
       {
@@ -90,7 +100,22 @@ class _NewPlanPageState extends State<NewPlanPage> {
         "label_percentage": "20%",
         "percentage": 0.2,
         "color": blue
-      }
+      },
+       {
+         "name": "Total amount",
+         "price": totalAmount.toString(),
+         "label_percentage": "100%",
+         "percentage": 1,
+         "color": green
+       },
+
+       {
+         "name": "Daily allowance",
+         "price": dailyAllowance.toString().substring(0, 6),
+         "label_percentage": "",
+         "percentage": 1,
+         "color": white
+       }
     ];
 
 
@@ -101,30 +126,33 @@ class _NewPlanPageState extends State<NewPlanPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            decoration: BoxDecoration(color: white, boxShadow: [
+            decoration: BoxDecoration(color: grey.withOpacity(0.01), boxShadow: [
               BoxShadow(
                 color: grey.withOpacity(0.01),
-                spreadRadius: 10,
+
+            spreadRadius: 10,
                 blurRadius: 3,
                 // changes position of shadow
               ),
             ]),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 60, right: 20, left: 20, bottom: 25),
+                  top: 30, right: 10, left: 20, bottom: 5),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "My Plan",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: black),
-                      ),
-                    ],
+                    children:  <Widget>[
+
+                  Text('This plan shows your daily, monthly \n allowance and saving point', style: TextStyle( color: Colors.black.withOpacity(0.8),
+
+                  fontSize:16,
+                  fontWeight: FontWeight.w400
+              )),
+              SizedBox(
+                height: 0,
+              ),
+                   ] ,
                   ),
                 ],
               ),
@@ -154,7 +182,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                           ]),
                       child: Padding(
                         padding: EdgeInsets.only(
-                            left: 25, right: 25, bottom: 25, top: 25),
+                            left: 25, right: 25, bottom: 20, top: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -162,7 +190,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                               budget_json[index]['name'],
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   color: Color(0xff67727d).withOpacity(0.6)),
                             ),
                             SizedBox(

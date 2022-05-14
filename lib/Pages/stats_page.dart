@@ -5,9 +5,6 @@ import 'package:sim/theme/colors.dart';
 import 'package:sim/widget/chart.dart';
 import 'dart:convert';
 import 'package:sim/Pages/function.dart';
-import 'package:sim/theme/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,7 +34,7 @@ class _StatsPageState extends State<StatsPage> {
     });
   }
 
-  String url = 'http://159.223.227.189:3000/api';
+  String url = 'http://159.223.227.189:7000/api';
   var data;
   String output = '0 SAR';
   bool showAvg = false;
@@ -93,7 +90,7 @@ class _StatsPageState extends State<StatsPage> {
       {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
-        "label": "Expected balance",
+        "label": "Expected spending",
         "cost": output
       }
     ];
@@ -244,7 +241,7 @@ class _StatsPageState extends State<StatsPage> {
                               expenses[index]['label'],
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 12.5,
+                                  fontSize: 11.5,
                                   color: Color(0xff67727d)),
                             ),
                             SizedBox(
@@ -254,7 +251,7 @@ class _StatsPageState extends State<StatsPage> {
                               expenses[index]['cost'],
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 16.5,
                               ),
                             )
                           ],
