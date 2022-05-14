@@ -5,6 +5,13 @@ import 'package:sim/theme/colors.dart';
 import 'package:sim/widget/chart.dart';
 import 'dart:convert';
 import 'package:sim/Pages/function.dart';
+import 'package:sim/theme/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sim/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class StatsPage extends StatefulWidget {
   @override
@@ -13,18 +20,37 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   int activeDay = 3;
+  double totalAmount =0;
+  //getting values from firestore
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+  getAllTransactions() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    QuerySnapshot snap = await
+    FirebaseFirestore.instance.collection('Test').get();
+
+    snap.docs.forEach((document) {
+      totalAmount = totalAmount + int.parse(document['Amount']);
+    });
+  }
+
   String url = 'http://159.223.227.189:3000/api';
   var data;
   String output = '0 SAR';
   bool showAvg = false;
   predict() async {
-  data = await fetchdata(url);
-  var decoded = jsonDecode(data);
-  print(decoded['output']);
-  setState(() {
-  output = decoded['output'].substring(0, 6)+" SAR";
-  });
-}
+    data = await fetchdata(url);
+    var decoded = jsonDecode(data);
+    print(decoded['output']);
+    setState(() {
+      output = decoded['output'].substring(0, 6) + " SAR";
+    });
+  }
+
+
 
   @override
   void initState() {
@@ -32,7 +58,20 @@ class _StatsPageState extends State<StatsPage> {
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) =>predict());
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+
+    getAllTransactions();
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +88,7 @@ class _StatsPageState extends State<StatsPage> {
         "icon": Icons.check,
         "color": const Color(0xFF40A083),
         "label": "Current balance",
-        "cost": "6500 SAR"
+        "cost": totalAmount.toString()
       },
       {
         "icon": Icons.show_chart,
@@ -229,4 +268,7 @@ class _StatsPageState extends State<StatsPage> {
       ),
     );
   }
+
+
+
 }
