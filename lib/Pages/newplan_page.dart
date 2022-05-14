@@ -1,6 +1,28 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:sim/json/budget_json.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:sim/theme/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sim/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:telephony/telephony.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:sim/theme/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sim/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:telephony/telephony.dart';
+import 'package:intl/intl.dart';
+
+import 'dart:convert';
+
+import '../json/daily_json.dart';
+import 'dart:developer';
 
 class NewPlanPage extends StatefulWidget {
   @override
@@ -8,17 +30,63 @@ class NewPlanPage extends StatefulWidget {
 }
 
 class _NewPlanPageState extends State<NewPlanPage> {
+  double totalAmount =0;
+  double savingPoint =0;
+  double monthlyAllowance =0;
   int activeDay = 3;
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
+
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+
+    getAllTransactions();
+  }
+
+
+
+  getAllTransactions() async{
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    QuerySnapshot snap = await
+    FirebaseFirestore.instance.collection('Test').get();
+
+    snap.docs.forEach((document) {
+      totalAmount = totalAmount + int.parse(document['Amount'] );
+      monthlyAllowance = totalAmount * 0.8;
+      savingPoint = totalAmount * 0.2;
+
+    });
+
+
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: grey.withOpacity(0.05),
       body: getBody(),
     );
+
   }
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
+
 
     return SingleChildScrollView(
       child: Column(
@@ -83,7 +151,9 @@ class _NewPlanPageState extends State<NewPlanPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              budget_json[index]['name'],
+                              //budget_json[index]['name'],
+                        totalAmount.toString(),
+
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13,
@@ -98,7 +168,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      budget_json[index]['price'],
+                                      //budget_json[index]['price'],
+                            monthlyAllowance.toString(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,

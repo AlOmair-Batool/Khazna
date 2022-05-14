@@ -142,7 +142,7 @@ class _DailyPageState extends State<DailyPage> {
     for (var i = 0; i < transactionType.length; i++) {
       totalAmount += int.parse(amount[i]);
 
-      DocumentReference ref = await FirebaseFirestore.instance.collection(
+      /*DocumentReference ref = await FirebaseFirestore.instance.collection(
           'Test')
           .add({
         'Date': date[i],
@@ -152,7 +152,7 @@ class _DailyPageState extends State<DailyPage> {
       });
       ref.update({
         'userID': uid
-      });
+      });*/
 
           }
 
