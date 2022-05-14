@@ -15,6 +15,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   double totalAmount =0;
   double savingPoint =0;
   double monthlyAllowance =0;
+  double dailyAllowance = 0;
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -47,6 +48,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
       totalAmount = totalAmount + int.parse(document['Amount'] );
       monthlyAllowance = totalAmount * 0.8;
       savingPoint = totalAmount * 0.2;
+      dailyAllowance = monthlyAllowance/30;
+
 
     });
 
