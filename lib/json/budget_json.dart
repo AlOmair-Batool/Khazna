@@ -2,21 +2,21 @@ import 'package:sim/theme/colors.dart';
 
 const List budget_json = [
   {
-    "name": "Gift",
+    "name": "Daily Allowance",
     "price": "\$2250.00",
     "label_percentage": "45%",
     "percentage": 0.45,
     "color": green
   },
   {
-    "name": "Automobile",
+    "name": "Monthly Allowance",
     "price": "\$3000.00",
     "label_percentage": "70%",
     "percentage": 0.7,
     "color": red
   },
   {
-    "name": "Bank",
+    "name": "Savings",
     "price": "\$4000.00",
     "label_percentage": "90%",
     "percentage": 0.9,
