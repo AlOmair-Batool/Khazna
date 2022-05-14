@@ -88,7 +88,7 @@ class _StatsPageState extends State<StatsPage> {
         "icon": Icons.check,
         "color": const Color(0xFF40A083),
         "label": "Current balance",
-        "cost": totalAmount.toString()
+        "cost": totalAmount.toString()+" SAR"
       },
       {
         "icon": Icons.show_chart,
