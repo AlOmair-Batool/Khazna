@@ -12,10 +12,11 @@ class NewPlanPage extends StatefulWidget {
 }
 
 class _NewPlanPageState extends State<NewPlanPage> {
-  double totalAmount =0;
-  double savingPoint =0;
-  double monthlyAllowance =0;
-  double dailyAllowance = 0;
+  late double totalAmount = 0 ;
+  late double savingPoint = 0 ;
+  late double monthlyAllowance= 0;
+  late double dailyAllowance = 0;
+
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -48,7 +49,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
       totalAmount = totalAmount + int.parse(document['Amount'] );
       monthlyAllowance = totalAmount * 0.8;
       savingPoint = totalAmount * 0.2;
-      dailyAllowance = monthlyAllowance/30;
+      dailyAllowance = monthlyAllowance*0.03;
+
 
 
     });
@@ -65,11 +67,11 @@ class _NewPlanPageState extends State<NewPlanPage> {
       body: getBody(),
       appBar: AppBar(
         title: Text("My Plan"),
+        toolbarHeight: 75,
         backgroundColor: Colors.white,
-        titleTextStyle: TextStyle(color: Colors.black ,
-            fontSize: 20,
+        titleTextStyle: TextStyle(color: black,
+            fontSize: 19,
             fontWeight: FontWeight.bold
-
         ),
 
         automaticallyImplyLeading: false,
@@ -89,21 +91,21 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
       {
         "name": "Monthly Allowance",
-        "price": monthlyAllowance.toString(),
+        "price": monthlyAllowance.toString()+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
         "color": red
       },
       {
         "name": "Savings",
-        "price": savingPoint.toString(),
+        "price": savingPoint.toString()+" SAR",
         "label_percentage": "20%",
         "percentage": 0.2,
         "color": blue
       },
        {
          "name": "Total amount",
-         "price": totalAmount.toString(),
+         "price": totalAmount.toString()+" SAR",
          "label_percentage": "100%",
          "percentage": 1,
          "color": green
@@ -111,7 +113,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
        {
          "name": "Daily allowance",
-         "price": dailyAllowance.toString().substring(0, 6),
+         "price": dailyAllowance.toString()+" SAR",
          "label_percentage": "",
          "percentage": 1,
          "color": white

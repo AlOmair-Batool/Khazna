@@ -117,7 +117,7 @@ class _StatsPageState extends State<StatsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Stats",
+                        "Statistics",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -158,25 +158,7 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Net balance",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13,
-                                color: Color(0xff67727d)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "2500 SAR",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
-                            ),
-                          )
-                        ],
+
                       ),
                     ),
                     Positioned(
