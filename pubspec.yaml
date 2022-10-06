@@ -41,7 +41,7 @@ dependencies:
 
   flutter:
     sdk: flutter
-  telephony: ^0.1.4
+  telephony: ^0.2.0
   flutter_icons: ^1.1.0
   animated_bottom_navigation_bar: ^0.2.1
   fl_chart: ^0.12.2

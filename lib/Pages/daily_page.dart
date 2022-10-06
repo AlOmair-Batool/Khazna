@@ -57,12 +57,14 @@ class _DailyPageState extends State<DailyPage> {
 
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-
+        sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC)],
+//where(SmsColumn.DATE).lessThan("1664841600")
         filter: SmsFilter.where(SmsColumn.ADDRESS)
-            .equals("alinmabank"),
-        sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC)]
+        .equals("RiyadBank").or(SmsColumn.ADDRESS).equals("alinmabank")
+        ,
 
     );
+
 
 
     for (var message in messages) {
@@ -128,7 +130,7 @@ class _DailyPageState extends State<DailyPage> {
       if (amountBeforeMatch != null) {
         amountBefore = amountBeforeMatch.group(0).toString();
       }
-      var amountNumReg = RegExp(r'[0-9]+');
+      var amountNumReg = RegExp(r'[0-9,]+');
       var amountAfterMatch = amountNumReg.firstMatch(amountBefore);
       if (amountAfterMatch != null) {
         amount.insert(0, amountAfterMatch.group(0).toString());
