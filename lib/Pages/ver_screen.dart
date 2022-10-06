@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sim/pages/auth_file.dart';
 import 'login_screen.dart';
@@ -37,7 +36,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
 
   Future<bool> verifyOTP()async{
     EmailAuth  emailAuth = EmailAuth(sessionName: "Khazna");
-    bool res= await emailAuth.validateOtp(recipientMail: userController.emailController.value.text,
+    bool res= emailAuth.validateOtp(recipientMail: userController.emailController.value.text,
         userOtp: userController.otpController.value.text);
     return res;
   }
@@ -93,7 +92,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               const SizedBox(height: 16),
-                              SizedBox(
+                              const SizedBox(
                                 height: 136,
                               ),
 
@@ -113,7 +112,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                 },
                                 decoration: InputDecoration(
                                     border: const OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black, width: 0.0),
+                                      borderSide: BorderSide(color: Colors.black, width: 0.0),
                                     ),
                                     suffixIcon: TextButton(
                                       onPressed: (){
@@ -126,24 +125,25 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                         );
                                         // userController.emailController.clear();
                                       },
-                                      child: Text('Send OTP', style: TextStyle(fontSize: 15, color:Colors.black, fontWeight: FontWeight.w900 ),),
+                                      child: const Text('Send OTP', style: TextStyle(fontSize: 15, color:Colors.black, fontWeight: FontWeight.w900 ),),
                                     ),
                                     isDense: true,
-                                    label: Text("Email")
+                                    label: const Text("Email")
                                 ),
                               ),
                               const SizedBox(height: 24),
                               TextFormField(
                                 obscureText: true,
                                 validator: (val){
-                                  if(val!.isEmpty)
+                                  if(val!.isEmpty) {
                                     return "Otp required! ";
+                                  }
                                   return null;
                                 },
                                 controller: userController.otpController,
-                                decoration: InputDecoration(
-                                    border: const OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black, width: 0.0),
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black, width: 0.0),
                                     ),
                                     isDense: true,
                                     label: Text("Enter OTP ")
@@ -158,7 +158,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all(Colors.teal.shade100),
                                     ),
-                                    child: Text("Verify", style: TextStyle(color: Colors.black),),
+                                    child: const Text("Verify", style: TextStyle(color: Colors.black),),
                                     onPressed: (){
                                       verifyOTP().then((value){
                                         if(_formKey.currentState!.validate()){
@@ -171,7 +171,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                               },
                                             );
                                             setState(() {
-                                              Future.delayed(Duration(seconds: 3) , navigation); // do this
+                                              Future.delayed(const Duration(seconds: 3) , navigation); // do this
 
                                             });
                                           }
@@ -203,12 +203,12 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
         ));
   }
   void navigation(){
-    Navigator.push(context, MaterialPageRoute(builder: (_)=> LoginScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (_)=> const LoginScreen()));
   }
   Widget alertDialog(String title, String message) {
     return AlertDialog(
-      title: Text("$title") ,
-      content: Text("$message"),
+      title: Text(title) ,
+      content: Text(message),
     );
   }
 }

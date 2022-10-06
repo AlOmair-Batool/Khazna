@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -12,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController _email = TextEditingController(text: "JohnDoe@gmail.com");
+  final TextEditingController _email = TextEditingController(text: "JohnDoe@gmail.com");
   TextEditingController password = TextEditingController(text: "123456");
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Profile",
                         style: TextStyle(
                             fontSize: 20,
@@ -52,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: black),
                       ),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           AntDesign.setting,
                           color: Colors.black,
                         ),
@@ -63,12 +62,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Row(
                     children: [
-                      Container(
+                      SizedBox(
                         width: (size.width - 40) * 0.4,
                         child: Container(
                           child: Stack(
@@ -88,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Container(
                                   width: 85,
                                   height: 85,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
                                           image: NetworkImage(
@@ -100,14 +99,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: (size.width - 40) * 0.6,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "${currentUser!.firstName} ${currentUser!.secondName}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: black),
@@ -117,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Container(
@@ -141,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Current Balance",
                                 style: TextStyle(
@@ -165,8 +164,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(color: white)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(13.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(13.0),
                               child: Text(
                                 "Update",
                                 style: TextStyle(color: white),
@@ -181,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Padding(
@@ -189,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Email: ",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -197,18 +196,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.black),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
             "${currentUser!.email}",
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 13,
                       color: Color(0xff67727d)),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
 

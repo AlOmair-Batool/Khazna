@@ -1,6 +1,5 @@
 import 'package:sim/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +21,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   UserModel loggedInUser = UserModel();
 
 
+  @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
@@ -29,7 +29,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
 
@@ -45,7 +45,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection('Test').get();
 
-    snap.docs.forEach((document) {
+    for (var document in snap.docs) {
       totalAmount = totalAmount + int.parse(document['Amount'] );
       monthlyAllowance = totalAmount * 0.8;
       savingPoint = totalAmount * 0.2;
@@ -53,7 +53,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
 
 
-    });
+    }
 
 
   }
@@ -66,10 +66,10 @@ class _NewPlanPageState extends State<NewPlanPage> {
       backgroundColor: grey.withOpacity(0.05),
       body: getBody(),
       appBar: AppBar(
-        title: Text("My Plan"),
+        title: const Text("My Plan"),
         toolbarHeight: 75,
         backgroundColor: Colors.white,
-        titleTextStyle: TextStyle(color: black,
+        titleTextStyle: const TextStyle(color: black,
             fontSize: 19,
             fontWeight: FontWeight.bold
         ),
@@ -87,7 +87,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
-     List budget_json = [
+     List budgetJson = [
 
       {
         "name": "Monthly Allowance",
@@ -151,7 +151,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                   fontSize:16,
                   fontWeight: FontWeight.w400
               )),
-              SizedBox(
+              const SizedBox(
                 height: 0,
               ),
                    ] ,
@@ -160,13 +160,13 @@ class _NewPlanPageState extends State<NewPlanPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Column(
-                children: List.generate(budget_json.length, (index) {
+                children: List.generate(budgetJson.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: Container(
@@ -183,19 +183,19 @@ class _NewPlanPageState extends State<NewPlanPage> {
                             ),
                           ]),
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 25, right: 25, bottom: 20, top: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              budget_json[index]['name'],
+                              budgetJson[index]['name'],
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
-                                  color: Color(0xff67727d).withOpacity(0.6)),
+                                  color: const Color(0xff67727d).withOpacity(0.6)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Row(
@@ -204,13 +204,13 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      budget_json[index]['price'],
-                                      style: TextStyle(
+                                      budgetJson[index]['price'],
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 8,
                                     ),
                                   ],
@@ -218,16 +218,16 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 3),
                                   child: Text(
-                                    budget_json[index]['label_percentage'],
+                                    budgetJson[index]['label_percentage'],
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 13,
-                                        color: Color(0xff67727d).withOpacity(0.6)),
+                                        color: const Color(0xff67727d).withOpacity(0.6)),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             Stack(
@@ -237,15 +237,15 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                   height: 4,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xff67727d).withOpacity(0.1)),
+                                      color: const Color(0xff67727d).withOpacity(0.1)),
                                 ),
                                 Container(
                                   width: (size.width - 40) *
-                                      budget_json[index]['percentage'],
+                                      budgetJson[index]['percentage'],
                                   height: 4,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
-                                      color: budget_json[index]['color']),
+                                      color: budgetJson[index]['color']),
                                 ),
                               ],
                             )

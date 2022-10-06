@@ -1,5 +1,4 @@
 //@dart=2.8
-import 'dart:math';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io' show Platform;
@@ -56,7 +55,7 @@ class LocalNotifyManager{
       priority: Priority.high,
       playSound: true,
     );
-    var iosChannel = IOSNotificationDetails();
+    var iosChannel = const IOSNotificationDetails();
     var platfornChannel = NotificationDetails(android: androidChannel,iOS: iosChannel);
     await flutterLocalNotificationsPlugin.show(notification.id, notification.title, notification.body, platfornChannel);
   }
@@ -70,7 +69,7 @@ class LocalNotifyManager{
       priority: Priority.high,
       playSound: true,
     );
-    var iosChannel = IOSNotificationDetails();
+    var iosChannel = const IOSNotificationDetails();
     var platfornChannel = NotificationDetails(android: androidChannel,iOS: iosChannel);
     await flutterLocalNotificationsPlugin.schedule(notification.id, notification.title, notification.body,notification.scheduleDate, platfornChannel);
   }

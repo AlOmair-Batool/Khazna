@@ -16,7 +16,7 @@ class _ResetScreenState extends State<ResetScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // editing controller
-  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   // firebase
   final _auth = FirebaseAuth.instance;
@@ -48,10 +48,10 @@ class _ResetScreenState extends State<ResetScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.mail_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -64,13 +64,13 @@ class _ResetScreenState extends State<ResetScreen> {
       borderRadius: BorderRadius.circular(30),
       color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
             _auth.sendPasswordResetEmail(email: emailController.text);
             Navigator.of(context).pop();
           },
-          child: Text("Reset", textAlign: TextAlign.center,
+          child: const Text("Reset", textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
@@ -83,14 +83,14 @@ class _ResetScreenState extends State<ResetScreen> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: Text("Reset Password"),
-        titleTextStyle: TextStyle(color: Colors.black ,
+        title: const Text("Reset Password"),
+        titleTextStyle: const TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: primary),
+          icon: const Icon(Icons.arrow_back, color: primary),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();
@@ -114,23 +114,23 @@ class _ResetScreenState extends State<ResetScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text('Trouble logging in?', style: TextStyle( color: Colors.black,
+                        const Text('Trouble logging in?', style: TextStyle( color: Colors.black,
                             fontSize:28,
                             fontWeight: FontWeight.w500,
                             height:4,
                         )),
-                        Text('Enter your email and we will send you a link to get back into your account.',textAlign: TextAlign.center, style: TextStyle( color: Colors.grey,
+                        const Text('Enter your email and we will send you a link to get back into your account.',textAlign: TextAlign.center, style: TextStyle( color: Colors.grey,
                           fontSize:15,
                           height: 1.5,
 
                         )),
-                        SizedBox(
+                        const SizedBox(
                           ),
-                        SizedBox(height: 40),
+                        const SizedBox(height: 40),
                         emailField,
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         resetButton,
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
 
 
                       ])

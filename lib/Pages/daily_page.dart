@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,10 +7,9 @@ import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
-import 'dart:convert';
 
-import '../json/daily_json.dart';
 import 'dart:developer';
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -23,7 +23,7 @@ class _DailyPageState extends State<DailyPage> {
   //messeges retrieving
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  String _message = "";
+  final String _message = "";
   final telephony = Telephony.instance;
   List<SmsMessage> messages = <SmsMessage>[];
 
@@ -35,11 +35,13 @@ class _DailyPageState extends State<DailyPage> {
   List <String> date=[];
   List <String> time=[];
   List <String> icon=[];
+  int transLen = 0;
   double totalAmount = 0;
   double monthlyAllowance = 0;
   double savingPoint = 0;
 
 
+  @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
@@ -47,7 +49,7 @@ class _DailyPageState extends State<DailyPage> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
     getAllSMS();
@@ -55,13 +57,42 @@ class _DailyPageState extends State<DailyPage> {
   }
 
 
+
+
+  String type = '';
+
+  _getType(params) async {
+      final response = await http.post(
+        Uri.parse("http://159.223.227.189:7000/type"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(params),
+      );
+      if (jsonDecode(response.body)["msg_type"].toString() == "2")
+        {setState(() {
+          type = "Withdrawals";
+        });
+        print("Withdrawals");}
+      else if (jsonDecode(response.body)["msg_type"].toString() == "0"){
+        setState(() {
+          type = "Deposit";
+        });
+      print("Deposit");}
+      else{
+        setState(() {
+          type = "None";
+        });
+        print("NONE");}
+  }
+
   getAllSMS() async {
     messages = await telephony.getInboxSms(
         sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC)],
 //where(SmsColumn.DATE).lessThan("1664841600")
         filter: SmsFilter.where(SmsColumn.ADDRESS)
-        .equals("RiyadBank").or(SmsColumn.ADDRESS).equals("alinmabank")
-        ,
+        .equals("SNB-AlAhli").or(SmsColumn.ADDRESS).equals("FransiSMS").or(SmsColumn.ADDRESS).equals("alinmabank")
+
 
     );
 
@@ -72,35 +103,44 @@ class _DailyPageState extends State<DailyPage> {
       //String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
       message1 = message.body!;
       log(message1);
+      Map<String, dynamic> params =  {
+        "msg": message1};
+
+      await _getType(params);
+
+
       String message2 = message1.toLowerCase();
 
       var msgDate = message.date!;
+      //print(msgDate);
       var dt = DateTime.fromMillisecondsSinceEpoch(msgDate);
       var dt2 = DateFormat('dd/MM/yyyy').format(dt);
-      //var d24 = DateFormat('dd/MM/yyyy, HH:mm').format(dt);
       bool flag = false;
-      if (message2.contains("withdrawal") || message2.contains("purchase") ||
-          message2.contains("mada atheer pos purchase") ||
-          message2.contains("debit transfer internal")
-          || message2.contains("pos purchase") ||
-          message2.contains("atheer pos")
-          || message2.contains("online purchase")) {
+      if (type == "Withdrawals") {
         transactionType.insert(0, "Withdrawal");
 
         icon.insert(0, "assets/images/Withdrawl.png");
         date.insert(0, dt2.toString());
+
         flag = true;
+        setState(() {
+          type = "None";
+        });
 
       }
-      else if (message2.contains("deposit") || message2.contains("refund") ||
-          message2.contains("credit transfer internal") ||
-          message2.contains("reverse transaction")) {
+      else if (type == "Deposit") {
         transactionType.insert(0, "Deposit");
 
         icon.insert(0, "assets/images/Deposit.png");
         date.insert(0, dt2.toString());
+
         flag = true;
+        setState(() {
+          type = "None";
+        });
       }
+      else
+        continue;
       //date extraction
       // RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
 
@@ -114,30 +154,37 @@ class _DailyPageState extends State<DailyPage> {
         var timeMatch = timeReg.firstMatch(message2);
         if (timeMatch != null) {
           time.insert(0, timeMatch.group(0).toString());
-        }
-        /* RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
-        var dateMatch = dateReg.firstMatch(message2);
+          print(timeMatch.group(0).toString());
 
-       if (dateMatch != null) {
-          date.insert(0, msgDate.toString());*/
+        }else
+          time.insert(0, "00:00");
+
       }
       //amount regex
-      var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
-      //var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
-      var amountBeforeMatch = amountReg.firstMatch(message2);
-      String amountBefore = "";
-
-      if (amountBeforeMatch != null) {
-        amountBefore = amountBeforeMatch.group(0).toString();
+      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+      var amountMatch = amountNumReg.firstMatch(message2);
+      if (amountMatch != null) {
+        amount.insert(0, amountMatch.group(0).toString());
       }
-      var amountNumReg = RegExp(r'[0-9,]+');
-      var amountAfterMatch = amountNumReg.firstMatch(amountBefore);
-      if (amountAfterMatch != null) {
-        amount.insert(0, amountAfterMatch.group(0).toString());
-      }
+      else {
+        var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
+        var amountBeforeMatch = amountReg.firstMatch(message2);
+        String amountBefore = "";
 
+        if (amountBeforeMatch != null) {
+          amountBefore = amountBeforeMatch.group(0).toString();
+        }
+        var amountNumReg = RegExp(r'[0-9,]+');
+        var amountAfterMatch = amountNumReg.firstMatch(message2);
+        if (amountAfterMatch != null) {
+          amount.insert(0, amountAfterMatch.group(0).toString());
+        } else
+          amount.insert(0, "0 SAR");
+      }
 
     }
+
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
@@ -164,8 +211,6 @@ class _DailyPageState extends State<DailyPage> {
   }
 
 
-
-  int activeDay = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,7 +240,7 @@ class _DailyPageState extends State<DailyPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text(
                           "Daily Transaction",
                           style: TextStyle(
@@ -210,60 +255,20 @@ class _DailyPageState extends State<DailyPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            // tell batool
-            /*Padding(
-    padding: const EdgeInsets.only(left: 20, right: 20),
-    child: Column(
-    children: [
-    Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      if (date.length == 0)
-    Container(
-    width: (size.width - 40) * 0.7,
-    child: Row(
-    children: [
-    Container(
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Text(
-    "No Message has been found..",
-    style: TextStyle(
-    fontSize: 15,
-    color: black,
-    fontWeight: FontWeight.w500),
-    overflow: TextOverflow.ellipsis,
-    ),
-    SizedBox(height: 5),
-
-    ],
-    ),
-    )
-    ],
-    ),
-
-    ),]
-    ),
-    ],
-    ),
-            ),*/
 
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
-                //tell batool date.length
-                  children: List.generate(daily.length, (index) {
+                  children: List.generate(transactionType.length, (index) {
                     return Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               width: (size.width - 40) * 0.7,
                               child: Row(
                                 children: [
@@ -282,8 +287,8 @@ class _DailyPageState extends State<DailyPage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 15),
-                                  Container(
+                                  const SizedBox(width: 15),
+                                  SizedBox(
                                     width: (size.width - 90) * 0.5,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -293,13 +298,13 @@ class _DailyPageState extends State<DailyPage> {
                                           //daily[index]['name'],
                                           transactionType[index],
 
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 15,
                                               color: black,
                                               fontWeight: FontWeight.w500),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                        SizedBox(height: 5),
+                                        const SizedBox(height: 5),
                                         Text(
                                           // daily[index]['date'],
                                           date[index]+" "+time[index],
@@ -318,15 +323,14 @@ class _DailyPageState extends State<DailyPage> {
                             ),
 
                             //money container
-                            Container(
+                            SizedBox(
                               width: (size.width - 40) * 0.3,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    //daily[index]['price'],
                                     amount[index]+" SAR",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 15,
                                         color: Colors.green),
@@ -336,8 +340,8 @@ class _DailyPageState extends State<DailyPage> {
                             )
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 65, top: 8),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 65, top: 8),
                           child: Divider(
                             thickness: 0.8,
                           ),

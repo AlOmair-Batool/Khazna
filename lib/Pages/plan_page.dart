@@ -1,5 +1,4 @@
 import 'package:sim/core/global.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -143,10 +142,10 @@ class _PlanPageState extends State<PlanPage> {
       child: Scaffold(
         backgroundColor: grey.withOpacity(0.05),
         appBar: AppBar(
-          title: Text("My Plan"),
+          title: const Text("My Plan"),
           backgroundColor: Colors.white,
           toolbarHeight: 75,
-          titleTextStyle: TextStyle(
+          titleTextStyle: const TextStyle(
               fontSize: 19,
               fontWeight: FontWeight.bold,
               color: black,
@@ -170,14 +169,14 @@ class _PlanPageState extends State<PlanPage> {
                     //Padding(padding: const EdgeInsets.all(30.0),),
                     Text(
                       'Hello' "  ${currentUser!.firstName}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                         height: 4,
 
                       ),
                     ),
-                    Text(
+                    const Text(
                       'To achieve your goals, we advice you to follow the plan below:',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -206,7 +205,7 @@ class _PlanPageState extends State<PlanPage> {
 
                 Container(
 
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   width: MediaQuery.of(context).size.width - 40,
                   height: 80,
                   decoration: BoxDecoration(
@@ -225,12 +224,12 @@ class _PlanPageState extends State<PlanPage> {
                     //child: Center(
                     child: Container(
                       padding: const EdgeInsets.all(10.0),
-                      margin: EdgeInsets.all(22.0),
+                      margin: const EdgeInsets.all(22.0),
                       child: Text(
                         'Daily Allowance = $dailyAllowance',
                         textAlign: TextAlign.left,
                         //textDirection: TextDirection.rtl,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: Colors.white,
@@ -251,7 +250,7 @@ class _PlanPageState extends State<PlanPage> {
               children: <Widget> [
                 Container(
                   //padding: const EdgeInsets.all(13.0),
-                  margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
+                  margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
                   child: SfCircularChart(
                     legend: Legend(
                         isVisible: true,
@@ -267,7 +266,7 @@ class _PlanPageState extends State<PlanPage> {
                     //)
                     //),
 
-                    margin: EdgeInsets.all(1),
+                    margin: const EdgeInsets.all(1),
 
 
                     series: <CircularSeries>[
@@ -279,7 +278,7 @@ class _PlanPageState extends State<PlanPage> {
                         yValueMapper: (TotalData data, _) => data.y,
                         //dataLabelMapper: (TotalData data, _) => data.text,
                         pointColorMapper: (TotalData data, _) => data.color,
-                        dataLabelSettings: DataLabelSettings(isVisible: true),
+                        dataLabelSettings: const DataLabelSettings(isVisible: true),
                         radius: '105%',
                         //pointShaderMapper: (1),
                         strokeColor: Colors.grey.shade400,
@@ -303,7 +302,7 @@ class _PlanPageState extends State<PlanPage> {
 
   List<TotalData> getChartData(){
     final List<TotalData> chartData = [
-      TotalData('Savings',savingPoint.toInt(),Color(0xFF4D908E)),
+      TotalData('Savings',savingPoint.toInt(),const Color(0xFF4D908E)),
       TotalData('Monthly Allowance',monthlyAllowance.toInt(), Colors.grey.shade300),
     ];
 

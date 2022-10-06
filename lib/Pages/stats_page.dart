@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:sim/widget/chart.dart';
@@ -29,9 +28,9 @@ class _StatsPageState extends State<StatsPage> {
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection('Test').get();
 
-    snap.docs.forEach((document) {
+    for (var document in snap.docs) {
       totalAmount = totalAmount + int.parse(document['Amount']);
-    });
+    }
   }
 
   String url = 'http://159.223.227.189:7000/api';
@@ -61,7 +60,7 @@ class _StatsPageState extends State<StatsPage> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
 
@@ -115,7 +114,7 @@ class _StatsPageState extends State<StatsPage> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         "Statistics",
                         style: TextStyle(
@@ -129,7 +128,7 @@ class _StatsPageState extends State<StatsPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
@@ -149,7 +148,7 @@ class _StatsPageState extends State<StatsPage> {
                     ),
                   ]),
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Stack(
                   children: [
                     Padding(
@@ -163,7 +162,7 @@ class _StatsPageState extends State<StatsPage> {
                     ),
                     Positioned(
                       bottom: 0,
-                      child: Container(
+                      child: SizedBox(
                         width: (size.width - 20),
                         height: 270,
                         child: LineChart(
@@ -176,7 +175,7 @@ class _StatsPageState extends State<StatsPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Wrap(
@@ -221,17 +220,17 @@ class _StatsPageState extends State<StatsPage> {
                           children: [
                             Text(
                               expenses[index]['label'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 11.5,
                                   color: Color(0xff67727d)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text(
                               expenses[index]['cost'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.5,
                               ),

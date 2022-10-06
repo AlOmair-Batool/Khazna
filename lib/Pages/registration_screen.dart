@@ -2,7 +2,6 @@ import 'package:sim/Pages/ver_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sim/pages/auth_file.dart';
 
@@ -37,7 +36,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         keyboardType: TextInputType.name,
 
         validator: (value) {
-          RegExp regex = new RegExp(r'^.{3,}$');
+          RegExp regex = RegExp(r'^.{3,}$');
           if (value!.isEmpty) {
             return ("First Name cannot be Empty");
           }
@@ -49,10 +48,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.account_circle_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "First Name",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -75,10 +74,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.account_circle_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Second Name",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -106,10 +105,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.mail_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -124,21 +123,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         obscureText: true,
         //validator: (){},
         validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
+          RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
             return ("Password is required!");
           }
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Password(Min. 6 Character)");
           }
+          return null;
         },
 
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.vpn_key_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -164,10 +164,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.vpn_key_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Confirm Password",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -182,7 +182,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       borderRadius: BorderRadius.circular(30),
       color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
           minWidth: MediaQuery
               .of(context)
               .size
@@ -204,7 +204,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             }
           },
 
-          child: Text("Register", textAlign: TextAlign.center,
+          child: const Text("Register", textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
@@ -214,14 +214,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Register"),
-        titleTextStyle: TextStyle(color: Colors.black ,
+        title: const Text("Register"),
+        titleTextStyle: const TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: primary),
+          icon: const Icon(Icons.arrow_back, color: primary),
           onPressed: () {
             //passing this to our root
             Navigator.of(context).pop();
@@ -240,25 +240,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                     ),
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
                     firstNameField,
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     secondNameField,
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     emailField,
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     passwordField,
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     confirmPasswordField,
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     signUpButton,
-                    SizedBox(height: 15,)
+                    const SizedBox(height: 15,)
                   ],
                 ),
               ),

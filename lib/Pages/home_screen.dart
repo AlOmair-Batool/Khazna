@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 //hailah
-  String _message = "";
+  final String _message = "";
   final telephony = Telephony.instance;
   List<SmsMessage> messages = <SmsMessage>[];
   @override
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
     getAllSMS();
@@ -65,12 +65,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 150,
                 //child: Image.asset("assets/logo.png", fit: BoxFit.contain),
               ),
@@ -79,32 +79,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),*/
 
-              Center(child: Text("Last 5 SMS:")),
+              const Center(child: Text("Last 5 SMS:")),
               Center(child: Text(messages[0].body!)),
               Center(child: Text(messages[1].body!)),
               Center(child: Text(messages[2].body!)),
               Center(child: Text(messages[3].body!)),
 
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
                     height: 3,
                   )),
               Text("${loggedInUser.email}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
                     height: 1,
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               ActionChip(
-                  label: Text("Logout"),
+                  label: const Text("Logout"),
                   backgroundColor: Colors.brown.shade200,
                   onPressed: () {
                     logout(context);
@@ -121,6 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }

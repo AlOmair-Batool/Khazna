@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sim/theme/colors.dart';
-import '../pages/login_screen.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -18,7 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   // final firstNameEditingController = new TextEditingController();
   // final secondNameEditingController = new TextEditingController();
   // final emailEditingController = new TextEditingController();
-  final passwordEditingController = new TextEditingController();
+  final passwordEditingController = TextEditingController();
   // final confirmPasswordEditingController = new TextEditingController();
 
   @override
@@ -31,25 +30,25 @@ class _SettingsPageState extends State<SettingsPage> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: primary,
           ),
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+        padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            Text(
+            const Text(
               "Settings",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Row(
-              children: [
+              children: const [
                 Icon(
                   AntDesign.user,
                   color: primary,
@@ -63,21 +62,21 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
             ),
-            Divider(
+            const Divider(
               height: 15,
               thickness: 0.8,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             buildAccountOptionRow(context, "Change password"),
             buildAccountOptionRow(context, "Language"),
             buildAccountOptionRow(context, "Privacy and security"),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Row(
-              children: [
+              children: const [
                 Icon(
                   Icons.notifications_none_rounded,
                   color: primary,
@@ -91,16 +90,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
             ),
-            Divider(
+            const Divider(
               height: 15,
               thickness: 0.8,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             buildNotificationOptionRow("Updates", true),
             buildNotificationOptionRow("Daily encouragements", false),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
 
@@ -142,9 +141,9 @@ class _SettingsPageState extends State<SettingsPage> {
       },
       key: _formKey,
       controller: passwordEditingController, ///////////////////////////////////////////////////////////////////////////////
-      decoration: InputDecoration(
-          border: const OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.black, width: 0.0),),
+      decoration: const InputDecoration(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 0.0),),
           isDense: true,
           label: Text("Reset password")
       ),
@@ -177,8 +176,8 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (_){
               return AlertDialog(
 
-                title: Text("New Passward"),
-                content: Container(
+                title: const Text("New Passward"),
+                content: SizedBox(
                   width: 250,
                   height: 250,
                   child: Column(
@@ -192,7 +191,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             });
                             // Navigator.pop(context);
                           },
-                          child: Text("Update"),
+                          child: const Text("Update"),
                         )
                       ]),
                 ),
@@ -214,7 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Colors.grey[600],
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios_rounded,
               size: 15,
               color: Colors.grey,

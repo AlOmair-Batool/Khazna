@@ -5,7 +5,7 @@ FROM python:3.7-slim-buster
 COPY requirements.txt /requirements.txt
 
 # Step 3:  Install required pyhton dependencies from requirements file
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Step 4: Copy source code in the current directory to the container
 ADD . /app

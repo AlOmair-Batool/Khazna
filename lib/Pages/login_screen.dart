@@ -3,7 +3,6 @@ import 'package:sim/Pages/reset_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:sim/pages/auth_file.dart';
 
@@ -51,11 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
         // },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.mail_outlined,
             color: primary,
           ),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -71,13 +70,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
         //validator: (){},
         validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
+          RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
             return ("Password is required for login");
           }
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Password(Min. 6 Character)");
           }
+          return null;
         },
 
         // onSaved: (value) {
@@ -85,10 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
         // },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
               Icons.vpn_key_outlined,
               color: primary),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Password",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
       borderRadius: BorderRadius.circular(30),
       color: primary,
       child: MaterialButton(
-          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed : (){
             if(_formKey.currentState!.validate()){
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
           },
 
-          child: Text("Login", textAlign: TextAlign.center,
+          child: const Text("Login", textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
@@ -123,9 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Login"),
+        title: const Text("Login"),
         backgroundColor: Colors.white,
-        titleTextStyle: TextStyle(color: Colors.black ,
+        titleTextStyle: const TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold
 
@@ -154,30 +154,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text('Welcome Back to Khazna!', style: TextStyle( color: Colors.black,
+                    const Text('Welcome Back to Khazna!', style: TextStyle( color: Colors.black,
                         fontSize:28,
                         fontWeight: FontWeight.w500
                     )),
-                    Text('Please fill your registered information below:', style: TextStyle( color: Colors.grey,
+                    const Text('Please fill your registered information below:', style: TextStyle( color: Colors.grey,
                       fontSize:15,
                       height: 2,
                     )
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 0,
                     ),
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
                     emailField,
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     passwordField,
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
                     loginButton,
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
 
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("Don't have an account? ", style: TextStyle( color: Colors.black,
+                          const Text("Don't have an account? ", style: TextStyle( color: Colors.black,
                             fontSize:15,
                             height: 2,
                           )),
@@ -187,9 +187,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          RegistrationScreen()));
+                                          const RegistrationScreen()));
                             },
-                            child: Text(
+                            child: const Text(
                               "Register",
                               style: TextStyle(
                                   color: primary,
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text("Forget password? ", style: TextStyle( color: Colors.black,
+                          const Text("Forget password? ", style: TextStyle( color: Colors.black,
                             fontSize:15,
                             height: 2,
                           )),
@@ -212,9 +212,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ResetScreen()));
+                                          const ResetScreen()));
                             },
-                            child: Text(
+                            child: const Text(
                               "Reset",
                               style: TextStyle(
                                   color: primary,

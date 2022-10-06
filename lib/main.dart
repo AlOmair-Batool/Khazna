@@ -1,8 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sim/Pages/local_notify_manager.dart';
 import 'package:sim/pages/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +45,7 @@ void main() async {
         "assets/images/logo.png",
         splashIconSize: 120,
         splashTransition: SplashTransition.fadeTransition,
-        nextScreen:LoginScreen(),
+        nextScreen:const LoginScreen(),
       )));
 
 }
