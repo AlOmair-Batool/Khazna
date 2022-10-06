@@ -167,7 +167,7 @@ class _DailyPageState extends State<DailyPage> {
         amount.insert(0, amountMatch.group(0).toString());
       }
       else {
-        var amountReg = RegExp(r'(?<=amount *:?)(.*)(?=sar)');
+        var amountReg = RegExp(r'[0-9]*.(?=SAR)');
         var amountBeforeMatch = amountReg.firstMatch(message2);
         String amountBefore = "";
 
