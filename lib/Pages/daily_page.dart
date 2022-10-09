@@ -88,17 +88,17 @@ class _DailyPageState extends State<DailyPage> {
 
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-        sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC)],
+       // sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC)],
 //where(SmsColumn.DATE).lessThan("1664841600")
         filter: SmsFilter.where(SmsColumn.ADDRESS)
         .equals("SNB-AlAhli").or(SmsColumn.ADDRESS).equals("FransiSMS").or(SmsColumn.ADDRESS).equals("alinmabank")
+        .or(SmsColumn.ADDRESS).equals("BankAlbilad").or(SmsColumn.ADDRESS).equals("ٍRiyadBank")
 
 
     );
-
-
-
+      var counter = 100;
     for (var message in messages) {
+      if(counter==0) break;
       //identification of Alinma messages
       //String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
       message1 = message.body!;
@@ -107,8 +107,6 @@ class _DailyPageState extends State<DailyPage> {
         "msg": message1};
 
       await _getType(params);
-
-
       String message2 = message1.toLowerCase();
 
       var msgDate = message.date!;
@@ -180,15 +178,17 @@ class _DailyPageState extends State<DailyPage> {
           amount.insert(0, "0 SAR");
       }
 
+      counter = counter - 1;
+
     }
 
 
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    /*final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
     for (var i = 0; i < transactionType.length; i++) {
       totalAmount += int.parse(amount[i]);
-
+///////////////
       /*DocumentReference ref = await FirebaseFirestore.instance.collection(
           'Test')
           .add({
@@ -201,7 +201,7 @@ class _DailyPageState extends State<DailyPage> {
         'userID': uid
       });*/
 
-          }
+          }*/
 
     monthlyAllowance = totalAmount * 0.8;
         savingPoint = totalAmount * 0.2;
