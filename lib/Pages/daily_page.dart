@@ -167,15 +167,13 @@ class _DailyPageState extends State<DailyPage> {
         amount.insert(0, amountMatch.group(0).toString());
       }
       else {
-        var amountReg = RegExp(r'[0-9]*.(?=SAR)');
-        var amountBeforeMatch = amountReg.firstMatch(message2);
+
+        var amountReg = RegExp(r'[0-9]+\*[0-9]+');
+        var amountBeforeMatch = message2.replaceAll(amountReg, '');
         String amountBefore = "";
 
-        if (amountBeforeMatch != null) {
-          amountBefore = amountBeforeMatch.group(0).toString();
-        }
         var amountNumReg = RegExp(r'[0-9,]+');
-        var amountAfterMatch = amountNumReg.firstMatch(message2);
+        var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
         if (amountAfterMatch != null) {
           amount.insert(0, amountAfterMatch.group(0).toString());
         } else
