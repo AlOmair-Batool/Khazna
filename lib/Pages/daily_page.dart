@@ -39,6 +39,7 @@ class _DailyPageState extends State<DailyPage> {
   double totalAmount = 0;
   double monthlyAllowance = 0;
   double savingPoint = 0;
+  double amountOf27= 0;
 
 
   @override
@@ -88,45 +89,48 @@ class _DailyPageState extends State<DailyPage> {
 
   getAllSMS() async {
     messages = await telephony.getInboxSms(
-       // sortOrder: [OrderBy(SmsColumn.DATE, sort: Sort.ASC)],
-//where(SmsColumn.DATE).lessThan("1664841600")
         filter: SmsFilter.where(SmsColumn.ADDRESS)
         .equals("SNB-AlAhli").or(SmsColumn.ADDRESS).equals("FransiSMS").or(SmsColumn.ADDRESS).equals("alinmabank")
         .or(SmsColumn.ADDRESS).equals("BankAlbilad").or(SmsColumn.ADDRESS).equals("ٍRiyadBank")
 
 
     );
-      var counter = 100;
+
+
+    var numOfMessage = 100;
     for (var message in messages) {
-      if(counter==0) break;
+      if(numOfMessage==0) break;
       //identification of Alinma messages
       //String message1 = "Deposit ATM Amount: 250 SAR Account: **8000 On: 2022-03-14 21:52";
       message1 = message.body!;
       log(message1);
-      Map<String, dynamic> params =  {
-        "msg": message1};
-
+      Map<String, dynamic> params =  {"msg": message1};
+      //Run SVM model
       await _getType(params);
-      String message2 = message1.toLowerCase();
 
-      var msgDate = message.date!;
+
+      //SMS processing after getting the type.
+      String message2 = message1.toLowerCase();
+      var messageDate = message.date!;
       //print(msgDate);
-      var dt = DateTime.fromMillisecondsSinceEpoch(msgDate);
+      var dt = DateTime.fromMillisecondsSinceEpoch(messageDate);
       var dt2 = DateFormat('dd/MM/yyyy').format(dt);
+
+      //to save the day of the message to accumulate last 27th day
+      var day = DateFormat('dd').format(dt);
       bool flag = false;
+
+      //"type" is assigned by SVM model
       if (type == "Withdrawals") {
         transactionType.insert(0, "Withdrawal");
-
         icon.insert(0, "assets/images/Withdrawl.png");
         date.insert(0, dt2.toString());
-
         flag = true;
         setState(() {
           type = "None";
         });
-
       }
-      else if (type == "Deposit") {
+      else if (type == "Deposit"){
         transactionType.insert(0, "Deposit");
 
         icon.insert(0, "assets/images/Deposit.png");
@@ -139,33 +143,36 @@ class _DailyPageState extends State<DailyPage> {
       }
       else
         continue;
-      //date extraction
-      // RegExp dateReg = RegExp(r'(\d{4}-\d{2}-\d{2})');
 
-      //date extraction for AlAhli
-      // When try it on alahli please remove the comment the comment alinma regex
 
       if (flag) {
-        //time extraction (also works for alahli since it's the same structure
-        RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
 
+        RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
         var timeMatch = timeReg.firstMatch(message2);
         if (timeMatch != null) {
           time.insert(0, timeMatch.group(0).toString());
           print(timeMatch.group(0).toString());
-
         }else
           time.insert(0, "00:00");
-
       }
+
       //amount regex
-      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
-      var amountMatch = amountNumReg.firstMatch(message2);
+
+      //var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+
+      var amountWithAlphabetsReg = RegExp(r'[a-zA-Z]+:\s+[0-9]+(\s+([a-zA-Z]+\s+)+)');
+      var amountNumReg = amountWithAlphabetsReg.firstMatch(message2);
+      var messageNumOnly = amountNumReg.toString();
+      //Amount: 100 SAR
+      var amountNumberOnly = RegExp(r'([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[eE]([+-]?\d+))?');
+      var amountMatch = amountNumberOnly.firstMatch(messageNumOnly);
+
       if (amountMatch != null) {
         amount.insert(0, amountMatch.group(0).toString());
       }
-      else {
 
+
+      else {
         var amountReg = RegExp(r'[0-9]+\*[0-9]+');
         var amountBeforeMatch = message2.replaceAll(amountReg, '');
         String amountBefore = "";
@@ -178,9 +185,20 @@ class _DailyPageState extends State<DailyPage> {
           amount.insert(0, "0 SAR");
       }
 
-      counter = counter - 1;
+      if(type=="Deposit" && day == "27" ){
+
+         amountOf27  += int.parse(amount[numOfMessage]);
+         totalAmount = totalAmount += int.parse(amount[numOfMessage]);
+      }else if(type=="Deposit"){
+        totalAmount = totalAmount += int.parse(amount[numOfMessage]);
+      }else if(type=="Withdrawals"){
+        totalAmount = totalAmount -= int.parse(amount[numOfMessage]);
+      }
+      savingPoint = amountOf27 * 0.2;
+      numOfMessage = numOfMessage - 1;
 
     }
+
 
 
     /*final FirebaseAuth auth = FirebaseAuth.instance;
@@ -202,12 +220,7 @@ class _DailyPageState extends State<DailyPage> {
       });*/
 
           }*/
-
-    monthlyAllowance = totalAmount * 0.8;
-        savingPoint = totalAmount * 0.2;
-
   }
-
 
   @override
   Widget build(BuildContext context) {
