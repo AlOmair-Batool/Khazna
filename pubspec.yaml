@@ -37,6 +37,7 @@ dependencies:
   animated_splash_screen: ^1.2.0
   font_awesome_flutter: ^9.2.0
   shared_preferences: ^2.0.13
+  dart_date: ^1.1.1
 
 
   flutter:
