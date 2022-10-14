@@ -93,13 +93,19 @@ class _DailyPageState extends State<DailyPage> {
 
   //return messages from banks across Saudi
   getAllSMS() async {
+    //11 banks
     messages = await telephony.getInboxSms(
-        filter: SmsFilter.where(SmsColumn.ADDRESS)
-            .equals("RiyadBank").or(SmsColumn.ADDRESS).equals("FransiSMS").or(
-            SmsColumn.ADDRESS).equals("")
+        filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
+            .or(SmsColumn.ADDRESS).equals("FransiSMS")
+            .or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
-            .or(SmsColumn.ADDRESS)
-            .equals("SNB-AlAhli")
+            .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
+            .or(SmsColumn.ADDRESS).equals("SAIB")
+            .or(SmsColumn.ADDRESS).equals("SABB")
+            .or(SmsColumn.ADDRESS).equals("AlJaziraSMS")
+            .or(SmsColumn.ADDRESS).equals("AlRajhiBank")
+            .or(SmsColumn.ADDRESS).equals("ANB")
+            .or(SmsColumn.ADDRESS).equals("meemKSA")
     );
 
     var counter = 20;
