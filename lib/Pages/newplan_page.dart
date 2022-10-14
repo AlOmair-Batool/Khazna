@@ -16,7 +16,6 @@ class _NewPlanPageState extends State<NewPlanPage> {
   late double savingPoint = 0 ;
   late double monthlyAllowance= 0;
   late double dailyAllowance = 0;
-  late double income = 0;
   late double balance = 0;
 
   int activeDay = 3;
@@ -53,21 +52,54 @@ class _NewPlanPageState extends State<NewPlanPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection('Test').get();
-
-    snap.docs.forEach((document) {
-      income = 0;
-      totalAmount = totalAmount + int.parse(document['Amount'] );
-      monthlyAllowance = income * 0.8;
-      savingPoint = income * 0.2;
-      balance = totalAmount - savingPoint;
-      dailyAllowance = balance/daysBetween();
 
 
+    // get  deposit
+    double totalDeposit = 0;
+    QuerySnapshot depositSnap = await FirebaseFirestore.instance.collection('Test').where('Type',isEqualTo: 'Deposit').get();
 
-    });
+    for (var document in depositSnap.docs) {
+      totalDeposit = totalDeposit + int.parse(document['Amount']);
+    }
+    // get withdrawals
+    double totalWithdrawal = 0;
+    QuerySnapshot withdrawalSnap = await FirebaseFirestore.instance.collection('Test').where('Type',isEqualTo: 'Withdrawal').get();
 
+    for (var document in withdrawalSnap.docs) {
+      totalWithdrawal = totalWithdrawal + int.parse(document['Amount']);
+    }
+
+    // total amount cal
+    totalAmount = totalDeposit - totalWithdrawal;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+    DateTime currentDate = DateTime.now();
+
+
+    String current27Day = currentDate.day >= 27?'27/${currentDate.month.toString().length == 1?'0'
+        +currentDate.month.toString():currentDate.month.toString()}/${currentDate.year}'
+        :'27/${(currentDate.month - 1).toString().length == 1?'0'+(currentDate.month - 1).toString():(currentDate.month - 1).toString()}'
+        '/${currentDate.year}';
+
+
+    double income=0;
+
+    QuerySnapshot incomeSnap =
+    await FirebaseFirestore.instance.collection('Test').where('Date',isEqualTo: current27Day).where('Type',isEqualTo: 'Deposit').get();
+
+    for (var document in incomeSnap.docs) {
+      income = income + int.parse(document['Amount']);
+    }
+
+
+
+    monthlyAllowance = income * 0.8;
+    savingPoint = income * 0.2;
+
+    balance = totalAmount - savingPoint;
+    dailyAllowance = balance/daysBetween();
 
   }
 
@@ -100,7 +132,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
-     List budget_json = [
+    List budget_json = [
 
       {
         "name": "Monthly Allowance",
@@ -116,36 +148,36 @@ class _NewPlanPageState extends State<NewPlanPage> {
         "percentage": 0.2,
         "color": blue
       },
-       {
-         "name": "Total amount",
-         "price": totalAmount.toString()+" SAR",
-         "label_percentage": "100%",
-         "percentage": 1,
-         "color": green
-       },
+      {
+        "name": "Total amount",
+        "price": totalAmount.toString()+" SAR",
+        "label_percentage": "100%",
+        "percentage": 1,
+        "color": green
+      },
 
-       {
-         "name": "Daily allowance",
-         "price": dailyAllowance.toString()+" SAR",
-         "label_percentage": "",
-         "percentage": 1,
-         "color": white
-       }
+      {
+        "name": "Daily allowance",
+        "price": dailyAllowance.toString()+" SAR",
+        "label_percentage": "",
+        "percentage": 1,
+        "color": white
+      }
     ];
 
 
 
     return SingleChildScrollView(
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             decoration: BoxDecoration(color: grey.withOpacity(0.01), boxShadow: [
               BoxShadow(
                 color: grey.withOpacity(0.01),
 
-            spreadRadius: 10,
+                spreadRadius: 10,
                 blurRadius: 3,
                 // changes position of shadow
               ),
@@ -159,15 +191,15 @@ class _NewPlanPageState extends State<NewPlanPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children:  <Widget>[
 
-                  Text('This plan shows your daily, monthly \n allowance and saving point', style: TextStyle( color: Colors.black.withOpacity(0.8),
+                      Text('This plan shows your daily, monthly \n allowance and saving point', style: TextStyle( color: Colors.black.withOpacity(0.8),
 
-                  fontSize:16,
-                  fontWeight: FontWeight.w400
-              )),
-              SizedBox(
-                height: 0,
-              ),
-                   ] ,
+                          fontSize:16,
+                          fontWeight: FontWeight.w400
+                      )),
+                      SizedBox(
+                        height: 0,
+                      ),
+                    ] ,
                   ),
                 ],
               ),
