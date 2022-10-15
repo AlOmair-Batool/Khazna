@@ -42,6 +42,7 @@ dependencies:
 
   flutter:
     sdk: flutter
+  charts_flutter: ^0.11.0
   http: ^0.13.0
   telephony: ^0.2.0
   flutter_icons: ^1.1.0

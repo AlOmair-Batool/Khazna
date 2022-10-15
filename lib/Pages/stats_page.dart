@@ -15,12 +15,14 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  bool _isLoading=false; //bool variable created
+
   int activeDay = 3;
   double totalAmount =0;
   //getting values from firestore
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-
+  external int get millisecondsSinceEpoch;
   getAllTransactions() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
@@ -36,6 +38,9 @@ class _StatsPageState extends State<StatsPage> {
   String url = 'http://159.223.227.189:7000/api';
   var data;
   String output = '0 SAR';
+  List X_test = [];
+  List mean = [];
+
   bool showAvg = false;
   predict() async {
     data = await fetchdata(url);
@@ -43,6 +48,29 @@ class _StatsPageState extends State<StatsPage> {
     print(decoded['output']);
     setState(() {
       output = decoded['output'].substring(0, 6) + " SAR";
+    });
+  }
+
+  model_data() async {
+
+    setState(() {
+      _isLoading=true;
+    });
+//for demo I had use delayed method. When you integrate use your api //call here.
+
+    print("CHECK");
+
+    data = await fetchdata('http://159.223.227.189:6000/predict');
+    var decoded = jsonDecode(data);
+    print("CHECK");
+    //print(jsonDecode(data['X_test']));
+    print(decoded["X_test"]);
+
+    setState(() {
+      X_test = decoded["X_test"];
+      mean = decoded["mean"];
+      _isLoading=false;
+
     });
   }
 
@@ -55,6 +83,9 @@ class _StatsPageState extends State<StatsPage> {
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) =>predict());
     super.initState();
+    WidgetsBinding.instance
+        ?.addPostFrameCallback((_) =>model_data());
+    super.initState();
     FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
@@ -65,6 +96,10 @@ class _StatsPageState extends State<StatsPage> {
     });
 
     getAllTransactions();
+    print("model_values");
+    print(output);
+    print(X_test);
+
   }
 
 
@@ -162,14 +197,25 @@ class _StatsPageState extends State<StatsPage> {
                     ),
                     Positioned(
                       bottom: 0,
-                      child: SizedBox(
+                      child:  !_isLoading
+                          ?SizedBox(
                         width: (size.width - 20),
                         height: 270,
                         child: LineChart(
-                          mainData(),
-                        ),
-                      ),
-                    )
+                            mainData(X_test, mean),),
+                      )
+                      : Container(
+                            padding: const EdgeInsets.all(50),
+                            margin:const EdgeInsets.all(50) ,
+                            color: primary,
+                        //widget shown according to the state
+                            child: Center(
+                            child: const CircularProgressIndicator(),
+                            ),
+                            ),
+                            ),
+
+                      //const CircularProgressIndicator(),
                   ],
                 ),
               ),

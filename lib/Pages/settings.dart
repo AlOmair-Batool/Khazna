@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sim/theme/colors.dart';
+import '../pages/login_screen.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -102,7 +103,20 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 50,
             ),
-
+            Center(
+              child: OutlineButton(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
+                child: Text("SIGN OUT",
+                    style: TextStyle(
+                        fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
+              ),
+            )
           ],
         ),
       ),

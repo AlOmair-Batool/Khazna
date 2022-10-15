@@ -337,7 +337,7 @@ class _DailyPageState extends State<DailyPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
                         Text(
-                          "Daily Transaction",
+                          "Latest Transactions",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -426,8 +426,8 @@ class _DailyPageState extends State<DailyPage> {
                                     amount20[index] + " SAR",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 15,
-                                        color: Colors.green),
+                                        fontSize: 14,
+                                        color: Colors.black87),
                                   ),
                                 ],
                               ),
