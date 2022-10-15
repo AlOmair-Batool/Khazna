@@ -283,9 +283,9 @@ class _DailyPageState extends State<DailyPage> {
     final uid = user?.uid;
 
     //works for sending 100 SMS messages to Firestore
-    /*for (var i = 0; i < transactionType.length; i++) {
+    for (var i = 0; i < transactionType.length; i++) {
     DocumentReference ref = await FirebaseFirestore.instance.collection(
-        'Test2')
+        'Test3')
         .add({
       'Date': date[i],
       'Time': time[i],
@@ -295,7 +295,7 @@ class _DailyPageState extends State<DailyPage> {
     ref.update({
       'userID': uid
     });
-  }*/
+  }
 
     /*for (var i = 0; i < transactionType.length; i++) {
       totalAmount += int.parse(amount[i]);

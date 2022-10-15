@@ -21,6 +21,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  bool _isLoading=false; //bool variable created
 
 
   void initState() {
@@ -49,6 +50,9 @@ class _NewPlanPageState extends State<NewPlanPage> {
   }
 
   getAllTransactions() async{
+    setState(() {
+      _isLoading=true;
+    });
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
@@ -61,6 +65,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
     for (var document in depositSnap.docs) {
       totalDeposit = totalDeposit + int.parse(document['Amount']);
     }
+
+
     // get withdrawals
     double totalWithdrawal = 0;
     QuerySnapshot withdrawalSnap = await FirebaseFirestore.instance.collection('Test').where('Type',isEqualTo: 'Withdrawal').get();
@@ -101,6 +107,10 @@ class _NewPlanPageState extends State<NewPlanPage> {
     balance = totalAmount - savingPoint;
     dailyAllowance = balance/daysBetween();
 
+
+    setState(() {
+      _isLoading=false;
+    });
   }
 
 
@@ -136,32 +146,52 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
       {
         "name": "Monthly Allowance",
-        "price": monthlyAllowance.toString()+" SAR",
+        "price": monthlyAllowance.toStringAsFixed(2)+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
-        "color": red
+        "color": red,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       },
       {
         "name": "Savings",
-        "price": savingPoint.toString()+" SAR",
+        "price": savingPoint.toStringAsFixed(2)+" SAR",
         "label_percentage": "20%",
         "percentage": 0.2,
-        "color": blue
+        "color": blue,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       },
       {
         "name": "Total amount",
-        "price": totalAmount.toString()+" SAR",
+        "price": totalAmount.toStringAsFixed(2)+" SAR",
         "label_percentage": "100%",
         "percentage": 1,
-        "color": green
+        "color": green,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       },
 
       {
         "name": "Daily allowance",
-        "price": dailyAllowance.toString()+" SAR",
+        "price": dailyAllowance.toStringAsFixed(2)+" SAR",
         "label_percentage": "",
         "percentage": 1,
-        "color": white
+        "color": white,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       }
     ];
 
@@ -233,6 +263,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+
                             Text(
                               budget_json[index]['name'],
                               style: TextStyle(
@@ -245,17 +276,19 @@ class _NewPlanPageState extends State<NewPlanPage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children:[
                                 Row(
                                   children: [
+                                    !_isLoading?
                                     Text(
                                       budget_json[index]['price'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
-                                    ),
-                                    SizedBox(
+                                    )
+                            :  budget_json[index]['load'],
+                      SizedBox(
                                       width: 8,
                                     ),
                                   ],
