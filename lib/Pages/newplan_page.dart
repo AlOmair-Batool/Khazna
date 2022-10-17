@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sim/classes/language.dart';
+import 'package:sim/classes/language_constants.dart';
+import 'package:sim/main.dart';
 
 
 class NewPlanPage extends StatefulWidget {
@@ -80,7 +83,6 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
     DateTime currentDate = DateTime.now();
 
 
@@ -121,7 +123,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
       backgroundColor: grey.withOpacity(0.05),
       body: getBody(),
       appBar: AppBar(
-        title: Text("My Plan"),
+        title: Text(translation(context).my_plan),
         toolbarHeight: 75,
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: black,
@@ -145,8 +147,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
     List budget_json = [
 
       {
-        "name": "Monthly Allowance",
-        "price": monthlyAllowance.toStringAsFixed(2)+" SAR",
+        "name": translation(context).monthly,
+        "price": monthlyAllowance.toStringAsFixed(2)+translation(context).sar+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
         "color": red,
@@ -157,8 +159,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
           ),        )
       },
       {
-        "name": "Savings",
-        "price": savingPoint.toStringAsFixed(2)+" SAR",
+        "name": translation(context).savings,
+        "price": savingPoint.toStringAsFixed(2)+translation(context).sar+" SAR",
         "label_percentage": "20%",
         "percentage": 0.2,
         "color": blue,
@@ -169,8 +171,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
           ),        )
       },
       {
-        "name": "Total amount",
-        "price": totalAmount.toStringAsFixed(2)+" SAR",
+        "name": translation(context).total,
+        "price": totalAmount.toStringAsFixed(2)+translation(context).sar+" SAR",
         "label_percentage": "100%",
         "percentage": 1,
         "color": green,
@@ -182,8 +184,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
       },
 
       {
-        "name": "Daily allowance",
-        "price": dailyAllowance.toStringAsFixed(2)+" SAR",
+        "name": translation(context).daily,
+        "price": dailyAllowance.toStringAsFixed(2)+translation(context).sar+" SAR",
         "label_percentage": "",
         "percentage": 1,
         "color": white,
@@ -221,7 +223,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children:  <Widget>[
 
-                      Text('This plan shows your daily, monthly \n allowance and saving point', style: TextStyle( color: Colors.black.withOpacity(0.8),
+                      Text(translation(context).this_plan, style: TextStyle( color: Colors.black.withOpacity(0.8),
 
                           fontSize:16,
                           fontWeight: FontWeight.w400
@@ -287,8 +289,8 @@ class _NewPlanPageState extends State<NewPlanPage> {
                                         fontSize: 20,
                                       ),
                                     )
-                            :  budget_json[index]['load'],
-                      SizedBox(
+                                        :  budget_json[index]['load'],
+                                    SizedBox(
                                       width: 8,
                                     ),
                                   ],

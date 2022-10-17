@@ -1,0 +1,88 @@
+{
+  "login": "Login",
+  "welcome": "welcome back to khazna!",
+  "please": "Please fill your registered information below:",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "have_acc" : "Don't have an account? ",
+  "register": "Register",
+  "forget": "Forget password?",
+  "reset": "Reset",
+  "required":"Password is required for login",
+  "valid_pass":"Enter Valid Password(Min. 6 Character)",
+  "enter_email":"Please Enter Your Email",
+  "valid_email":"Please Enter a valid email",
+
+
+  "f_cannot_empty":"First Name cannot be Empty",
+  "valid_name":"Enter Valid name(Min. 3 Character)",
+  "first_name":"First Name",
+  "s_cannot_empty":"Second Name cannot be Empty",
+  "second_name":"Second Name",
+  "r_required":"Password is required !",
+  "dont_match":"Password don't match",
+  "confirm_password":"Confirm Password",
+  "register":"Register",
+
+
+  "reset":"Reset",
+  "reset_password":"Reset Password",
+  "trouble":"Trouble logging in?",
+  "send_link":"Enter your email and we will send you a link to get back into your account.",
+
+
+  "email_verification":"Email Verification",
+  "invalid_format":"Invalid Email Format",
+  "otp_sent":"OTP sent !",
+  "send_otp":"Send OTP",
+  "otp_required":"Otp required!",
+  "enter_otp":"Enter OTP",
+  "otp_verified":"OTP Verified",
+  "verify":"Verify",
+  "thanks":"Thanks for your patience",
+  "invalid_otp":"Invalid OTP",
+  "try_again":"Please try again!",
+  "email_required":"Email required!",
+
+
+
+
+
+  "my_plan":"My Plan",
+  "this_plan":"This plan shows your daily, monthly \n allowance and saving point",
+  "monthly":"Monthly Allowance",
+  "savings":"Savings",
+  "total":"Total amount",
+  "daily":"Daily allowance",
+  "sar":"SAR",
+
+  "stats":"Stats",
+  "net_balance":"Net balance",
+  "current_balance":"Current balance",
+  "expected_balance":"Expected balance",
+
+  "profile":"Profile",
+  "update":"Update",
+
+  "settings":"Settings",
+  "account":"Account",
+  "change_password":"Change password",
+  "language":"Language",
+  "privacy":"Privacy and security",
+  "notifications":"Notifications",
+  "updates":"Updates",
+  "daily_encouragements":"Daily encouragements",
+
+
+  "daily_transaction":"Daily Transaction",
+
+  "last_sms":"Last 5 SMS:",
+
+  "hello":"Hello",
+  "achieve_goals":"To achieve your goals, we advice you to follow the plan below:",
+  "daily_allowance":"Daily Allowance",
+
+  "logout":"Logout"
+
+  }

@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:sim/classes/language.dart';
+import 'package:sim/classes/language_constants.dart';
+import 'package:sim/main.dart';
 import 'package:sim/theme/colors.dart';
-import '../pages/login_screen.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -41,25 +43,25 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            const Text(
-              "Settings",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              translation(context).profile,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 40,
             ),
             Row(
-              children: const [
-                Icon(
+              children: [
+                const Icon(
                   AntDesign.user,
                   color: primary,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Text(
-                  "Account",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  translation(context).account,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -70,24 +72,66 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 10,
             ),
-            buildAccountOptionRow(context, "Change password"),
-            buildAccountOptionRow(context, "Language"),
-            buildAccountOptionRow(context, "Privacy and security"),
+            buildAccountOptionRow(context, translation(context).change_password , (){}),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  translation(context).language,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                DropdownButton<Language>(
+                  underline: const SizedBox(),
+                  icon: const Icon(
+                    Icons.language,
+                    color: Colors.grey,
+                  ),
+                  onChanged: (Language? language) async {
+                    if (language != null) {
+                      Locale _locale = await setLocale(language.languageCode);
+                      MyApp.setLocale(context, _locale);
+                    }
+                  },
+                  items: Language.languageList()
+                      .map<DropdownMenuItem<Language>>(
+                        (e) => DropdownMenuItem<Language>(
+                      value: e,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            e.flag,
+                            style: const TextStyle(fontSize: 30),
+                          ),
+                          Text(e.name)
+                        ],
+                      ),
+                    ),
+                  )
+                      .toList(),
+                ),
+              ],
+            ),
+            buildAccountOptionRow(context, translation(context).privacy, (){}),
             const SizedBox(
               height: 40,
             ),
             Row(
-              children: const [
-                Icon(
+              children: [
+                const Icon(
                   Icons.notifications_none_rounded,
                   color: primary,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Text(
-                  "Notifications",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500), //
+                  translation(context).notifications,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500), //
                 ),
               ],
             ),
@@ -98,25 +142,12 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 10,
             ),
-            buildNotificationOptionRow("Updates", true),
-            buildNotificationOptionRow("Daily encouragements", false),
+            buildNotificationOptionRow(translation(context).updates, true),
+            buildNotificationOptionRow(translation(context).daily_encouragements, false),
             const SizedBox(
               height: 50,
             ),
-            Center(
-              child: OutlineButton(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginScreen()));
-                },
-                child: Text("SIGN OUT",
-                    style: TextStyle(
-                        fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
-              ),
-            )
+
           ],
         ),
       ),
@@ -182,14 +213,13 @@ class _SettingsPageState extends State<SettingsPage> {
   //
   // }
 
-  GestureDetector buildAccountOptionRow(BuildContext context, String title) {
+  GestureDetector buildAccountOptionRow(BuildContext context, String title , Function onTap) {
     return GestureDetector(
       onTap: () {
         showDialog(
             context: context,
             builder: (_){
               return AlertDialog(
-
                 title: const Text("New Passward"),
                 content: SizedBox(
                   width: 250,

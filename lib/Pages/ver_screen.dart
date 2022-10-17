@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:get/get.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:sim/classes/language_constants.dart';
 import 'package:sim/pages/auth_file.dart';
 import 'login_screen.dart';
 import 'package:sim/Pages/login_screen.dart';
@@ -62,8 +63,8 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                       color: Colors.black,
                     ),
                   ),
-                  const Text(
-                    'Email Verification',
+                  Text(
+                    translation(context).email_verification,
                     style: TextStyle(
                       color:Colors.black,
                       fontSize: 18,
@@ -104,9 +105,9 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                   String pattern = r'\w+@\w+\.\w+';
                                   RegExp regex = RegExp(pattern);
                                   if(val!.isEmpty){
-                                    return 'Email required.';
+                                    return translation(context).email_required;
                                   }else if(!regex.hasMatch(val)){
-                                    return 'Invalid Email Format';
+                                    return translation(context).invalid_format;
                                   }
                                   return null;
                                 },
@@ -120,15 +121,15 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                         showDialog(
                                           context: context,
                                           builder: (_){
-                                            return alertDialog("OTP sent !", "");
+                                            return alertDialog(translation(context).otp_sent, "");
                                           },
                                         );
                                         // userController.emailController.clear();
                                       },
-                                      child: const Text('Send OTP', style: TextStyle(fontSize: 15, color:Colors.black, fontWeight: FontWeight.w900 ),),
+                                      child:  Text(translation(context).send_otp, style: TextStyle(fontSize: 15, color:Colors.black, fontWeight: FontWeight.w900 ),),
                                     ),
                                     isDense: true,
-                                    label: const Text("Email")
+                                    label:  Text(translation(context).email)
                                 ),
                               ),
                               const SizedBox(height: 24),
@@ -136,7 +137,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                 obscureText: true,
                                 validator: (val){
                                   if(val!.isEmpty) {
-                                    return "Otp required! ";
+                                    return translation(context).otp_required;
                                   }
                                   return null;
                                 },
@@ -158,7 +159,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all(Colors.teal.shade100),
                                     ),
-                                    child: const Text("Verify", style: TextStyle(color: Colors.black),),
+                                    child: Text(translation(context).verify, style: TextStyle(color: Colors.black),),
                                     onPressed: (){
                                       verifyOTP().then((value){
                                         if(_formKey.currentState!.validate()){
@@ -167,7 +168,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                             showDialog(
                                               context: context,
                                               builder: (_){
-                                                return alertDialog("OTP Verified !", "Thanks for your patience");
+                                                return alertDialog(translation(context).otp_verified, translation(context).thanks);
                                               },
                                             );
                                             setState(() {
@@ -179,7 +180,7 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                             showDialog(
                                               context: context,
                                               builder: (_){
-                                                return alertDialog("Invalid OTP", "Please try again!");
+                                                return alertDialog(translation(context).invalid_otp, translation(context).try_again);
                                               },
                                             );
                                           }

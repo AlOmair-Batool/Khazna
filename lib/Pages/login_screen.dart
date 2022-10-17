@@ -1,6 +1,9 @@
 import 'package:sim/Pages/registration_screen.dart';
 import 'package:sim/Pages/reset_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:sim/classes/language.dart';
+import 'package:sim/classes/language_constants.dart';
+import 'package:sim/main.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:get/get.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -35,12 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
         keyboardType: TextInputType.emailAddress,
         validator: (value) { //validator
           if (value!.isEmpty) {
-            return ("Please Enter Your Email");
+            return (translation(context).enter_email);
           }
           // reg expression for email validation
           if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
               .hasMatch(value)) {
-            return ("Please Enter a valid email");
+            return (translation(context).valid_email);
           }
           return null;
         },
@@ -55,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: primary,
           ),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Email",
+          hintText: translation(context).email,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -72,10 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
         validator: (value) {
           RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
-            return ("Password is required for login");
+            return (translation(context).required);
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid Password(Min. 6 Character)");
+            return (translation(context).valid_pass);
           }
           return null;
         },
@@ -89,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Icons.vpn_key_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Password",
+          hintText: translation(context).password,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -112,8 +115,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
           },
 
-          child: const Text("Login", textAlign: TextAlign.center,
-            style: TextStyle(
+          child: Text(translation(context).login, textAlign: TextAlign.center,
+            style: const TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
@@ -123,18 +126,51 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text("Login"),
+        title: Text(
+            translation(context).login),
         backgroundColor: Colors.white,
         titleTextStyle: const TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold
 
         ),
-
         automaticallyImplyLeading: false,
-
         elevation: 0,
-
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: DropdownButton<Language>(
+              underline: const SizedBox(),
+              icon: const Icon(
+                Icons.language,
+                color: Colors.grey,
+              ),
+              onChanged: (Language? language) async {
+                if (language != null) {
+                  Locale _locale = await setLocale(language.languageCode);
+                  MyApp.setLocale(context, _locale);
+                }
+              },
+              items: Language.languageList()
+                  .map<DropdownMenuItem<Language>>(
+                    (e) => DropdownMenuItem<Language>(
+                  value: e,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(
+                        e.flag,
+                        style: const TextStyle(fontSize: 30),
+                      ),
+                      Text(e.name)
+                    ],
+                  ),
+                ),
+              )
+                  .toList(),
+            ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
 
@@ -154,11 +190,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    const Text('Welcome Back to Khazna!', style: TextStyle( color: Colors.black,
+                    Text(translation(context).welcome, style: const TextStyle( color: Colors.black,
                         fontSize:28,
                         fontWeight: FontWeight.w500
                     )),
-                    const Text('Please fill your registered information below:', style: TextStyle( color: Colors.grey,
+                    Text(translation(context).please, style: const TextStyle( color: Colors.grey,
                       fontSize:15,
                       height: 2,
                     )
@@ -177,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text("Don't have an account? ", style: TextStyle( color: Colors.black,
+                          Text(translation(context).have_acc, style: const TextStyle( color: Colors.black,
                             fontSize:15,
                             height: 2,
                           )),
@@ -187,11 +223,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const RegistrationScreen()));
+                                      const RegistrationScreen()));
                             },
-                            child: const Text(
-                              "Register",
-                              style: TextStyle(
+                            child: Text(
+                              translation(context).register,
+                              style: const TextStyle(
                                   color: primary,
                                   fontWeight: FontWeight.bold,
                                   height: 2,
@@ -202,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text("Forget password? ", style: TextStyle( color: Colors.black,
+                          Text(translation(context).forget, style: const TextStyle( color: Colors.black,
                             fontSize:15,
                             height: 2,
                           )),
@@ -212,10 +248,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const ResetScreen()));
+                                      const ResetScreen()));
                             },
-                            child: const Text(
-                              "Reset",
+                            child: Text(
+                              translation(context).reset,
                               style: TextStyle(
                                   color: primary,
                                   fontWeight: FontWeight.bold,

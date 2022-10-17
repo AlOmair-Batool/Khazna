@@ -1,5 +1,6 @@
 import 'package:sim/Pages/ver_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:get/get.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -38,10 +39,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         validator: (value) {
           RegExp regex = RegExp(r'^.{3,}$');
           if (value!.isEmpty) {
-            return ("First Name cannot be Empty");
+            return (translation(context).f_cannot_empty);
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid name(Min. 3 Character)");
+            return (translation(context).valid_name);
           }
           return null;
         },
@@ -52,7 +53,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Icons.account_circle_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "First Name",
+          hintText: translation(context).first_name,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -67,7 +68,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         validator: (value) {
           if (value!.isEmpty) {
-            return ("Second Name cannot be Empty");
+            return (translation(context).s_cannot_empty);
           }
           return null;
         },
@@ -78,7 +79,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Icons.account_circle_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Second Name",
+          hintText:translation(context).second_name,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -93,12 +94,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //validator: (){},
         validator: (value) {
           if (value!.isEmpty) {
-            return ("Please Enter Your Email");
+            return (translation(context).enter_email);
           }
           // reg expression for email validation
           if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
               .hasMatch(value)) {
-            return ("Please Enter a valid email");
+            return (translation(context).valid_email);
           }
           return null;
         },
@@ -109,7 +110,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Icons.mail_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Email",
+          hintText: translation(context).email,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -125,10 +126,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         validator: (value) {
           RegExp regex = RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
-            return ("Password is required!");
+            return (translation(context).r_required);
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid Password(Min. 6 Character)");
+            return (translation(context).valid_pass);
           }
           return null;
         },
@@ -139,7 +140,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Icons.vpn_key_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Password",
+          hintText: translation(context).password,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -154,10 +155,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //validator
         validator: (value) {
           if (value!.isEmpty) {
-            return ("Password is required!");
+            return (translation(context).r_required);
           } else if (userController.confirmPasswordController.text !=
               userController.confirmPasswordController.text) {
-            return "Password don't match";
+            return translation(context).dont_match;
           }
           return null;
         },
@@ -168,7 +169,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Icons.vpn_key_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Confirm Password",
+          hintText: translation(context).confirm_password,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -199,13 +200,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               }
               else
               {
-                userController.showSnackBar("Password not match", context);
+                userController.showSnackBar(translation(context).dont_match, context);
               }
             }
           },
 
-          child: const Text("Register", textAlign: TextAlign.center,
-            style: TextStyle(
+          child: Text(translation(context).register, textAlign: TextAlign.center,
+            style: const TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
@@ -214,7 +215,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Register"),
+        title: Text(translation(context).register),
         titleTextStyle: const TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold ),

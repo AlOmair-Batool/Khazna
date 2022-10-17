@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:sim/Pages/daily_page.dart';
 import 'package:sim/Pages/newplan_page.dart';
 import 'package:sim/Pages/profile_page.dart';
+import 'package:sim/Pages/sms/sms_screen.dart';
 import 'package:sim/Pages/stats_page.dart';
 import 'package:sim/theme/colors.dart';
 
@@ -26,7 +26,7 @@ class _RootAppState extends State<RootApp> {
       children:[
         NewPlanPage(),
         StatsPage(),
-        DailyPage(),
+        SmsScreen(),
         ProfilePage(),
       ],
     );

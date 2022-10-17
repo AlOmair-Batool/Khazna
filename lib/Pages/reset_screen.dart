@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 
 
@@ -33,12 +34,12 @@ class _ResetScreenState extends State<ResetScreen> {
         keyboardType: TextInputType.emailAddress,
         validator: (value) { //validator
           if (value!.isEmpty) {
-            return ("Please Enter Your Email");
+            return (translation(context).enter_email);
           }
           // reg expression for email validation
           if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
               .hasMatch(value)) {
-            return ("Please Enter a valid email");
+            return (translation(context).valid_email);
           }
           return null;
         },
@@ -52,7 +53,7 @@ class _ResetScreenState extends State<ResetScreen> {
               Icons.mail_outlined,
               color: primary),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Email",
+          hintText: translation(context).email,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -70,8 +71,8 @@ class _ResetScreenState extends State<ResetScreen> {
             _auth.sendPasswordResetEmail(email: emailController.text);
             Navigator.of(context).pop();
           },
-          child: const Text("Reset", textAlign: TextAlign.center,
-            style: TextStyle(
+          child: Text(translation(context).reset, textAlign: TextAlign.center,
+            style: const TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.w500),
           )),
 
@@ -83,7 +84,7 @@ class _ResetScreenState extends State<ResetScreen> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: const Text("Reset Password"),
+        title: Text(translation(context).reset_password),
         titleTextStyle: const TextStyle(color: Colors.black ,
             fontSize: 20,
             fontWeight: FontWeight.bold ),
@@ -114,18 +115,19 @@ class _ResetScreenState extends State<ResetScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        const Text('Trouble logging in?', style: TextStyle( color: Colors.black,
-                            fontSize:28,
-                            fontWeight: FontWeight.w500,
-                            height:4,
+                        Text(translation(context).trouble, style: const TextStyle( color: Colors.black,
+                          fontSize:28,
+                          fontWeight: FontWeight.w500,
+                          height:4,
                         )),
-                        const Text('Enter your email and we will send you a link to get back into your account.',textAlign: TextAlign.center, style: TextStyle( color: Colors.grey,
-                          fontSize:15,
-                          height: 1.5,
+                        Text(translation(context).send_link,textAlign: TextAlign.center,
+                            style: const TextStyle( color: Colors.grey,
+                              fontSize:15,
+                              height: 1.5,
 
-                        )),
+                            )),
                         const SizedBox(
-                          ),
+                        ),
                         const SizedBox(height: 40),
                         emailField,
                         const SizedBox(height: 25),

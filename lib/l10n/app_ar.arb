@@ -1,0 +1,80 @@
+{
+  "login": "تسجيل الدخول",
+  "welcome": "أهلا بكم من جديد في \n Khazna!",
+  "please": "الرجاء إدخال بيانات التسجيل الخاصة بك :",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "login": "تسجيل الدخول",
+  "have_acc" : "ليس لديك حساب؟ ",
+  "register": "إنشاء",
+  "forget": "نسيت كلمة المرور؟",
+  "reset": "إعادة تعيين",
+  "required":"يجب إدخال كلمة المرور للتسجيل",
+  "valid_pass":"أدخل كلمة مرور صالحة (بحد أدنى 6 أحرف)",
+  "enter_email":"من فضلك أدخل البريد الإلكتروني",
+  "valid_email":"من فضلك أدخل بريد إلكتروني صالح",
+
+    "f_cannot_empty":"لا يمكن أن يكون الاسم الأول فارغًا",
+    "valid_name":"أدخل اسمًا صالحًا (3 أحرف على الأقل)",
+    "first_name":"الاسم الأول",
+    "s_cannot_empty":"لا يمكن أن يكون الاسم الثاني فارغًا",
+    "second_name":"الاسم الثاني",
+    "r_required":"كلمة المرور مطلوبة!",
+    "dont_match":"كلمة المرور غير متطابقة",
+    "confirm_password":"تأكيد كلمة المرور",
+    "register":"تسجيل",
+
+     "reset":"إعادة ضبط",
+      "reset_password":"إعادة تعيين كلمة المرور",
+      "trouble":"مشكلة في تسجيل الدخول؟",
+      "send_link":"أدخل بريدك الإلكتروني وسنرسل لك رابطًا للعودة إلى حسابك.",
+
+        "email_verification":"تأكيد بواسطة البريد الالكتروني",
+        "invalid_format":"بريد إلكتروني غير صالح",
+        "otp_sent":"تم إرسال OTP!",
+        "send_otp":"إرسال OTP",
+        "otp_required":"Otp مطلوب!",
+        "enter_otp":"أدخل OTP",
+        "otp_verified":"OTP تم التحقق من",
+        "verify":"تحقق",
+        "thanks":"شكرًا لصبرك",
+        "invalid_otp":"غير صالح OTP",
+        "try_again":"من فضلك حاول مرة أخرى!",
+        "email_required":"البريد الإلكتروني مطلوب!",
+
+
+  "my_plan":"خطتي",
+  "this_plan":"تعرض هذه الخطة رصيدك اليومي والشهري \n ونقطة التوفير",
+  "monthly":"رصيد شهري",
+  "savings":"مدخرات",
+  "total":"المبلغ الإجمالي",
+  "daily":"رصيد يومي",
+  "sar":"ريال",
+
+  "stats":"احصائيات",
+  "net_balance":"الرصيد الصافي",
+  "current_balance":"الرصيد الحالي",
+  "expected_balance":"الرصيد المتوقع",
+
+  "profile":"حسابي",
+  "update":"تحديث",
+
+  "settings":"الإعدادات",
+  "account":"حساب",
+  "change_password":"تغيير كلمة المرور",
+  "language":"اللغة",
+  "privacy":"الخصوصية والأمان",
+  "notifications":"إشعارات",
+  "updates":"تحديثات",
+  "daily_encouragements":"تشجيعات يومية",
+
+
+  "daily_transaction":"المعاملات اليومية",
+
+  "last_sms":"آخر 5 رسائل :",
+
+  "hello":"Hello",
+  "achieve_goals":"To achieve your goals, we advice you to follow the plan below:",
+  "daily_allowance":"Daily Allowance",
+
+  "logout":"تسجيل خروج"}

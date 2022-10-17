@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sim/Pages/settings.dart';
+import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:sim/core/global.dart';
 
@@ -43,9 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Profile",
-                        style: TextStyle(
+                      Text(
+                        translation(context).profile,
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: black),
@@ -140,18 +141,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children:[
                               Text(
-                                "Current Balance",
-                                style: TextStyle(
+                                translation(context).current_balance,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 12,
                                     color: white),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
-                              Text(
+                              const Text(
                                 "\$2446.90",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -164,11 +165,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(color: white)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(13.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(13.0),
                               child: Text(
-                                "Update",
-                                style: TextStyle(color: white),
+                                translation(context).update,
+                                style: const TextStyle(color: white),
                               ),
                             ),
                           )
@@ -188,9 +189,9 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Email: ",
-                  style: TextStyle(
+                Text(
+                  "${translation(context).email}: ",
+                  style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 13,
                       color: Colors.black),
@@ -200,7 +201,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                 ),
                 Text(
-            "${currentUser!.email}",
+                  "${currentUser!.email}",
                   style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 13,
