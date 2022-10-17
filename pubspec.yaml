@@ -41,7 +41,7 @@ dependencies:
   reactive_forms: ^11.0.1
   get: ^4.3.8
   onesignal_flutter: ^3.0.0
-
+  dart_date: ^1.1.1
   firebase_messaging: ^11.2.8
   flutter_local_notifications: ^9.4.1
   rxdart: ^0.27.3
