@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../json/json_daily.dart';
 import 'dart:developer';
 
 
@@ -68,7 +66,7 @@ class _DailyPageState extends State<DailyPage> {
   //getting message type using SVM model
   _getType(params) async {
       final response = await http.post(
-        Uri.parse("http://159.223.227.189:7000/type"),
+        Uri.parse("http://159.223.227.189:6000/type"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -276,6 +274,7 @@ class _DailyPageState extends State<DailyPage> {
       countForFireStore = countForFireStore - 1;
 
     }
+
 
     //read from database
     final FirebaseAuth auth = FirebaseAuth.instance;
