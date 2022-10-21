@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import '../json/json_daily.dart';
 import 'dart:developer';
 
 
@@ -65,28 +67,28 @@ class _DailyPageState extends State<DailyPage> {
   String type = '';
   //getting message type using SVM model
   _getType(params) async {
-      final response = await http.post(
-        Uri.parse("http://159.223.227.189:6000/type"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(params),
-      );
-      if (jsonDecode(response.body)["msg_type"].toString() == "2")
-        {setState(() {
-          type = "Withdrawals";
-        });
-        print("Withdrawals");}
-      else if (jsonDecode(response.body)["msg_type"].toString() == "0"){
-        setState(() {
-          type = "Deposit";
-        });
+    final response = await http.post(
+      Uri.parse("http://159.223.227.189:7000/type"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(params),
+    );
+    if (jsonDecode(response.body)["msg_type"].toString() == "2")
+    {setState(() {
+      type = "Withdrawals";
+    });
+    print("Withdrawals");}
+    else if (jsonDecode(response.body)["msg_type"].toString() == "0"){
+      setState(() {
+        type = "Deposit";
+      });
       print("Deposit");}
-      else{
-        setState(() {
-          type = "None";
-        });
-        print("NONE");}
+    else{
+      setState(() {
+        type = "None";
+      });
+      print("NONE");}
   }
 
   //return messages from banks across Saudi
@@ -106,7 +108,7 @@ class _DailyPageState extends State<DailyPage> {
             .or(SmsColumn.ADDRESS).equals("meemKSA")
     );
 
-    var counter = 20;
+    var counter = 2;
     for (var message in messages) {
       if(counter==0) break;
       message1 = message.body!;
@@ -122,7 +124,7 @@ class _DailyPageState extends State<DailyPage> {
       var day = DateFormat('dd').format(date1);
       bool flag = false;
       //"type" is assigned by SVM model
-     //type = Withdrawal
+      //type = Withdrawal
       if (type == "Withdrawals") {
         transactionType20.insert(0, "Withdrawal");
         icon.insert(0, "assets/images/Withdrawl.png");
@@ -146,7 +148,7 @@ class _DailyPageState extends State<DailyPage> {
         continue;
       }
       //parse other variables
-     //1. Extract time
+      //1. Extract time
       if (flag) {
         RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
         var timeMatch = timeReg.firstMatch(message2);
@@ -183,7 +185,7 @@ class _DailyPageState extends State<DailyPage> {
     //send to firestore + all calculations
     var countForFireStore = 100;
     for (var message in messages) {
-      if(counter==0) break;
+      if (countForFireStore == 0) break;
       message1 = message.body!;
       log(message1);
       Map<String, dynamic> params = {"msg": message1};
@@ -192,26 +194,21 @@ class _DailyPageState extends State<DailyPage> {
       var date1 = DateTime.fromMillisecondsSinceEpoch(message.date!);
       var date2 = DateFormat('dd/MM/yyyy').format(date1);
       var month = DateFormat('MM').format(date1);
-      var day = DateFormat('dd').format(date1);
+      String day = DateFormat('dd').format(date1);
       bool flag = false;
+      double amount2 = 0;
 
       if (type == "Withdrawals") {
         transactionType.insert(0, "Withdrawal");
         icon.insert(0, "assets/images/Withdrawl.png");
         date.insert(0, date2.toString());
         flag = true;
-        setState(() {
-          type = "None";
-        });
       }
       else if (type == "Deposit") {
         transactionType.insert(0, "Deposit");
         icon.insert(0, "assets/images/Deposit.png");
         date.insert(0, date2.toString());
         flag = true;
-        setState(() {
-          type = "None";
-        });
       }
       else {
         continue;
@@ -232,9 +229,9 @@ class _DailyPageState extends State<DailyPage> {
       var amountMatch = amountNumReg.firstMatch(message2);
       if (amountMatch != null) {
         amount.insert(0, amountMatch.group(0).toString());
+        amount2 = double.parse(amountMatch.group(0).toString());
       }
       else {
-
         var amountReg = RegExp(r'[0-9]+\*[0-9]+');
         var amountBeforeMatch = message2.replaceAll(amountReg, '');
         String amountBefore = "";
@@ -256,35 +253,44 @@ class _DailyPageState extends State<DailyPage> {
       bool isItThisMonth = true;
       var usedMonth = "";
 
-      if (day == "27" && isItThisMonth) {
+      if (day == "24" && isItThisMonth) {
         usedMonth = month;
-        isItThisMonth=false;
+        isItThisMonth = false;
       }
 
-      if (type == "Deposit" && day == "27" && month == usedMonth) {
-        income += int.parse(amount[countForFireStore]);
-        balance += int.parse(amount[countForFireStore]);
-      } else if (type == "Deposit") {
-        balance += int.parse(amount[countForFireStore]);
-      } else if (type == "Withdrawals") {
-        balance -= int.parse(amount[countForFireStore]);
+      //if (type.toString() == "Deposit" && day == "27" && month == usedMonth) {
+      bool withOutDays = true;
+      if(flag) {
+        if (type == "Deposit") {
+          income = income + amount2;
+          balance = balance + amount2;
+
+        }
+        if(type == "Withdrawals"){
+          balance = balance - amount2;
+        }
       }
-      savingPoint = income * 0.2;
+
+      /*if (type == "Deposit" && withOutDays) {
+        balance = balance + amount2;
+      }
+      if (type == "Withdrawals") {
+        balance = balance - amount2;
+      }*/
+
 
       countForFireStore = countForFireStore - 1;
-
     }
 
-
+    savingPoint = income * 0.20;
     //read from database
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
 
     //works for sending 100 SMS messages to Firestore
-    for (var i = 0; i < transactionType.length; i++) {
-    DocumentReference ref = await FirebaseFirestore.instance.collection(
-        'Test3')
+    /*for (var i = 0; i < transactionType.length; i++) {
+    DocumentReference ref = await FirebaseFirestore.instance.collection("FinalTest")
         .add({
       'Date': date[i],
       'Time': time[i],
@@ -294,12 +300,23 @@ class _DailyPageState extends State<DailyPage> {
     ref.update({
       'userID': uid
     });
-  }
+  }*/
 
     /*for (var i = 0; i < transactionType.length; i++) {
       totalAmount += int.parse(amount[i]);
     }*/
+//send user variables to database
 
+    DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
+        .add({
+      'income': income,
+      'balance': balance,
+      'savingPoint': savingPoint,
+
+    });
+    ref.update({
+      'userID': uid
+    });
 
   }
   int activeDay = 3;
