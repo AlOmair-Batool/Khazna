@@ -28,10 +28,9 @@ class _StatsPageState extends State<StatsPage> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection('Test').get();
-
+    FirebaseFirestore.instance.collection('userdata').get();
     for (var document in snap.docs) {
-      totalAmount = totalAmount + int.parse(document['Amount']);
+      totalAmount = document['balance'];
     }
   }
 

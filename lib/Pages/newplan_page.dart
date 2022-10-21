@@ -4,9 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sim/classes/language.dart';
-import 'package:sim/classes/language_constants.dart';
-import 'package:sim/main.dart';
 
 
 class NewPlanPage extends StatefulWidget {
@@ -19,12 +16,12 @@ class _NewPlanPageState extends State<NewPlanPage> {
   late double savingPoint = 0 ;
   late double monthlyAllowance= 0;
   late double dailyAllowance = 0;
-  late double balance = 0;
+  late double income = 0;
+
 
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  bool _isLoading=false; //bool variable created
 
 
   void initState() {
@@ -51,67 +48,17 @@ class _NewPlanPageState extends State<NewPlanPage> {
       to = DateTime(from.year, from.month, 26);
     return  to.difference(from).inDays;
   }
-
+  double balance = 0;
   getAllTransactions() async{
-    setState(() {
-      _isLoading=true;
-    });
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
+    QuerySnapshot snap = await
+    FirebaseFirestore.instance.collection("userdata").get();
 
-
-    // get  deposit
-    double totalDeposit = 0;
-    QuerySnapshot depositSnap = await FirebaseFirestore.instance.collection('Test').where('Type',isEqualTo: 'Deposit').get();
-
-    for (var document in depositSnap.docs) {
-      totalDeposit = totalDeposit + int.parse(document['Amount']);
-    }
-
-
-    // get withdrawals
-    double totalWithdrawal = 0;
-    QuerySnapshot withdrawalSnap = await FirebaseFirestore.instance.collection('Test').where('Type',isEqualTo: 'Withdrawal').get();
-
-    for (var document in withdrawalSnap.docs) {
-      totalWithdrawal = totalWithdrawal + int.parse(document['Amount']);
-    }
-
-    // total amount cal
-    totalAmount = totalDeposit - totalWithdrawal;
-
-////////////////////////////////////////////////////////////////////////////////
-
-    DateTime currentDate = DateTime.now();
-
-
-    String current27Day = currentDate.day >= 27?'27/${currentDate.month.toString().length == 1?'0'
-        +currentDate.month.toString():currentDate.month.toString()}/${currentDate.year}'
-        :'27/${(currentDate.month - 1).toString().length == 1?'0'+(currentDate.month - 1).toString():(currentDate.month - 1).toString()}'
-        '/${currentDate.year}';
-
-
-    double income=0;
-
-    QuerySnapshot incomeSnap =
-    await FirebaseFirestore.instance.collection('Test').where('Date',isEqualTo: current27Day).where('Type',isEqualTo: 'Deposit').get();
-
-    for (var document in incomeSnap.docs) {
-      income = income + int.parse(document['Amount']);
-    }
-
-
-
-    monthlyAllowance = income * 0.8;
-    savingPoint = income * 0.2;
-
-    balance = totalAmount - savingPoint;
-    dailyAllowance = balance/daysBetween();
-
-
-    setState(() {
-      _isLoading=false;
+    snap.docs.forEach((document) {
+      savingPoint = document['savingPoint'];
+      balance = document['balance'];
     });
   }
 
@@ -123,7 +70,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
       backgroundColor: grey.withOpacity(0.05),
       body: getBody(),
       appBar: AppBar(
-        title: Text(translation(context).my_plan),
+        title: Text("My Plan"),
         toolbarHeight: 75,
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: black,
@@ -147,53 +94,33 @@ class _NewPlanPageState extends State<NewPlanPage> {
     List budget_json = [
 
       {
-        "name": translation(context).monthly,
-        "price": monthlyAllowance.toStringAsFixed(2)+translation(context).sar+" SAR",
+        "name": "Monthly Allowance",
+        "price": monthlyAllowance.toString()+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
-        "color": red,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ),        )
+        "color": red
       },
       {
-        "name": translation(context).savings,
-        "price": savingPoint.toStringAsFixed(2)+translation(context).sar+" SAR",
+        "name": "Savings",
+        "price": savingPoint.toString()+" SAR",
         "label_percentage": "20%",
         "percentage": 0.2,
-        "color": blue,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ),        )
+        "color": blue
       },
       {
-        "name": translation(context).total,
-        "price": totalAmount.toStringAsFixed(2)+translation(context).sar+" SAR",
+        "name": "Balance",
+        "price": balance.toString()+" SAR",
         "label_percentage": "100%",
         "percentage": 1,
-        "color": green,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ),        )
+        "color": green
       },
 
       {
-        "name": translation(context).daily,
-        "price": dailyAllowance.toStringAsFixed(2)+translation(context).sar+" SAR",
+        "name": "Daily allowance",
+        "price": dailyAllowance.toString()+" SAR",
         "label_percentage": "",
         "percentage": 1,
-        "color": white,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ),        )
+        "color": white
       }
     ];
 
@@ -223,7 +150,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children:  <Widget>[
 
-                      Text(translation(context).this_plan, style: TextStyle( color: Colors.black.withOpacity(0.8),
+                      Text('This plan shows your daily, monthly \n allowance and saving point', style: TextStyle( color: Colors.black.withOpacity(0.8),
 
                           fontSize:16,
                           fontWeight: FontWeight.w400
@@ -265,7 +192,6 @@ class _NewPlanPageState extends State<NewPlanPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             Text(
                               budget_json[index]['name'],
                               style: TextStyle(
@@ -278,18 +204,16 @@ class _NewPlanPageState extends State<NewPlanPage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children:[
+                              children: [
                                 Row(
                                   children: [
-                                    !_isLoading?
                                     Text(
                                       budget_json[index]['price'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
-                                    )
-                                        :  budget_json[index]['load'],
+                                    ),
                                     SizedBox(
                                       width: 8,
                                     ),

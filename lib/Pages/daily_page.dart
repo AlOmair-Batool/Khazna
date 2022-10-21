@@ -307,7 +307,7 @@ class _DailyPageState extends State<DailyPage> {
     }*/
 //send user variables to database
 
-    DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
+   /* DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
         .add({
       'income': income,
       'balance': balance,
@@ -316,7 +316,7 @@ class _DailyPageState extends State<DailyPage> {
     });
     ref.update({
       'userID': uid
-    });
+    });*/
 
   }
   int activeDay = 3;
