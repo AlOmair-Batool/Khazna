@@ -30,6 +30,7 @@ class _StatsPageState extends State<StatsPage> {
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection('userdata').get();
     for (var document in snap.docs) {
+      //balance
       totalAmount = document['balance'];
     }
   }
