@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../json/json_daily.dart';
 import 'dart:developer';
 
 
@@ -108,7 +106,7 @@ class _DailyPageState extends State<DailyPage> {
             .or(SmsColumn.ADDRESS).equals("meemKSA")
     );
 
-    var counter = 2;
+    var counter = 10;
     for (var message in messages) {
       if(counter==0) break;
       message1 = message.body!;

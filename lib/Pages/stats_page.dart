@@ -18,6 +18,7 @@ class _StatsPageState extends State<StatsPage> {
   bool _isLoading=false; //bool variable created
 
   int activeDay = 3;
+  double income = 0;
   double totalAmount =0;
   //getting values from firestore
   User? user = FirebaseAuth.instance.currentUser;
@@ -32,19 +33,19 @@ class _StatsPageState extends State<StatsPage> {
     for (var document in snap.docs) {
       //balance
       totalAmount = document['balance'];
+      income = document['income'];
     }
   }
 
-  String url = 'http://159.223.227.189:7000/api';
   var data;
   String output = '0 SAR';
   double pred_output = 0.0;
   List X_test = [];
   List mean = [];
-
   bool showAvg = false;
+  // predecting GP
   predict() async {
-    data = await fetchdata(url);
+    data = await fetchdata('http://159.223.227.189:7000/api');
     var decoded = jsonDecode(data);
     print("pred_out");
     print(double.parse(decoded['output']));
@@ -220,10 +221,13 @@ class _StatsPageState extends State<StatsPage> {
                       : Container(
                             padding: const EdgeInsets.all(50),
                             margin:const EdgeInsets.all(50) ,
-                            color: primary,
                         //widget shown according to the state
                             child: Center(
-                            child: const CircularProgressIndicator(),
+                            child: const CircularProgressIndicator(
+    backgroundColor: Colors.black26,
+    valueColor: AlwaysStoppedAnimation<Color>(
+    primary //<-- SEE HERE
+    ),        ),
                             ),
                             ),
                             ),
