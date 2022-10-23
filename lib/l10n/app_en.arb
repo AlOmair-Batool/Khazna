@@ -55,12 +55,12 @@
   "savings":"Savings",
   "total":"Total amount",
   "daily":"Daily allowance",
-  "sar":"SAR",
+  "sar":" SAR",
 
   "stats":"Stats",
-  "net_balance":"Net balance",
+  "net_balance":"Current balance",
   "current_balance":"Current balance",
-  "expected_balance":"Expected balance",
+  "expected_balance":"Expected spending",
 
   "profile":"Profile",
   "update":"Update",
@@ -75,7 +75,9 @@
   "daily_encouragements":"Daily encouragements",
 
 
-  "daily_transaction":"Daily Transaction",
+  "daily_transaction":"Latest Transactions",
+  "dep": "Deposit",
+  "ww": "Withdrawal",
 
   "last_sms":"Last 5 SMS:",
 

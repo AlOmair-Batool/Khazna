@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
@@ -124,7 +125,7 @@ class _DailyPageState extends State<DailyPage> {
       //"type" is assigned by SVM model
       //type = Withdrawal
       if (type == "Withdrawals") {
-        transactionType20.insert(0, "Withdrawal");
+        transactionType20.insert(0, translation(context).ww);
         icon.insert(0, "assets/images/Withdrawl.png");
         date20.insert(0, date2.toString());
         flag = true;
@@ -134,7 +135,7 @@ class _DailyPageState extends State<DailyPage> {
       }
       //type = Deposit
       else if (type == "Deposit") {
-        transactionType20.insert(0, "Deposit");
+        transactionType20.insert(0, translation(context).dep);
         icon.insert(0, "assets/images/Deposit.png");
         date20.insert(0, date2.toString());
         flag = true;
@@ -203,7 +204,7 @@ class _DailyPageState extends State<DailyPage> {
         flag = true;
       }
       else if (type == "Deposit") {
-        transactionType.insert(0, "Deposit");
+        transactionType.insert(0, translation(context).dep);
         icon.insert(0, "assets/images/Deposit.png");
         date.insert(0, date2.toString());
         flag = true;
@@ -349,10 +350,10 @@ class _DailyPageState extends State<DailyPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children:  [
                         Text(
-                          "Latest Transactions",
-                          style: TextStyle(
+                            translation(context).daily_transaction,
+                          style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: black),
@@ -437,7 +438,7 @@ class _DailyPageState extends State<DailyPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    amount20[index] + " SAR",
+                                    amount20[index] + translation(context).sar,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,
