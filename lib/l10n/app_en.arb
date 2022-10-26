@@ -23,6 +23,8 @@
   "r_required":"Password is required !",
   "dont_match":"Password don't match",
   "confirm_password":"Confirm Password",
+  "income":"Your monthly income",
+  "balance":"Your current balance",
   "register":"Register",
 
 

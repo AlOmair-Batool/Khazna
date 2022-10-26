@@ -14,9 +14,7 @@ import 'package:sim/model/user_model.dart';
 class UserController extends GetxController{
 
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
-
   TextEditingController firstNameController = TextEditingController();
   TextEditingController secondNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -24,8 +22,9 @@ class UserController extends GetxController{
   TextEditingController confirmPasswordController = TextEditingController();
 
   TextEditingController otpController = TextEditingController();
-
-
+//batool here
+  TextEditingController incomeController = TextEditingController();
+  TextEditingController balanceController = TextEditingController();
 
 
   void signInUser(context)async
@@ -65,12 +64,21 @@ class UserController extends GetxController{
         'secondname': secondNameController.text,
         'email': emailController.text,
       });
+      DocumentReference ref2 = await FirebaseFirestore.instance.collection('userdata')
+          .add({
+        'income': incomeController.text,
+        'balance': balanceController.text,
+        'savingPoint': int.parse(incomeController.text) * 0.20,
+
+      });
 
       ref.update({
         'userID': ref.id
-      }
+      });
 
-      );
+
+
+
 
       firstNameController.clear();
       secondNameController.clear();

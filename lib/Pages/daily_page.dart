@@ -47,6 +47,7 @@ class _DailyPageState extends State<DailyPage> {
   double monthlyAllowance = 0;
   double savingPoint = 0;
   double income= 0;
+  String monthSend = "";
 
 
   @override
@@ -97,9 +98,9 @@ class _DailyPageState extends State<DailyPage> {
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-            .or(SmsColumn.ADDRESS).equals("alinmabank")
+            //.or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
-            .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
+            //.or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
             .or(SmsColumn.ADDRESS).equals("SABB")
             .or(SmsColumn.ADDRESS).equals("AlJaziraSMS")
@@ -183,9 +184,10 @@ class _DailyPageState extends State<DailyPage> {
 
 
     //send to firestore + all calculations
-    var countForFireStore = 100;
+    var countForFireStore = 150;
+    bool stopCounting = false;
     for (var message in messages) {
-      if (countForFireStore == 0) break;
+      if (countForFireStore == 0 || stopCounting == true ) break;
       message1 = message.body!;
       log(message1);
       Map<String, dynamic> params = {"msg": message1};
@@ -225,21 +227,26 @@ class _DailyPageState extends State<DailyPage> {
         }
       }
 
-      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+      var amountNumReg = RegExp(r'\d,[0-9]*\.[0-9]+');
       var amountMatch = amountNumReg.firstMatch(message2);
+      var amountMatch2= amountMatch?.group(0);
+      var removeComma = RegExp(r'[,]+');
+      var remove = amountMatch2.toString().replaceAll(removeComma, "");
+
+
       if (amountMatch != null) {
-        amount.insert(0, amountMatch.group(0).toString());
-        amount2 = double.parse(amountMatch.group(0).toString());
+        amount.insert(0, remove);
+        amount2 = double.parse(remove);
       }
       else {
-        var amountReg = RegExp(r'[0-9]+\*[0-9]+');
-        var amountBeforeMatch = message2.replaceAll(amountReg, '');
-        String amountBefore = "";
-
-        var amountNumReg = RegExp(r'[0-9,]+');
-        var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
-        if (amountAfterMatch != null) {
-          amount.insert(0, amountAfterMatch.group(0).toString());
+        var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+        var amountMatch = amountNumReg.firstMatch(message2);
+        //String amountBefore = "";
+       // var amountNumReg = RegExp(r'[0-9,.]+');
+        //var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
+        if (amountMatch != null) {
+          amount2  = double.parse(amountMatch.group(0).toString());
+          amount.insert(0, amountMatch.group(0).toString());
         } else {
           amount.insert(0, "0 SAR");
         }
@@ -253,22 +260,31 @@ class _DailyPageState extends State<DailyPage> {
       bool isItThisMonth = true;
       var usedMonth = "";
 
-      if (day == "24" && isItThisMonth) {
+      if (day == "04" && isItThisMonth) {
         usedMonth = month;
         isItThisMonth = false;
+        monthSend = "04";
+        //balance = amount2;
       }
 
       //if (type.toString() == "Deposit" && day == "27" && month == usedMonth) {
       bool withOutDays = true;
       if(flag) {
-        if (type == "Deposit") {
+        if (type == "Deposit" && day == "04") {
           income = income + amount2;
           balance = balance + amount2;
+          stopCounting = true;
+
+
+        }else if (type == "Deposit"){
+
+            balance = balance + amount2;
 
         }
         if(type == "Withdrawals"){
           balance = balance - amount2;
         }
+
       }
 
       /*if (type == "Deposit" && withOutDays) {
@@ -282,15 +298,15 @@ class _DailyPageState extends State<DailyPage> {
       countForFireStore = countForFireStore - 1;
     }
 
-    savingPoint = income * 0.20;
+
     //read from database
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
 
     //works for sending 100 SMS messages to Firestore
-    /*for (var i = 0; i < transactionType.length; i++) {
-    DocumentReference ref = await FirebaseFirestore.instance.collection("FinalTest")
+    for (var i = 0; i < transactionType.length; i++) {
+    DocumentReference ref = await FirebaseFirestore.instance.collection("FinalTest2")
         .add({
       'Date': date[i],
       'Time': time[i],
@@ -300,23 +316,23 @@ class _DailyPageState extends State<DailyPage> {
     ref.update({
       'userID': uid
     });
-  }*/
+  }
 
     /*for (var i = 0; i < transactionType.length; i++) {
       totalAmount += int.parse(amount[i]);
     }*/
 //send user variables to database
 
-   /* DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
+   DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
         .add({
       'income': income,
       'balance': balance,
-      'savingPoint': savingPoint,
+      'savingPoint': income*0.20,
 
     });
     ref.update({
       'userID': uid
-    });*/
+    });
 
   }
   int activeDay = 3;
