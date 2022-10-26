@@ -15,7 +15,6 @@ external String get millisecondsSinceEpoch;
 
 LineChartData mainData(List X_test, List mean) {
   data= [];
-  print("Najat");
   print(X_test);
   print(mean);
   //minx = DateTime.parse(X_test[0]).millisecondsSinceEpoch.toDouble();

@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
-import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import '../json/json_daily.dart';
 import 'dart:developer';
 
 
@@ -47,6 +48,11 @@ class _DailyPageState extends State<DailyPage> {
   double savingPoint = 0;
   double income= 0;
   String monthSend = "";
+
+  //don't add duplicate entries in database
+  int time200 =0 ;
+
+
 
 
   @override
@@ -97,9 +103,9 @@ class _DailyPageState extends State<DailyPage> {
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-            //.or(SmsColumn.ADDRESS).equals("alinmabank")
+        //.or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
-            //.or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
+        //.or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
             .or(SmsColumn.ADDRESS).equals("SABB")
             .or(SmsColumn.ADDRESS).equals("AlJaziraSMS")
@@ -108,85 +114,16 @@ class _DailyPageState extends State<DailyPage> {
             .or(SmsColumn.ADDRESS).equals("meemKSA")
     );
 
-    var counter = 10;
-    for (var message in messages) {
-      if(counter==0) break;
-      message1 = message.body!;
-      log(message1);
-      Map<String, dynamic> params = {"msg": message1};
-      //Run SVM model
-      await _getType(params);
-      //SMS processing after getting the type.
-      String message2 = message1.toLowerCase();
-      var date1 = DateTime.fromMillisecondsSinceEpoch(message.date!);
-      var date2 = DateFormat('dd/MM/yyyy').format(date1);
-      //to save the day of the message to accumulate last 27th day
-      var day = DateFormat('dd').format(date1);
-      bool flag = false;
-      //"type" is assigned by SVM model
-      //type = Withdrawal
-      if (type == "Withdrawals") {
-        transactionType20.insert(0, translation(context).ww);
-        icon.insert(0, "assets/images/Withdrawl.png");
-        date20.insert(0, date2.toString());
-        flag = true;
-        setState(() {
-          type = "None";
-        });
-      }
-      //type = Deposit
-      else if (type == "Deposit") {
-        transactionType20.insert(0, translation(context).dep);
-        icon.insert(0, "assets/images/Deposit.png");
-        date20.insert(0, date2.toString());
-        flag = true;
-        setState(() {
-          type = "None";
-        });
-      }
-      else {
-        continue;
-      }
-      //parse other variables
-      //1. Extract time
-      if (flag) {
-        RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
-        var timeMatch = timeReg.firstMatch(message2);
-        if (timeMatch != null) {
-          time20.insert(0, timeMatch.group(0).toString());
-          print(timeMatch.group(0).toString());
-        } else {
-          time20.insert(0, "00:00");
-        }
-      }
 
-      //2. Extract amount
-      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
-      var amountMatch = amountNumReg.firstMatch(message2);
-      if (amountMatch != null) {
-        amount20.insert(0, amountMatch.group(0).toString());
-      }
-      else {
-        var amountReg = RegExp(r'[0-9]+\*[0-9]+');
-        var amountBeforeMatch = message2.replaceAll(amountReg, '');
-        var amountNumReg = RegExp(r'[0-9,]+');
-        var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
-        if (amountAfterMatch != null) {
-          amount20.insert(0, amountAfterMatch.group(0).toString());
-        } else {
-          amount20.insert(0, "0 SAR");
-        }
-      }
-      counter = counter - 1;
-    }
 
 
 
     //send to firestore + all calculations
-    var countForFireStore = 150;
+    var countForFireStore = 2;
     bool stopCounting = false;
     for (var message in messages) {
-      if (countForFireStore == 0 || stopCounting == true ) break;
+      if (countForFireStore == 0) break;
+      //if (countForFireStore == 0 || stopCounting == true ) break;
       message1 = message.body!;
       log(message1);
       Map<String, dynamic> params = {"msg": message1};
@@ -206,7 +143,7 @@ class _DailyPageState extends State<DailyPage> {
         flag = true;
       }
       else if (type == "Deposit") {
-        transactionType.insert(0, translation(context).dep);
+        transactionType.insert(0, "Deposit");
         icon.insert(0, "assets/images/Deposit.png");
         date.insert(0, date2.toString());
         flag = true;
@@ -228,7 +165,7 @@ class _DailyPageState extends State<DailyPage> {
 
       var amountNumReg = RegExp(r'\d,[0-9]*\.[0-9]+');
       var amountMatch = amountNumReg.firstMatch(message2);
-      var amountMatch2= amountMatch?.group(0);
+      var amountMatch2 = amountMatch?.group(0);
       var removeComma = RegExp(r'[,]+');
       var remove = amountMatch2.toString().replaceAll(removeComma, "");
 
@@ -241,10 +178,10 @@ class _DailyPageState extends State<DailyPage> {
         var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
         var amountMatch = amountNumReg.firstMatch(message2);
         //String amountBefore = "";
-       // var amountNumReg = RegExp(r'[0-9,.]+');
+        // var amountNumReg = RegExp(r'[0-9,.]+');
         //var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
         if (amountMatch != null) {
-          amount2  = double.parse(amountMatch.group(0).toString());
+          amount2 = double.parse(amountMatch.group(0).toString());
           amount.insert(0, amountMatch.group(0).toString());
         } else {
           amount.insert(0, "0 SAR");
@@ -268,31 +205,18 @@ class _DailyPageState extends State<DailyPage> {
 
       //if (type.toString() == "Deposit" && day == "27" && month == usedMonth) {
       bool withOutDays = true;
-      if(flag) {
+      if (flag) {
         if (type == "Deposit" && day == "04") {
           income = income + amount2;
           balance = balance + amount2;
           stopCounting = true;
-
-
-        }else if (type == "Deposit"){
-
-            balance = balance + amount2;
-
+        } else if (type == "Deposit") {
+          balance = balance + amount2;
         }
-        if(type == "Withdrawals"){
+        if (type == "Withdrawals") {
           balance = balance - amount2;
         }
-
       }
-
-      /*if (type == "Deposit" && withOutDays) {
-        balance = balance + amount2;
-      }
-      if (type == "Withdrawals") {
-        balance = balance - amount2;
-      }*/
-
 
       countForFireStore = countForFireStore - 1;
     }
@@ -302,37 +226,136 @@ class _DailyPageState extends State<DailyPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-
+    var userID = null;
     //works for sending 100 SMS messages to Firestore
-    for (var i = 0; i < transactionType.length; i++) {
-    DocumentReference ref = await FirebaseFirestore.instance.collection("FinalTest2")
-        .add({
-      'Date': date[i],
-      'Time': time[i],
-      'Type': transactionType[i],
-      'Amount': amount[i],
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection("FinalTest3").get();
+    snap.docs.forEach((document) {
+      userID = document['userID'];
     });
-    ref.update({
-      'userID': uid
-    });
+    if (userID == null){
+      for (var i = 0; i < transactionType.length; i++) {
+
+        DocumentReference ref = await FirebaseFirestore.instance.collection(
+            "FinalTest3")
+            .add({
+          'Date': date[i],
+          'Time': time[i],
+          'Type': transactionType[i],
+          'Amount': amount[i],
+        });
+        ref.update({
+          'userID': uid
+        });
+      }
   }
 
-    /*for (var i = 0; i < transactionType.length; i++) {
-      totalAmount += int.parse(amount[i]);
-    }*/
+
+
 //send user variables to database
 
-   DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
+ /*DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
         .add({
-      'income': income,
-      'balance': balance,
-      'savingPoint': income*0.20,
+      'income': 4318,
+      'balance': 5711.36,
+      'savingPoint': 863.6,
 
     });
     ref.update({
       'userID': uid
-    });
+    });*/
+    var counter = 3;
+    for (var message in messages) {
+      if (counter == 0) break;
+      message1 = message.body!;
+      var date200 = "";
+      log(message1);
+      Map<String, dynamic> params = {"msg": message1};
+      //Run SVM model
+      await _getType(params);
+      //SMS processing after getting the type.
+      String message2 = message1.toLowerCase();
+      var date1 = DateTime.fromMillisecondsSinceEpoch(message.date!);
+      var date2 = DateFormat('dd/MM/yyyy').format(date1);
+      //to save the day of the message to accumulate last 27th day
+      var day = DateFormat('dd').format(date1);
+      bool flag = false;
+      //"type" is assigned by SVM model
+      //type = Withdrawal
+      if (type == "Withdrawals") {
+        transactionType20.insert(0, "Withdrawal");
+        icon.insert(0, "assets/images/Withdrawl.png");
+        date20.insert(0, date2.toString());
+        flag = true;
+      }
+      //type = Deposit
+      else if (type == "Deposit") {
+        transactionType20.insert(0, "Deposit");
+        icon.insert(0, "assets/images/Deposit.png");
+        date20.insert(0, date2.toString());
+        flag = true;
+      }
+      else {
+        continue;
+      }
+      //parse other variables
+      //1. Extract time
+      if (flag) {
+        RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
+        var timeMatch = timeReg.firstMatch(message2);
+        if (timeMatch != null) {
+          time20.insert(0, timeMatch.group(0).toString());
+        } else {
+          time20.insert(0, "00:00");
+        }
+      }
 
+      //2. Extract amount
+      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+      var amountMatch = amountNumReg.firstMatch(message2);
+      if (amountMatch != null) {
+        amount20.insert(0, amountMatch.group(0).toString());
+      }
+      else {
+        var amountReg = RegExp(r'[0-9]+\*[0-9]+');
+        var amountBeforeMatch = message2.replaceAll(amountReg, '');
+        var amountNumReg = RegExp(r'[0-9,]+');
+        var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
+        if (amountAfterMatch != null) {
+          amount20.insert(0, amountAfterMatch.group(0).toString());
+        } else {
+          amount20.insert(0, "0 SAR");
+        }
+      }
+
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+
+      if (counter == 3){
+        QuerySnapshot snap = await FirebaseFirestore.instance.collection("FinalTest3").get();
+        snap.docs.forEach((document) {
+          date200 = document['Date'];
+        });
+        if (date200 != date2.toString()) {
+          DocumentReference ref = await FirebaseFirestore.instance.collection(
+              "FinalTest3")
+              .add({
+            'Date': date20[0],
+            'Time': time20[0],
+            'Type': transactionType20[0],
+            'Amount': amount20[0],
+          });
+          ref.update({
+            'userID': uid
+          });
+        }
+      }
+      if(counter == 3){
+        //newest message
+        time200 = message.date!;
+      }
+      counter = counter - 1;
+    }
   }
   int activeDay = 3;
 
@@ -366,10 +389,10 @@ class _DailyPageState extends State<DailyPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children:  [
+                      children: const [
                         Text(
-                            translation(context).daily_transaction,
-                          style: const TextStyle(
+                          "Latest Transactions",
+                          style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: black),
@@ -454,7 +477,7 @@ class _DailyPageState extends State<DailyPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    amount20[index] + translation(context).sar,
+                                    amount20[index] + " SAR",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,

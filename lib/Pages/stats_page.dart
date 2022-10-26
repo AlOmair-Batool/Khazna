@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:sim/widget/chart.dart';
 import 'dart:convert';
@@ -19,6 +18,7 @@ class _StatsPageState extends State<StatsPage> {
   bool _isLoading=false; //bool variable created
 
   int activeDay = 3;
+  double income = 0;
   double totalAmount =0;
   //getting values from firestore
   User? user = FirebaseAuth.instance.currentUser;
@@ -29,26 +29,29 @@ class _StatsPageState extends State<StatsPage> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection('Test').get();
-
+    FirebaseFirestore.instance.collection('userdata').get();
     for (var document in snap.docs) {
-      totalAmount = totalAmount + int.parse(document['Amount']);
+      //balance
+      totalAmount = document['balance'];
+      income = document['income'];
     }
   }
 
-  String url = 'http://159.223.227.189:7000/api';
   var data;
   String output = '0 SAR';
+  double pred_output = 0.0;
   List X_test = [];
   List mean = [];
-
   bool showAvg = false;
+  // predecting GP
   predict() async {
-    data = await fetchdata(url);
+    data = await fetchdata('http://159.223.227.189:7000/api');
     var decoded = jsonDecode(data);
-    print(decoded['output']);
+    print("pred_out");
+    print(double.parse(decoded['output']));
     setState(() {
-      output = decoded['output'].substring(0, 6) + translation(context).sar;
+      pred_output = double.parse(decoded['output']);
+      output = double.parse(decoded['output']).toStringAsFixed(2) + " SAR";
     });
   }
 
@@ -61,15 +64,12 @@ class _StatsPageState extends State<StatsPage> {
 
     print("CHECK");
 
-    data = await fetchdata('http://159.223.227.189:6000/predict');
+    data = await fetchdata('http://159.223.227.189:6000/predict_v4');
     var decoded = jsonDecode(data);
-    print("CHECK");
-    //print(jsonDecode(data['X_test']));
-    print(decoded["X_test"]);
 
     setState(() {
-      X_test = decoded["X_test"];
-      mean = decoded["mean"];
+      X_test = decoded["date"];
+      mean = decoded["amount"];
       _isLoading=false;
 
     });
@@ -119,14 +119,14 @@ class _StatsPageState extends State<StatsPage> {
       {
         "icon": Icons.check,
         "color": const Color(0xFF40A083),
-        "label": translation(context).current_balance,
-        "cost": totalAmount.toString()+translation(context).sar
+        "label": "Current balance",
+        "cost": totalAmount.toString()+" SAR"
       },
       {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
-        "label": translation(context).expected_balance,
-        "cost": '$output${translation(context).sar}',
+        "label": "Expected balance",
+        "cost": (totalAmount/pred_output).abs().toStringAsFixed(2) +" SAR"
       }
     ];
 
@@ -145,15 +145,15 @@ class _StatsPageState extends State<StatsPage> {
             ]),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 60, right: 20, left: 20, bottom: 25),
+                  top: 50, right: 20, left: 20, bottom: 25),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
-                        translation(context).stats,
-                        style: const TextStyle(
+                        "Spending analytics",
+                        style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: black),
@@ -193,44 +193,60 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-
+                        children: [
+                          Text(
+                            "Daily Spending Behaviour",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xff67727d)),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
                     ),
                     Positioned(
-                      bottom: 0,
+                      top: 45,
+                      bottom: 2,
                       child:  !_isLoading
                           ?SizedBox(
-                        width: (size.width - 20),
-                        height: 270,
-                        child: LineChart(
-                            mainData(X_test, mean),),
-                      )
-                      : Container(
-                            padding: const EdgeInsets.all(50),
-                            margin:const EdgeInsets.all(50) ,
-                            color: primary,
-                        //widget shown according to the state
-                            child: Center(
-                            child: const CircularProgressIndicator(),
-                            ),
-                            ),
-                            ),
+                        width: (size.width - 60),
+                        height: (size.height - 10),
 
-                      //const CircularProgressIndicator(),
+                        child: LineChart(
+                          mainData(X_test, mean),),
+                      )
+                          : Container(
+                        padding: const EdgeInsets.all(50),
+                        margin:const EdgeInsets.all(50) ,
+                        //widget shown according to the state
+                        child: Center(
+                          child: const CircularProgressIndicator(
+                            backgroundColor: Colors.black26,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                primary //<-- SEE HERE
+                            ),        ),
+                        ),
+                      ),
+                    ),
+
+                    //const CircularProgressIndicator(),
                   ],
                 ),
               ),
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 40,
           ),
           Wrap(
               spacing: 20,
               children: List.generate(expenses.length, (index) {
                 return Container(
                   width: (size.width - 60) / 2,
-                  height: 170,
+                  height: 160,
                   decoration: BoxDecoration(
                       color: white,
                       borderRadius: BorderRadius.circular(12),
@@ -244,7 +260,7 @@ class _StatsPageState extends State<StatsPage> {
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 25, right: 25, top: 20, bottom: 20),
+                        left: 25, right: 25, top: 20, bottom: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,7 +285,7 @@ class _StatsPageState extends State<StatsPage> {
                               expenses[index]['label'],
                               style: const TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 11.5,
+                                  fontSize: 12,
                                   color: Color(0xff67727d)),
                             ),
                             const SizedBox(
