@@ -22,7 +22,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-
+  bool _isLoading=false; //bool variable created
 
   void initState() {
     super.initState();
@@ -50,6 +50,9 @@ class _NewPlanPageState extends State<NewPlanPage> {
   }
   double balance = 0;
   getAllTransactions() async{
+    setState(() {
+      _isLoading=true;
+    });
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
@@ -59,6 +62,10 @@ class _NewPlanPageState extends State<NewPlanPage> {
     snap.docs.forEach((document) {
       savingPoint = document['savingPoint'];
       balance = document['balance'];
+    });
+
+    setState(() {
+      _isLoading=false;
     });
   }
 
@@ -95,32 +102,52 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
       {
         "name": "Monthly Allowance",
-        "price": monthlyAllowance.toString()+" SAR",
+        "price": monthlyAllowance.toStringAsFixed(2)+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
-        "color": red
+        "color": red,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       },
       {
         "name": "Savings",
-        "price": savingPoint.toString()+" SAR",
+        "price": savingPoint.toStringAsFixed(2)+" SAR",
         "label_percentage": "20%",
         "percentage": 0.2,
-        "color": blue
+        "color": blue,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       },
       {
         "name": "Balance",
-        "price": balance.toString()+" SAR",
+        "price": balance.toStringAsFixed(2)+" SAR",
         "label_percentage": "100%",
         "percentage": 1,
-        "color": green
+        "color": green,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       },
 
       {
         "name": "Daily allowance",
-        "price": dailyAllowance.toString()+" SAR",
+        "price": dailyAllowance.toStringAsFixed(2)+" SAR",
         "label_percentage": "",
         "percentage": 1,
-        "color": white
+        "color": white,
+        "load":const CircularProgressIndicator(
+          backgroundColor: Colors.black26,
+          valueColor: AlwaysStoppedAnimation<Color>(
+              primary //<-- SEE HERE
+          ),        )
       }
     ];
 
@@ -207,13 +234,14 @@ class _NewPlanPageState extends State<NewPlanPage> {
                               children: [
                                 Row(
                                   children: [
+                                    !_isLoading?
                                     Text(
                                       budget_json[index]['price'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
-                                    ),
+                                    ): budget_json[index]['load'],
                                     SizedBox(
                                       width: 8,
                                     ),

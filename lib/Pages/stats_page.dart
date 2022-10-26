@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:sim/classes/language_constants.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:sim/widget/chart.dart';
 import 'dart:convert';
@@ -28,17 +29,16 @@ class _StatsPageState extends State<StatsPage> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection('userdata').get();
+    FirebaseFirestore.instance.collection('Test').get();
+
     for (var document in snap.docs) {
-      //balance
-      totalAmount = document['balance'];
+      totalAmount = totalAmount + int.parse(document['Amount']);
     }
   }
 
   String url = 'http://159.223.227.189:7000/api';
   var data;
   String output = '0 SAR';
-  double pred_output = 0.0;
   List X_test = [];
   List mean = [];
 
@@ -46,11 +46,9 @@ class _StatsPageState extends State<StatsPage> {
   predict() async {
     data = await fetchdata(url);
     var decoded = jsonDecode(data);
-    print("pred_out");
-    print(double.parse(decoded['output']));
+    print(decoded['output']);
     setState(() {
-      pred_output = double.parse(decoded['output']);
-      output = double.parse(decoded['output']).toStringAsFixed(2) + " SAR";
+      output = decoded['output'].substring(0, 6) + translation(context).sar;
     });
   }
 
@@ -63,12 +61,15 @@ class _StatsPageState extends State<StatsPage> {
 
     print("CHECK");
 
-    data = await fetchdata('http://159.223.227.189:6000/predict_v4');
+    data = await fetchdata('http://159.223.227.189:6000/predict');
     var decoded = jsonDecode(data);
+    print("CHECK");
+    //print(jsonDecode(data['X_test']));
+    print(decoded["X_test"]);
 
     setState(() {
-      X_test = decoded["date"];
-      mean = decoded["amount"];
+      X_test = decoded["X_test"];
+      mean = decoded["mean"];
       _isLoading=false;
 
     });
@@ -118,14 +119,14 @@ class _StatsPageState extends State<StatsPage> {
       {
         "icon": Icons.check,
         "color": const Color(0xFF40A083),
-        "label": "Current balance",
-        "cost": totalAmount.toString()+" SAR"
+        "label": translation(context).current_balance,
+        "cost": totalAmount.toString()+translation(context).sar
       },
       {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
-        "label": "Expected balance",
-        "cost": (totalAmount/pred_output).abs().toStringAsFixed(2) +" SAR"
+        "label": translation(context).expected_balance,
+        "cost": '$output${translation(context).sar}',
       }
     ];
 
@@ -144,15 +145,15 @@ class _StatsPageState extends State<StatsPage> {
             ]),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 50, right: 20, left: 20, bottom: 25),
+                  top: 60, right: 20, left: 20, bottom: 25),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
-                        "Spending analytics",
-                        style: TextStyle(
+                        translation(context).stats,
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: black),
@@ -192,28 +193,15 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                            Text(
-                            "Daily Spending Behaviour",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: Color(0xff67727d)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+
                       ),
                     ),
                     Positioned(
-                      top: 45,
-                      bottom: 2,
+                      bottom: 0,
                       child:  !_isLoading
                           ?SizedBox(
-                        width: (size.width - 60),
-                        height: (size.height - 10),
-
+                        width: (size.width - 20),
+                        height: 270,
                         child: LineChart(
                             mainData(X_test, mean),),
                       )
@@ -235,14 +223,14 @@ class _StatsPageState extends State<StatsPage> {
             ),
           ),
           const SizedBox(
-            height: 40,
+            height: 20,
           ),
           Wrap(
               spacing: 20,
               children: List.generate(expenses.length, (index) {
                 return Container(
                   width: (size.width - 60) / 2,
-                  height: 160,
+                  height: 170,
                   decoration: BoxDecoration(
                       color: white,
                       borderRadius: BorderRadius.circular(12),
@@ -256,7 +244,7 @@ class _StatsPageState extends State<StatsPage> {
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        left: 25, right: 25, top: 20, bottom: 30),
+                        left: 25, right: 25, top: 20, bottom: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -281,7 +269,7 @@ class _StatsPageState extends State<StatsPage> {
                               expenses[index]['label'],
                               style: const TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 12,
+                                  fontSize: 11.5,
                                   color: Color(0xff67727d)),
                             ),
                             const SizedBox(

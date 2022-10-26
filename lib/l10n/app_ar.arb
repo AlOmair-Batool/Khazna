@@ -50,12 +50,12 @@
   "savings":"مدخرات",
   "total":"المبلغ الإجمالي",
   "daily":"رصيد يومي",
-  "sar":"ريال",
+  "sar":" ريال ",
 
   "stats":"احصائيات",
   "net_balance":"الرصيد الصافي",
   "current_balance":"الرصيد الحالي",
-  "expected_balance":"الرصيد المتوقع",
+  "expected_balance":"الإنفاق المتوقع",
 
   "profile":"حسابي",
   "update":"تحديث",
@@ -70,7 +70,9 @@
   "daily_encouragements":"تشجيعات يومية",
 
 
-  "daily_transaction":"المعاملات اليومية",
+  "daily_transaction":"أحدث التحويلات",
+  "dep": "إيداع",
+  "ww": "سحب",
 
   "last_sms":"آخر 5 رسائل :",
 
