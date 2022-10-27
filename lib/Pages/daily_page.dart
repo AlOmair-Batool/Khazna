@@ -119,7 +119,7 @@ class _DailyPageState extends State<DailyPage> {
 
 
     //send to firestore + all calculations
-    var countForFireStore = 2;
+    var countForFireStore = 150;
     bool stopCounting = false;
     for (var message in messages) {
       if (countForFireStore == 0) break;

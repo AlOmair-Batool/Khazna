@@ -18,7 +18,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   late double dailyAllowance = 0;
   late double income = 0;
 
-
+  String userID = "";
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -59,6 +59,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
     snap.docs.forEach((document) {
       savingPoint = document['savingPoint'];
       balance = document['balance'];
+      userID = uid!;
     });
   }
 
