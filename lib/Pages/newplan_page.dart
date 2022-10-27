@@ -13,11 +13,12 @@ class NewPlanPage extends StatefulWidget {
 
 class _NewPlanPageState extends State<NewPlanPage> {
   late double totalAmount = 0 ;
-  late var savingPoint = 0 ;
+  late String  savingPoint ="";
   late double monthlyAllowance= 0;
   late double dailyAllowance = 0;
-  late double income = 0;
-
+  late String  income ="";
+  late String balance = "";
+String allData = "";
   String userID = "";
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
@@ -48,19 +49,34 @@ class _NewPlanPageState extends State<NewPlanPage> {
       to = DateTime(from.year, from.month, 26);
     return  to.difference(from).inDays;
   }
-  double balance = 0;
+
   getAllTransactions() async{
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
+
+
+
+
     QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection("userdata").get();
+    FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
 
     snap.docs.forEach((document) {
-      savingPoint = document['savingPoint'];
-      balance = document['balance'];
-      userID = uid!;
+      allData = document['balance'].toString()  + "B" + document['savingPoint'].toString() + "S" + document['income'].toString() ;
+
+      userID = document['userID'];
+
     });
+
+    int length = allData.length;
+    int index = allData.indexOf("B");
+    balance = allData.substring(0, index);
+    int index2 = allData.indexOf("S");
+    savingPoint = allData.substring(index+1, index2);
+    income = allData.substring(index2+1, length);
+
+
+
   }
 
 
@@ -96,7 +112,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
       {
         "name": "Monthly Allowance",
-        "price": monthlyAllowance.toString()+" SAR",
+        "price": income.toString()+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
         "color": red

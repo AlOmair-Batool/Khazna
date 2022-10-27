@@ -20,6 +20,8 @@ class _StatsPageState extends State<StatsPage> {
   int activeDay = 3;
   double income = 0;
   double totalAmount =0;
+
+  var userID;
   //getting values from firestore
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -29,12 +31,13 @@ class _StatsPageState extends State<StatsPage> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection('userdata').get();
-    for (var document in snap.docs) {
-      //balance
-      totalAmount = document['balance'];
+    FirebaseFirestore.instance.collection("userCalculations").get();
+
+    snap.docs.forEach((document) {
       income = document['income'];
-    }
+      totalAmount = document['balance'];
+
+    });
   }
 
   var data;

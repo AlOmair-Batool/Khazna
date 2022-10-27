@@ -43,6 +43,12 @@ class _DailyPageState extends State<DailyPage> {
   List <String> date20=[];
   List <String> time20=[];
 
+
+  List <String> newTransactionType = [];
+  List <String> newAmount =[];
+  List <String> newDate =[];
+  List <String> newTime =[];
+
   double balance = 0;
   double monthlyAllowance = 0;
   double savingPoint = 0;
@@ -51,7 +57,7 @@ class _DailyPageState extends State<DailyPage> {
 
   //don't add duplicate entries in database
   int time200 =0 ;
-
+ int newdatte =0;
 
 
 
@@ -116,10 +122,80 @@ class _DailyPageState extends State<DailyPage> {
 
 
 
+    var counter = 3;
+    for (var message in messages) {
+      if (counter == 0) break;
+      message1 = message.body!;
 
+      log(message1);
+      Map<String, dynamic> params = {"msg": message1};
+      //Run SVM model
+      await _getType(params);
+      //SMS processing after getting the type.
+      String message2 = message1.toLowerCase();
+      var date1 = DateTime.fromMillisecondsSinceEpoch(message.date!);
+      var date2 = DateFormat('dd/MM/yyyy').format(date1);
+      //to save the day of the message to accumulate last 27th day
+      var day = DateFormat('dd').format(date1);
+      bool flag = false;
+      //"type" is assigned by SVM model
+      //type = Withdrawal
+      if (type == "Withdrawals") {
+        transactionType20.insert(0, "Withdrawal");
+        icon.insert(0, "assets/images/Withdrawl.png");
+        date20.insert(0, date2.toString());
+        flag = true;
+      }
+      //type = Deposit
+      else if (type == "Deposit") {
+        transactionType20.insert(0, "Deposit");
+        icon.insert(0, "assets/images/Deposit.png");
+        date20.insert(0, date2.toString());
+        flag = true;
+      }
+      else {
+        continue;
+      }
+      //parse other variables
+      //1. Extract time
+      if (flag) {
+        RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
+        var timeMatch = timeReg.firstMatch(message2);
+        if (timeMatch != null) {
+          time20.insert(0, timeMatch.group(0).toString());
+        } else {
+          time20.insert(0, "00:00");
+        }
+      }
+
+      //2. Extract amount
+      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+      var amountMatch = amountNumReg.firstMatch(message2);
+      if (amountMatch != null) {
+        amount20.insert(0, amountMatch.group(0).toString());
+      }
+      else {
+        var amountReg = RegExp(r'[0-9]+\*[0-9]+');
+        var amountBeforeMatch = message2.replaceAll(amountReg, '');
+        var amountNumReg = RegExp(r'[0-9,]+');
+        var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
+        if (amountAfterMatch != null) {
+          amount20.insert(0, amountAfterMatch.group(0).toString());
+        } else {
+          amount20.insert(0, "0 SAR");
+        }
+      }
+
+
+
+      if(counter == 3){
+        newdatte = message.date!;
+      }
+      counter = counter - 1;
+    }
 
     //send to firestore + all calculations
-    var countForFireStore = 150;
+    var countForFireStore = 5;
     bool stopCounting = false;
     for (var message in messages) {
       if (countForFireStore == 0) break;
@@ -138,13 +214,11 @@ class _DailyPageState extends State<DailyPage> {
 
       if (type == "Withdrawals") {
         transactionType.insert(0, "Withdrawal");
-        icon.insert(0, "assets/images/Withdrawl.png");
         date.insert(0, date2.toString());
         flag = true;
       }
       else if (type == "Deposit") {
         transactionType.insert(0, "Deposit");
-        icon.insert(0, "assets/images/Deposit.png");
         date.insert(0, date2.toString());
         flag = true;
       }
@@ -228,7 +302,7 @@ class _DailyPageState extends State<DailyPage> {
     final uid = user?.uid;
     var userID = null;
     //works for sending 100 SMS messages to Firestore
-    QuerySnapshot snap = await FirebaseFirestore.instance.collection("FinalTest3").get();
+    QuerySnapshot snap = await FirebaseFirestore.instance.collection("FinalTest3").where('userID',isEqualTo:uid).get();
     snap.docs.forEach((document) {
       userID = document['userID'];
     });
@@ -253,21 +327,19 @@ class _DailyPageState extends State<DailyPage> {
 
 //send user variables to database
 
- DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
+ /*DocumentReference ref = await FirebaseFirestore.instance.collection("userCalculations")
         .add({
-      'income': income,
-      'balance': balance,
-      'savingPoint': income * 0.20,
+      'income': 4318,
+      'balance': 5711.36,
+      'savingPoint': 863.6,
+       'userID' : uid
 
-    });
-    ref.update({
-      'userID': uid
-    });
-    var counter = 3;
+    });*/
+    var newcounter = 1;
     for (var message in messages) {
-      if (counter == 0) break;
+      if (newcounter == 0) break;
       message1 = message.body!;
-      var date200 = "";
+      var newMessageDate = "";
       log(message1);
       Map<String, dynamic> params = {"msg": message1};
       //Run SVM model
@@ -282,16 +354,16 @@ class _DailyPageState extends State<DailyPage> {
       //"type" is assigned by SVM model
       //type = Withdrawal
       if (type == "Withdrawals") {
-        transactionType20.insert(0, "Withdrawal");
-        icon.insert(0, "assets/images/Withdrawl.png");
-        date20.insert(0, date2.toString());
+        newTransactionType.insert(0, "Withdrawal");
+
+        newDate.insert(0, date2.toString());
         flag = true;
       }
       //type = Deposit
       else if (type == "Deposit") {
-        transactionType20.insert(0, "Deposit");
-        icon.insert(0, "assets/images/Deposit.png");
-        date20.insert(0, date2.toString());
+        newTransactionType.insert(0, "Deposit");
+
+        newDate.insert(0, date2.toString());
         flag = true;
       }
       else {
@@ -303,9 +375,9 @@ class _DailyPageState extends State<DailyPage> {
         RegExp timeReg = RegExp(r'(\d{2}:\d{2})');
         var timeMatch = timeReg.firstMatch(message2);
         if (timeMatch != null) {
-          time20.insert(0, timeMatch.group(0).toString());
+          newTime.insert(0, timeMatch.group(0).toString());
         } else {
-          time20.insert(0, "00:00");
+          newTime.insert(0, "00:00");
         }
       }
 
@@ -313,7 +385,7 @@ class _DailyPageState extends State<DailyPage> {
       var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
       var amountMatch = amountNumReg.firstMatch(message2);
       if (amountMatch != null) {
-        amount20.insert(0, amountMatch.group(0).toString());
+        newAmount.insert(0, amountMatch.group(0).toString());
       }
       else {
         var amountReg = RegExp(r'[0-9]+\*[0-9]+');
@@ -321,9 +393,9 @@ class _DailyPageState extends State<DailyPage> {
         var amountNumReg = RegExp(r'[0-9,]+');
         var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
         if (amountAfterMatch != null) {
-          amount20.insert(0, amountAfterMatch.group(0).toString());
+          newAmount.insert(0, amountAfterMatch.group(0).toString());
         } else {
-          amount20.insert(0, "0 SAR");
+          newAmount.insert(0, "0 SAR");
         }
       }
 
@@ -331,31 +403,28 @@ class _DailyPageState extends State<DailyPage> {
       final User? user = auth.currentUser;
       final uid = user?.uid;
 
-      if (counter == 3){
-        QuerySnapshot snap = await FirebaseFirestore.instance.collection("FinalTest3").get();
-        snap.docs.forEach((document) {
-          date200 = document['Date'];
-        });
-        if (date200 != date2.toString()) {
+      if (newcounter == 1){
+
+        if (newdatte != message.date!) {
           DocumentReference ref = await FirebaseFirestore.instance.collection(
               "FinalTest3")
               .add({
-            'Date': date20[0],
-            'Time': time20[0],
-            'Type': transactionType20[0],
-            'Amount': amount20[0],
+            'Date': newDate[0],
+            'Time': newTime[0],
+            'Type': newTransactionType[0],
+            'Amount': newAmount[0],
           });
           ref.update({
             'userID': uid
           });
+        }else{
+          break;
         }
       }
-      if(counter == 3){
-        //newest message
-        time200 = message.date!;
-      }
-      counter = counter - 1;
+
+      newcounter = newcounter - 1;
     }
+
   }
   int activeDay = 3;
 
