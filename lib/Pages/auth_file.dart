@@ -22,9 +22,6 @@ class UserController extends GetxController{
   TextEditingController confirmPasswordController = TextEditingController();
 
   TextEditingController otpController = TextEditingController();
-//batool here
-  TextEditingController incomeController = TextEditingController();
-  TextEditingController balanceController = TextEditingController();
 
 
   void signInUser(context)async
@@ -64,13 +61,7 @@ class UserController extends GetxController{
         'secondname': secondNameController.text,
         'email': emailController.text,
       });
-      DocumentReference ref2 = await FirebaseFirestore.instance.collection('userdata')
-          .add({
-        'income': incomeController.text,
-        'balance': balanceController.text,
-        'savingPoint': int.parse(incomeController.text) * 0.20,
 
-      });
 
       ref.update({
         'userID': ref.id

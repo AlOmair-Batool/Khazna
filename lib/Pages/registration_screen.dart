@@ -181,68 +181,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
 
-    //batool
-    //income field
-    final incomeField = TextFormField(
-        autofocus: false,
-        controller: userController.incomeController,
-        obscureText: false,
-        //validator: (){},
-        validator: (value) {
-          RegExp regex = RegExp(r'^.{4,}$');
-          if (value!.isEmpty) {
-            return (translation(context).r_required);
-          }
-          if (!regex.hasMatch(value)) {
-            return (translation(context).valid_pass);
-          }
-          return null;
-        },
-
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(
-              Icons.vpn_key_outlined,
-              color: primary),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: translation(context).income,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        )
-    );
-
-    //batool
-    //income field
-    final balanceField = TextFormField(
-        autofocus: false,
-        controller: userController.balanceController,
-        obscureText: false,
-        //validator: (){},
-        validator: (value) {
-          RegExp regex = RegExp(r'^.{4,}$');
-          if (value!.isEmpty) {
-            return (translation(context).r_required);
-          }
-          if (!regex.hasMatch(value)) {
-            return (translation(context).valid_pass);
-          }
-          return null;
-        },
-
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(
-              Icons.vpn_key_outlined,
-              color: primary),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: translation(context).balance,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        )
-    );
-
 
 
 
@@ -327,10 +265,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                     const SizedBox(height: 20),
                     confirmPasswordField,
-                    const SizedBox(height: 20,),
-                    incomeField,
-                    const SizedBox(height: 20,),
-                    balanceField,
+
                     const SizedBox(height: 20),
                     signUpButton
 
