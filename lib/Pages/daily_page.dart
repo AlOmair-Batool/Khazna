@@ -253,16 +253,16 @@ class _DailyPageState extends State<DailyPage> {
 
 //send user variables to database
 
- /*DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
+ DocumentReference ref = await FirebaseFirestore.instance.collection("userdata")
         .add({
-      'income': 4318,
-      'balance': 5711.36,
-      'savingPoint': 863.6,
+      'income': income,
+      'balance': balance,
+      'savingPoint': income * 0.20,
 
     });
     ref.update({
       'userID': uid
-    });*/
+    });
     var counter = 3;
     for (var message in messages) {
       if (counter == 0) break;
