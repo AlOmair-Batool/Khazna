@@ -23,8 +23,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     'phoneNumber': FormControl(validators: [Validators.required]),
     'password': FormControl(validators: [Validators.required]),
     'confirmPassword': FormControl(validators: [Validators.required]),
-    'income': FormControl(validators: [Validators.required]),
-    'balance': FormControl(validators: [Validators.required]),
+
   });
 
   final _formKey = GlobalKey<FormState>(); // work from here
