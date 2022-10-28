@@ -77,6 +77,12 @@ String allData = "";
 
 
 
+    double userBalance = double.parse(balance);
+    double userIncome = double.parse(income);
+    double userSavingPoint = double.parse(savingPoint);
+
+
+
   }
 
 

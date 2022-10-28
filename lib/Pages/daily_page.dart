@@ -339,13 +339,14 @@ class _DailyPageState extends State<DailyPage> {
     for (var message in messages) {
       if (newcounter == 0) break;
       message1 = message.body!;
-      var newMessageDate = "";
+
       log(message1);
       Map<String, dynamic> params = {"msg": message1};
       //Run SVM model
       await _getType(params);
       //SMS processing after getting the type.
       String message2 = message1.toLowerCase();
+      var newmesgdate = message.date!;
       var date1 = DateTime.fromMillisecondsSinceEpoch(message.date!);
       var date2 = DateFormat('dd/MM/yyyy').format(date1);
       //to save the day of the message to accumulate last 27th day
@@ -402,12 +403,8 @@ class _DailyPageState extends State<DailyPage> {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User? user = auth.currentUser;
       final uid = user?.uid;
-
-      if (newcounter == 1){
-
-        if (newdatte != message.date!) {
-          DocumentReference ref = await FirebaseFirestore.instance.collection(
-              "FinalTest3")
+        if (newdatte == newmesgdate) break;
+          DocumentReference ref = await FirebaseFirestore.instance.collection("FinalTest3")
               .add({
             'Date': newDate[0],
             'Time': newTime[0],
@@ -417,14 +414,9 @@ class _DailyPageState extends State<DailyPage> {
           ref.update({
             'userID': uid
           });
-        }else{
-          break;
-        }
-      }
 
-      newcounter = newcounter - 1;
+        newcounter = newcounter - 1;
     }
-
   }
   int activeDay = 3;
 
