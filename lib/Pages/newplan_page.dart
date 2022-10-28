@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:android_sms_retriever/android_sms_retriever.dart';
+
+
 
 
 class NewPlanPage extends StatefulWidget {
@@ -12,6 +15,11 @@ class NewPlanPage extends StatefulWidget {
 }
 
 class _NewPlanPageState extends State<NewPlanPage> {
+
+
+  String sms = "";
+  String sms2 = "";
+
   late double totalAmount = 0 ;
   late String  savingPoint ="";
   late double monthlyAllowance= 0;
@@ -20,6 +28,9 @@ class _NewPlanPageState extends State<NewPlanPage> {
   late String balance = "";
 String allData = "";
   String userID = "";
+
+  String? message = "";
+
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
@@ -27,6 +38,7 @@ String allData = "";
 
   void initState() {
     super.initState();
+
     FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
@@ -51,9 +63,12 @@ String allData = "";
   }
 
   getAllTransactions() async{
+
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
+
 
 
 
@@ -80,7 +95,6 @@ String allData = "";
     double userBalance = double.parse(balance);
     double userIncome = double.parse(income);
     double userSavingPoint = double.parse(savingPoint);
-
 
 
   }
@@ -118,7 +132,7 @@ String allData = "";
 
       {
         "name": "Monthly Allowance",
-        "price": income.toString()+" SAR",
+        "price": message.toString()+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
         "color": red
