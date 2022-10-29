@@ -26,7 +26,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   late double dailyAllowance = 0;
   late String  income ="";
   late String balance = "";
-String allData = "";
+  String allData = "";
   String userID = "";
 
   String? message = "";
@@ -72,7 +72,6 @@ String allData = "";
 
 
 
-
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
 
@@ -95,8 +94,12 @@ String allData = "";
     double userBalance = double.parse(balance);
     double userIncome = double.parse(income);
     double userSavingPoint = double.parse(savingPoint);
+    double newBalance = 0;
 
 
+    monthlyAllowance = userIncome * 0.8 ;
+    newBalance = userBalance - userSavingPoint;
+    dailyAllowance = newBalance / daysBetween();
   }
 
 
@@ -132,7 +135,7 @@ String allData = "";
 
       {
         "name": "Monthly Allowance",
-        "price": message.toString()+" SAR",
+        "price": monthlyAllowance.toString()+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
         "color": red
