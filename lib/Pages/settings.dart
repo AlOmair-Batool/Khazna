@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:sim/Pages/login_screen.dart';
 import 'package:sim/classes/language.dart';
 import 'package:sim/classes/language_constants.dart';
 import 'package:sim/main.dart';
@@ -142,12 +143,26 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 10,
             ),
+
             buildNotificationOptionRow(translation(context).updates, true),
             buildNotificationOptionRow(translation(context).daily_encouragements, false),
             const SizedBox(
               height: 50,
             ),
-
+            Center(
+              child: OutlineButton(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const LoginScreen()));
+                },
+                child: const Text("Logout",
+                    style: const TextStyle(
+                        fontSize: 16, letterSpacing: 1.5, color: black)),
+              ),
+            ),
           ],
         ),
       ),
@@ -240,6 +255,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ]),
                 ),
               );
+
             });
 
 

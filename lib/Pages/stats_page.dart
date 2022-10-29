@@ -129,7 +129,8 @@ class _StatsPageState extends State<StatsPage> {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
         "label": "Expected balance",
-        "cost": (totalAmount/pred_output).abs().toStringAsFixed(2) +" SAR"
+        "cost": ( pred_output).abs().toStringAsFixed(2) +" SAR"
+        // "cost": (totalAmount/pred_output).abs().toStringAsFixed(2) +" SAR"
       }
     ];
 
