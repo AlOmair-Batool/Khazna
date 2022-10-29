@@ -7,12 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
+import 'package:sim/Pages/local_notify_manager.dart';
+
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //   await localNotifyManager.showNotification(ReceiveNotification(title: message.notification!.title,body: message.notification!.body));
 //   print('Handling a background message ${message.messageId}');
 // }
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
