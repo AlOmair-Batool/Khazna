@@ -7,6 +7,7 @@ import 'package:sim/Pages/function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 
 class StatsPage extends StatefulWidget {
@@ -20,7 +21,6 @@ class _StatsPageState extends State<StatsPage> {
   int activeDay = 3;
   double income = 0;
   double totalAmount =0;
-
   var userID;
   //getting values from firestore
   User? user = FirebaseAuth.instance.currentUser;
@@ -30,6 +30,9 @@ class _StatsPageState extends State<StatsPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
+    //userID = user?.uid;
+    userID = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
+
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
 
@@ -55,6 +58,35 @@ class _StatsPageState extends State<StatsPage> {
     setState(() {
       pred_output = double.parse(decoded['output']);
       output = double.parse(decoded['output']).toStringAsFixed(2) + " SAR";
+    });
+  }
+  model_data_2(params) async {
+
+    setState(() {
+      _isLoading=true;
+    });
+//for demo I had use delayed method. When you integrate use your api //call here.
+
+    final response = await http.post(
+      Uri.parse("http://159.223.227.189:6000/predict_v4"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(params),
+    );
+
+    print("Check");
+    print(params);
+    print(response.body);
+
+    var decoded = jsonDecode(response.body);
+
+    print(decoded["date"]);
+
+    setState(() {
+      X_test = decoded["date"];
+      mean = decoded["amount"];
+      _isLoading=false;
     });
   }
 
@@ -88,7 +120,7 @@ class _StatsPageState extends State<StatsPage> {
         ?.addPostFrameCallback((_) =>predict());
     super.initState();
     WidgetsBinding.instance
-        ?.addPostFrameCallback((_) =>model_data());
+        ?.addPostFrameCallback((_) =>model_data_2({"userid":userID}));
     super.initState();
     FirebaseFirestore.instance
         .collection("users")

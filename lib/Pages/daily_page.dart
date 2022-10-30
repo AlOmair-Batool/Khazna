@@ -126,7 +126,7 @@ class _DailyPageState extends State<DailyPage> {
     );
 
 
-    var counter = 3;
+    var counter = 10;
     for (var message in messages) {
       if (counter == 0) break;
       message1 = message.body!;
@@ -190,19 +190,23 @@ class _DailyPageState extends State<DailyPage> {
           amount20.insert(0, amountMatch.group(0).toString());
 
         }else {
+          var amountReg = RegExp(r'[0-9]+\*[0-9]+');
+          var amountBeforeMatch = message2.replaceAll(amountReg, '');
+          String amountBefore = "";
 
+          var amountNumReg = RegExp(r'[0-9,]+');
+          var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
 
-          amountNumReg = RegExp(r'[0-9,]+');
-          amountMatch = amountNumReg.firstMatch(message2);
-         if (amountMatch != null) {
-            amount20.insert(0, amountMatch.group(0).toString());
+          // amountNumReg = RegExp(r'[0-9,]+');
+          // amountMatch = amountNumReg.firstMatch(message2);
+         if (amountAfterMatch != null) {
+            amount20.insert(0, amountAfterMatch.group(0).toString());
           }else{
            amount20.insert(0, "0 SAR");
          }
 
 
         }
-
 
       }
 
