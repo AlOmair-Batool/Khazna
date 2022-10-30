@@ -97,7 +97,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
     double newBalance = 0;
 
 
-    monthlyAllowance = userIncome * 0.8 ;
+    monthlyAllowance = userIncome * 0.8;
     newBalance = userBalance - userSavingPoint;
     dailyAllowance = newBalance / daysBetween();
   }

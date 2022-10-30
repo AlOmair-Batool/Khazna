@@ -21,7 +21,6 @@ import 'package:sim/core/functions/validation.dart';
 import 'package:sim/core/global.dart';
 import 'package:sim/core/models/field.dart';
 import 'package:sim/theme/colors.dart';
-import 'package:sim/widget/select_date_dialog.dart';
 import 'package:sim/Pages/local_notify_manager.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -252,9 +251,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   const SizedBox(height: 5,),
-                                  SelectDateDialog((date){
-                                    scheduleNotificationDateTime = date;
-                                  }),
+
                                   const SizedBox(height: 10,),
                                   ElevatedButton(
                                     onPressed: () async{
@@ -307,10 +304,12 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 50,
             ),
             Center(
-              child: OutlineButton(
+              child: OutlinedButton(
+                style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
+  ),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => const LoginScreen()));

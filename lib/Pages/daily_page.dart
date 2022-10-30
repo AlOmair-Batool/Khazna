@@ -114,9 +114,9 @@ class _DailyPageState extends State<DailyPage> {
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-        //.or(SmsColumn.ADDRESS).equals("alinmabank")
+            .or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
-        //.or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
+            .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
             .or(SmsColumn.ADDRESS).equals("SABB")
             .or(SmsColumn.ADDRESS).equals("AlJaziraSMS")
@@ -188,9 +188,22 @@ class _DailyPageState extends State<DailyPage> {
         var amountMatch = amountNumReg.firstMatch(message2);
         if (amountMatch != null) {
           amount20.insert(0, amountMatch.group(0).toString());
-        } else {
-          amount20.insert(0, "0 SAR");
+
+        }else {
+
+
+          amountNumReg = RegExp(r'[0-9,]+');
+          amountMatch = amountNumReg.firstMatch(message2);
+         if (amountMatch != null) {
+            amount20.insert(0, amountMatch.group(0).toString());
+          }else{
+           amount20.insert(0, "0 SAR");
+         }
+
+
         }
+
+
       }
 
 
@@ -258,11 +271,11 @@ class _DailyPageState extends State<DailyPage> {
     }
 
     //send to firestore + all calculations////////////////////////////////////////////////////////////
-    var countForFireStore = 5;
+    int countForFireStore = 5;
     bool stopCounting = false;
     for (var message in messages) {
       //if there is any thing stored in database it will not excute the loop
-      if(countForFireStore==0) break;
+if(countForFireStore == 0) break;
       if (userID != null) break;
       if (stopCounting == true) break;
       message1 = message.body!;
@@ -304,27 +317,33 @@ class _DailyPageState extends State<DailyPage> {
         }
       }
 
-      var amountNumReg = RegExp(r'\d,[0-9]*\.[0-9]+');
-      var amountMatch = amountNumReg.firstMatch(message2);
-      var amountMatch2 = amountMatch?.group(0);
-      var removeComma = RegExp(r'[,]+');
-      var remove = amountMatch2.toString().replaceAll(removeComma, "");
-
+var amountNumReg = RegExp(r'\d,[0-9]*\.[0-9]+');
+var amountMatch = amountNumReg.firstMatch(message2);
+var amountMatch2 = amountMatch?.group(0);
+var removeComma = RegExp(r'[,]+');
+var remove = amountMatch2.toString().replaceAll(removeComma, "");
 
       if (amountMatch != null) {
-        amount.insert(0, remove);
-        amount2 = double.parse(remove);
+      amount.insert(0, remove);
+      amount2 = double.parse(remove);
       }
-      else {
-        var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
-        var amountMatch = amountNumReg.firstMatch(message2);
-        if (amountMatch != null) {
-          amount2 = double.parse(amountMatch.group(0).toString());
-          amount.insert(0, amountMatch.group(0).toString());
-        } else {
-          amount.insert(0, "0 SAR");
-        }
-      }
+    else {
+      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+      var amountMatch = amountNumReg.firstMatch(message2);
+      if (amountMatch != null) {
+           amount.insert(0, amountMatch.group(0).toString());
+           amount2 = double.parse(remove);
+       } else {
+            amountNumReg = RegExp(r'[0-9,]+');
+            amountMatch = amountNumReg.firstMatch(message2);
+       if (amountMatch != null) {
+         amount2 = double.parse(remove);
+        amount.insert(0, amountMatch.group(0).toString());
+    } else {
+      amount.insert(0, "0 SAR");
+    }
+  }
+}
 
       //A. Find the 27 of this month or the month before
 
@@ -355,14 +374,11 @@ class _DailyPageState extends State<DailyPage> {
         }
       }
 
-      countForFireStore = countForFireStore - 1;
+countForFireStore = countForFireStore + 1;
       numOfSMS = numOfSMS + 1;
     }
 
-
     //read from database
-
-
     if (userID == null) {
       for (var i = 0; i < transactionType.length; i++) {
         DocumentReference ref = await FirebaseFirestore.instance.collection(
@@ -371,7 +387,7 @@ class _DailyPageState extends State<DailyPage> {
           'Date': date[i],
           'Time': time[i],
           'Type': transactionType[i],
-          'Amount':double.parse(amount[i]),
+          'Amount':amount[i],
           'epochTime' : epochTime[i],
         });
         ref.update({
@@ -380,7 +396,7 @@ class _DailyPageState extends State<DailyPage> {
       }
     }
 
-var userIDCal = null;
+    var userIDCal = null;
 
     int indexx = 3;
 //send user variables to database

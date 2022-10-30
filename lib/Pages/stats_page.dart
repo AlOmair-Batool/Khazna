@@ -31,7 +31,7 @@ class _StatsPageState extends State<StatsPage> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     QuerySnapshot snap = await
-    FirebaseFirestore.instance.collection("userCalculations").get();
+    FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
 
     snap.docs.forEach((document) {
       income = document['income'];
