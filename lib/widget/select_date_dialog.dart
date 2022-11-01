@@ -15,7 +15,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
   DateTime scheduleNotificationDateTime;
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       onPressed: () async{
         DatePicker.showDateTimePicker(context,
             showTitleActions: true,

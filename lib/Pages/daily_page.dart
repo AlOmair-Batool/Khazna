@@ -114,7 +114,7 @@ class _DailyPageState extends State<DailyPage> {
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-            .or(SmsColumn.ADDRESS).equals("alinmabank")
+            //.or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
             .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
@@ -126,7 +126,7 @@ class _DailyPageState extends State<DailyPage> {
     );
 
 
-    var counter = 10;
+    var counter = 30;
     for (var message in messages) {
       if (counter == 0) break;
       message1 = message.body!;
@@ -211,7 +211,7 @@ class _DailyPageState extends State<DailyPage> {
       }
 
 
-      if (counter == 3) {
+      if (counter == 5) {
         newdatte = message.date!;
       }
       counter = counter - 1;
@@ -230,13 +230,13 @@ class _DailyPageState extends State<DailyPage> {
     var userID = null;
     //works for sending 100 SMS messages to Firestore
     QuerySnapshot snap = await FirebaseFirestore.instance.collection(
-        "FinalTest3").where('userID', isEqualTo: uid).get();
+        "transaction").where('userID', isEqualTo: uid).get();
     snap.docs.forEach((document) {
       userID = document['userID'];
     });
 
     QuerySnapshot snap3 = await FirebaseFirestore.instance.collection(
-        "FinalTest3").orderBy("epochTime", descending: true).limit(1).where('userID', isEqualTo: uid).get();
+        "transaction").orderBy("epochTime", descending: true).limit(1).where('userID', isEqualTo: uid).get();
 
     for (var document in snap3.docs) {
       timeDup = document['Time'].toString();
@@ -245,6 +245,7 @@ class _DailyPageState extends State<DailyPage> {
       dateDup = document['Date'].toString();
       epochDup = document['epochTime'];
     }
+
 
     bool stopDup = false;
     int newCounter = 2;
@@ -256,7 +257,7 @@ class _DailyPageState extends State<DailyPage> {
 
           break;
         }
-         else{ DocumentReference ref2 = await FirebaseFirestore.instance.collection("FinalTest3")
+         else{ DocumentReference ref2 = await FirebaseFirestore.instance.collection("transaction")
               .add({
             'Date': date20[newCounter],
             'Time': time20[newCounter],
@@ -275,12 +276,15 @@ class _DailyPageState extends State<DailyPage> {
     }
 
     //send to firestore + all calculations////////////////////////////////////////////////////////////
-    int countForFireStore = 5;
+    String day = "";
+    int countForFirestore = 50;
+    int numOfSMS = 0;
+    bool itIs27 = false;
     bool stopCounting = false;
     for (var message in messages) {
       //if there is any thing stored in database it will not excute the loop
-if(countForFireStore == 0) break;
-      if (userID != null) break;
+      if(countForFirestore==0) break;
+     // if (userID != null) break;
       if (stopCounting == true) break;
       message1 = message.body!;
       log(message1);
@@ -291,9 +295,9 @@ if(countForFireStore == 0) break;
       epochTime.insert(0, message.date!);
       var date2 = DateFormat('dd/MM/yyyy').format(date1);
       var month = DateFormat('MM').format(date1);
-      String day = DateFormat('dd').format(date1);
+      day = DateFormat('dd').format(date1);
       bool flag = false;
-      int numOfSMS = 0;
+
       double amount2 = 0;
 
       if (type == "Withdrawals") {
@@ -332,38 +336,54 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
       amount2 = double.parse(remove);
       }
     else {
-      var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
-      var amountMatch = amountNumReg.firstMatch(message2);
-      if (amountMatch != null) {
-           amount.insert(0, amountMatch.group(0).toString());
-           amount2 = double.parse(remove);
-       } else {
-            amountNumReg = RegExp(r'[0-9,]+');
-            amountMatch = amountNumReg.firstMatch(message2);
-       if (amountMatch != null) {
-         amount2 = double.parse(remove);
-        amount.insert(0, amountMatch.group(0).toString());
-    } else {
-      amount.insert(0, "0 SAR");
-    }
-  }
-}
+        var amountNumReg = RegExp(r'[0-9]*\.[0-9]+');
+        var amountMatch = amountNumReg.firstMatch(message2);
+        if (amountMatch != null) {
+          amount.insert(0, amountMatch.group(0).toString());
+          amount2 = double.parse(amountMatch.group(0).toString());
+        }else {
+          var amountReg = RegExp(r'[0-9]+\*[0-9]+');
+          var amountBeforeMatch = message2.replaceAll(amountReg, '');
+          String amountBefore = "";
+
+          var amountNumReg = RegExp(r'[0-9,]+');
+          var amountAfterMatch = amountNumReg.firstMatch(amountBeforeMatch);
+
+          // amountNumReg = RegExp(r'[0-9,]+');
+          // amountMatch = amountNumReg.firstMatch(message2);
+          if (amountAfterMatch != null) {
+            amount.insert(0, amountAfterMatch.group(0).toString());
+            amount2 = double.parse(amountAfterMatch.group(0).toString());
+          }else{
+            amount.insert(0, "0 SAR");
+          }
+
+
+        }
+
+      }
 
       //A. Find the 27 of this month or the month before
 
 
       final now = DateTime.now();
       var thisMonth = DateFormat('MM').format(now);
-      bool itIs27 = false;
+
 
 
       if (day == "27" && type == "Deposit") {
+        print("entred day 27");
         itIs27 = true;
+
       }
 
-      if (day == "26" && numOfSMS >= 50 && itIs27 == true) {
+      if(day != "27" && itIs27 == true && numOfSMS >= 50){
         stopCounting == true;
       }
+
+      /*if (numOfSMS >= 50 && itIs27 == true) {
+        stopCounting == true;
+      }*/
 
 
       if (flag) {
@@ -378,15 +398,17 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
         }
       }
 
-countForFireStore = countForFireStore + 1;
+
       numOfSMS = numOfSMS + 1;
+      countForFirestore = countForFirestore - 1;
     }
 
     //read from database
+    print("entered");
     if (userID == null) {
       for (var i = 0; i < transactionType.length; i++) {
         DocumentReference ref = await FirebaseFirestore.instance.collection(
-            "FinalTest3")
+            "transaction")
             .add({
           'Date': date[i],
           'Time': time[i],
