@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: 10,
                               ),
                               const Text(
-                                "\$2446.90",
+                                "2446.90 SAR",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,

@@ -135,7 +135,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
       {
         "name": "Monthly Allowance",
-        "price": monthlyAllowance.toString()+" SAR",
+        "price": monthlyAllowance.toStringAsFixed(2)+" SAR",
         "label_percentage": "80%",
         "percentage": 0.8,
         "color": red
@@ -148,7 +148,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
         "color": blue
       },
       {
-        "name": "Balance",
+        "name": "Current Balance",
         "price": balance.toString()+" SAR",
         "label_percentage": "100%",
         "percentage": 1,
@@ -157,7 +157,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
       {
         "name": "Daily allowance",
-        "price": dailyAllowance.toString()+" SAR",
+        "price": dailyAllowance.toStringAsFixed(2)+" SAR",
         "label_percentage": "",
         "percentage": 1,
         "color": white
@@ -237,7 +237,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
-                                  color: Color(0xff67727d).withOpacity(0.6)),
+                                  color: black.withOpacity(0.7)),
                             ),
                             SizedBox(
                               height: 10,

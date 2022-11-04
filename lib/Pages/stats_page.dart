@@ -31,7 +31,7 @@ class _StatsPageState extends State<StatsPage> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     userID = user?.uid;
-    //userID = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
+    // userID = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
 
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
@@ -80,12 +80,15 @@ class _StatsPageState extends State<StatsPage> {
     print(response.body);
 
     var decoded = jsonDecode(response.body);
+    var date = decoded["date"];
+    date.add("2022-11-26");
+    var amount = decoded["amount"];
+    amount.add( double.parse((income/pred_output).abs().toStringAsFixed(2)));
 
-    print(decoded["date"]);
-
+    print(date);
     setState(() {
-      X_test = decoded["date"];
-      mean = decoded["amount"];
+      X_test = date;
+      mean = amount;
       _isLoading=false;
     });
   }
@@ -154,14 +157,14 @@ class _StatsPageState extends State<StatsPage> {
         "icon": Icons.check,
         "color": const Color(0xFF40A083),
         "label": "Current balance",
-        "cost": totalAmount.toString()+" SAR"
+        "cost": totalAmount.toStringAsFixed(2)+" SAR"
       },
       {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
         "label": "Expected balance",
-        "cost": ( pred_output).abs().toStringAsFixed(2) +" SAR"
-        // "cost": (totalAmount/pred_output).abs().toStringAsFixed(2) +" SAR"
+        //"cost": ( pred_output).abs().toStringAsFixed(2) +" SAR"
+        "cost": (income/pred_output).abs().toStringAsFixed(2) +" SAR"
       }
     ];
 

@@ -34,7 +34,7 @@ LineChartData mainData(List X_test, List mean) {
     data_dic.add({DateTime.fromMillisecondsSinceEpoch(date.toInt()).toString():mean[i]});
 
     //data.add(FlSpot(date,mean[i]));
-    data.add(FlSpot(double.parse(i.toString()),mean[i]));
+    data.add(FlSpot(double.parse(i.toStringAsFixed(2)),mean[i]));
 
   }
 
@@ -117,27 +117,27 @@ LineChartData mainData(List X_test, List mean) {
     // maxX: maxx,
     minY: 0 ,
     maxY: double.parse(maxy.toString()),
+
+
     lineBarsData: [
       LineChartBarData(
-        showingIndicators: showIndexes,
 
         spots: data,
         //isCurved: true,
         colors: gradientColors,
         barWidth: 2.5,
         isStrokeCapRound: true,
-        dotData: FlDotData(show: true),
+        dotData: FlDotData(show: false),
 
-        ),
-  //     LineChartBarData(
-  //       spots:  [ FlSpot(26, 40000.8)],
-  // isCurved: true,
-  // curveSmoothness: 0,
-  // barWidth: 2,
-  // isStrokeCapRound: true,
-  // dotData: FlDotData(show: true),
-  // belowBarData: BarAreaData(show: false),
-  //       ),
+      ),
+     // LineChartBarData(
+     //   spots:  [data[data.length-1]],
+     //   isCurved: true,
+     //   curveSmoothness: 0,
+     //   barWidth: 2.5,
+     //   isStrokeCapRound: true,
+     //   dotData: FlDotData(show: true),
+     //   ),
 
     ],
   );
