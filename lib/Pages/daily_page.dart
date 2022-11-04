@@ -277,7 +277,7 @@ class _DailyPageState extends State<DailyPage> {
 
     //send to firestore + all calculations////////////////////////////////////////////////////////////
     String day = "";
-    int countForFirestore = 50;
+    int countForFirestore = 10;
     int numOfSMS = 0;
     bool itIs27 = false;
     bool stopCounting = false;
@@ -404,8 +404,8 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
     }
 
     //read from database
-    print("entered");
     if (userID == null) {
+      print("entered");
       for (var i = 0; i < transactionType.length; i++) {
         DocumentReference ref = await FirebaseFirestore.instance.collection(
             "transaction")

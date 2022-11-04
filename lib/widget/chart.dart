@@ -2,6 +2,7 @@ import 'package:sim/theme/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 List <Color> gradientColors = [primary];
 List<FlSpot>data = [];
@@ -12,8 +13,11 @@ double miny = 0;
 double maxy = 1;
 double inter = 0;
 external String get millisecondsSinceEpoch;
+List<int> get showIndexes => const [1, 3, 5];
 
 LineChartData mainData(List X_test, List mean) {
+
+
   data= [];
   print(X_test);
   print(mean);
@@ -34,11 +38,27 @@ LineChartData mainData(List X_test, List mean) {
 
   }
 
-
-
   miny =  mean.reduce((curr, next) => curr < next? curr: next);
   maxy = mean.reduce((curr, next) => curr > next? curr: next);
   var avg = mean.reduce((a, b) => a + b) / mean.length;
+  if(avg >=50000)
+    inter = 50000;
+  else
+  if(avg >=40000)
+    inter = 40000;
+  else
+  if(avg >=30000)
+    inter = 30000;
+  else
+  if(avg >=20000)
+    inter = 20000;
+  else
+  if(avg >=10000)
+    inter = 10000;
+  else
+  if(avg >=5000)
+    inter = 5000;
+  else
   if(avg >=1000)
     inter = 1000;
     else
@@ -49,6 +69,7 @@ LineChartData mainData(List X_test, List mean) {
 
   return LineChartData(
     gridData: FlGridData(
+
         show: true,
         drawHorizontalLine: false,
         getDrawingHorizontalLine: (value) {
@@ -68,11 +89,9 @@ LineChartData mainData(List X_test, List mean) {
         getTitles: (value) {
 
           double date = DateTime.parse(X_test[value.toInt()]).toUtc().millisecondsSinceEpoch.toDouble();
-          print(DateTime.fromMillisecondsSinceEpoch(date.toInt()).toString());
+          //print(DateTime.fromMillisecondsSinceEpoch(date.toInt()).toString());
           return DateFormat('MM-dd').format(DateTime.fromMillisecondsSinceEpoch(date.toInt()));
-         //print(DateFormat('MM-dd').format(DateTime.fromMillisecondsSinceEpoch(value.toInt())));
-          //return DateFormat('MM-dd').format(DateTime.fromMillisecondsSinceEpoch(value.toInt()));
-          //return DateFormat('MM-dd').format(DateTime.fromMillisecondsSinceEpoch(value.toInt()));
+
         },
         margin: 8,
       ),
@@ -100,15 +119,27 @@ LineChartData mainData(List X_test, List mean) {
     maxY: double.parse(maxy.toString()),
     lineBarsData: [
       LineChartBarData(
+        showingIndicators: showIndexes,
+
         spots: data,
         //isCurved: true,
         colors: gradientColors,
         barWidth: 2.5,
         isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: false,
+        dotData: FlDotData(show: true),
+
         ),
-      ),
+  //     LineChartBarData(
+  //       spots:  [ FlSpot(26, 40000.8)],
+  // isCurved: true,
+  // curveSmoothness: 0,
+  // barWidth: 2,
+  // isStrokeCapRound: true,
+  // dotData: FlDotData(show: true),
+  // belowBarData: BarAreaData(show: false),
+  //       ),
+
     ],
   );
+
 }

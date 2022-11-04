@@ -10,3 +10,4 @@ nltk
 protobuf<3.20.0
 arabic-reshaper
 python-bidi
+firebase_admin==5.2.0

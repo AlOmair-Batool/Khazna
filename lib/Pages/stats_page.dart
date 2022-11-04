@@ -30,8 +30,8 @@ class _StatsPageState extends State<StatsPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    //userID = user?.uid;
-    userID = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
+    userID = user?.uid;
+    //userID = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
 
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
@@ -109,7 +109,6 @@ class _StatsPageState extends State<StatsPage> {
 
     });
   }
-
 
 
   @override
