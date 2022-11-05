@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sim/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:sim/classes/language_constants.dart';
 
 
 class StatsPage extends StatefulWidget {
@@ -80,38 +81,14 @@ class _StatsPageState extends State<StatsPage> {
     print(response.body);
 
     var decoded = jsonDecode(response.body);
-    var date = decoded["date"];
-    date.add("2022-11-26");
-    var amount = decoded["amount"];
-    amount.add( double.parse((income/pred_output).abs().toStringAsFixed(2)));
-
-    print(date);
-    setState(() {
-      X_test = date;
-      mean = amount;
-      _isLoading=false;
-    });
-  }
-
-  model_data() async {
-
-    setState(() {
-      _isLoading=true;
-    });
-//for demo I had use delayed method. When you integrate use your api //call here.
-
-    print("CHECK");
-
-    data = await fetchdata('http://159.223.227.189:6000/predict_v4');
-    var decoded = jsonDecode(data);
 
     setState(() {
       X_test = decoded["date"];
-      mean = decoded["amount"];
+      mean =  decoded["amount"];
       _isLoading=false;
-
     });
   }
+
 
 
   @override
@@ -156,15 +133,15 @@ class _StatsPageState extends State<StatsPage> {
       {
         "icon": Icons.check,
         "color": const Color(0xFF40A083),
-        "label": "Current balance",
-        "cost": totalAmount.toStringAsFixed(2)+" SAR"
+        "label": translation(context).cb,
+        "cost": totalAmount.toStringAsFixed(2)+ translation(context).sar
       },
       {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
-        "label": "Expected balance",
+        "label":  translation(context).eb,
         //"cost": ( pred_output).abs().toStringAsFixed(2) +" SAR"
-        "cost": (income/pred_output).abs().toStringAsFixed(2) +" SAR"
+        "cost": (income/pred_output).abs().toStringAsFixed(2) +translation(context).sar
       }
     ];
 
@@ -188,9 +165,9 @@ class _StatsPageState extends State<StatsPage> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children:  [
                       Text(
-                        "Spending analytics",
+                        translation(context).stats,
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -233,7 +210,7 @@ class _StatsPageState extends State<StatsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Daily Spending Behaviour",
+                            translation(context).dsb ,
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,

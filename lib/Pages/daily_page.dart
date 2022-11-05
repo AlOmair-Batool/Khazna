@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../json/json_daily.dart';
 import 'dart:developer';
+import 'package:sim/classes/language_constants.dart';
 
 
 
@@ -146,14 +147,14 @@ class _DailyPageState extends State<DailyPage> {
       //"type" is assigned by SVM model
       //type = Withdrawal
       if (type == "Withdrawals") {
-        transactionType20.insert(0, "Withdrawal");
+        transactionType20.insert(0,          translation(context).ww);
         icon.insert(0, "assets/images/Withdrawl.png");
         date20.insert(0, date2.toString());
         flag = true;
       }
       //type = Deposit
       else if (type == "Deposit") {
-        transactionType20.insert(0, "Deposit");
+        transactionType20.insert(0, translation(context).dep);
         icon.insert(0, "assets/images/Deposit.png");
         date20.insert(0, date2.toString());
         flag = true;
@@ -483,9 +484,9 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children:  [
                         Text(
-                          "Latest Transactions",
+                          translation(context).daily_transaction,
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -571,7 +572,7 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    amount20[index] + " SAR",
+                                    amount20[index] + translation(context).sar,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14,

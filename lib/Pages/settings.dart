@@ -22,6 +22,7 @@ import 'package:sim/core/global.dart';
 import 'package:sim/core/models/field.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:sim/Pages/local_notify_manager.dart';
+import 'package:sim/classes/language_constants.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -95,8 +96,8 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            const Text(
-              "Settings",
+             Text(
+              translation(context).settings,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -111,8 +112,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(
                   width: 8,
                 ),
-                const Text(
-                  "Account",
+                 Text(
+                  translation(context).account,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ],
@@ -124,9 +125,8 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 10,
             ),
-            buildAccountOptionRow(context, "Change password"),
-            buildAccountOptionRow(context, "Language"),
-            buildAccountOptionRow(context, "Privacy and security"),
+            buildAccountOptionRow(context, translation(context).change_password),
+            buildAccountOptionRow(context, translation(context).language),
             const SizedBox(
               height: 40,
             ),
@@ -139,8 +139,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(
                   width: 8,
                 ),
-                const Text(
-                  "Notifications",
+                 Text(
+                  translation(context).notifications,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500), //
                 ),
               ],
@@ -198,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         },
                       );
                     }else{
-                      return Container(height: 50,alignment: Alignment.center,child: Text('No custom notification yet'));
+                      return Container(height: 50,alignment: Alignment.center,child: Text(translation(context).ncn));
                     }
                   }else{
                     return Container(height: 50,alignment: Alignment.center,child: CircularProgressIndicator());
@@ -208,12 +208,12 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
 
 
-            buildNotificationOptionRow("Daily encouragements", receiveNotification),
+            buildNotificationOptionRow(translation(context).daily_encouragements, receiveNotification),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Custom notifications",
+                  translation(context).cust,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
@@ -224,7 +224,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       showDialog(context: context, builder: (con){
                         return AlertDialog(
 
-                          title: const Text("Add custom notifications"),
+                          title:  Text(translation(context).add_cus),
                           content: Container(
                             width: 250,
                             height: 250,
@@ -233,21 +233,21 @@ class _SettingsPageState extends State<SettingsPage> {
                                 children:[
                                   TextFormField(
                                     controller: notificationTitle, ///////////////////////////////////////////////////////////////////////////////
-                                    decoration: const InputDecoration(
+                                    decoration:  InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(color: Colors.black, width: 0.0),),
                                         isDense: true,
-                                        label: const Text("Notification title")
+                                        label:  Text( translation(context).notit)
                                     ),
                                   ),
                                   const SizedBox(height: 5,),
                                   TextFormField(
                                     controller: notificationBody, ///////////////////////////////////////////////////////////////////////////////
-                                    decoration: const InputDecoration(
+                                    decoration:  InputDecoration(
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(color: Colors.black, width: 0.0),),
                                         isDense: true,
-                                        label: const Text("Notification body")
+                                        label: Text(translation(context).nobod)
                                     ),
                                   ),
                                   const SizedBox(height: 5,),
@@ -286,12 +286,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
                                           });
                                         }else{
-                                          showAlertDialog(context, 'Select notification Date', false);
+                                          showAlertDialog(context, translation(context).snd , false);
                                         }
 
                                       }
                                     },
-                                    child: const Text("Add"),
+                                    child:  Text(translation(context).add),
                                   )
                                 ]),
                           ),
@@ -314,7 +314,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => const LoginScreen()));
                 },
-                child: const Text("Logout",
+                child:  Text(translation(context).logout,
                     style: const TextStyle(
                         fontSize: 16, letterSpacing: 1.5, color: black)),
               ),

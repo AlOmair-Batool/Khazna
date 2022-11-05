@@ -1,6 +1,7 @@
 {
   "login": "Login",
-  "welcome": "welcome back to khazna!",
+  "welcome": "Welcome back to khazna!",
+  "wel": "Welcome,\n",
   "please": "Please fill your registered information below:",
   "email": "Email",
   "password": "Password",
@@ -58,8 +59,12 @@
   "total":"Total amount",
   "daily":"Daily allowance",
   "sar":" SAR",
+  "e": "80%",
+  "t": "20%",
+  "o": "100%",
 
-  "stats":"Stats",
+
+  "stats":"Spending analytics",
   "net_balance":"Current balance",
   "current_balance":"Current balance",
   "expected_balance":"Expected spending",
@@ -75,17 +80,25 @@
   "notifications":"Notifications",
   "updates":"Updates",
   "daily_encouragements":"Daily encouragements",
-
-
+  "cb": "Current balance",
+  "eb": "Expected balance",
+  "dsb": "Daily Spending Behaviour",
+  "dsb": "Daily Spending Behaviour",
   "daily_transaction":"Latest Transactions",
   "dep": "Deposit",
   "ww": "Withdrawal",
-
+  "snd": "Select notification Date",
+  "ncn": "No custom notification yet",
+  "cust": "Custom notifications",
   "last_sms":"Last 5 SMS:",
 
   "hello":"Hello",
   "achieve_goals":"To achieve your goals, we advice you to follow the plan below:",
   "daily_allowance":"Daily Allowance",
+  "add_cus":"Add custom notifications",
+  "notit":"Notification title",
+  "nobod":"Notification body",
+  "add": "Add",
 
   "logout":"Logout"
 

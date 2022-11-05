@@ -106,6 +106,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
+                              translation(context).wel,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: black,
+                              ),
+                            ),
+                            Text(
                               "${currentUser!.firstName} ${currentUser!.secondName}",
                               style: const TextStyle(
                                   fontSize: 20,
@@ -118,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 40,
                   ),
                   Container(
                     width: double.infinity,
@@ -135,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ]),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 25, bottom: 25),
+                          left: 20, right: 20, top: 30, bottom: 30),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -143,17 +150,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children:[
                               Text(
-                                translation(context).current_balance,
+                                "${translation(context).email}: ",
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     color: white),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Text(
-                                "2446.90 SAR",
+                               Text(
+                                "${currentUser!.email}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -161,18 +168,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ],
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: white)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(13.0),
-                              child: Text(
-                                translation(context).update,
-                                style: const TextStyle(color: white),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
@@ -182,39 +177,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 60,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${translation(context).email}: ",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Colors.black),
-                ),
 
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "${currentUser!.email}",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Color(0xff67727d)),
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-              ],
-            ),
-          )
         ],
       ),
     );
