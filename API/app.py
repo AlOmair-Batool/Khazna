@@ -326,11 +326,6 @@ def gp_model():
     mean = [dt[0] for dt in mean.numpy()]
     
     
-    #plt.plot(X_train,Y_train)
-
-    
-    #plt.plot(X_test,mean)
-    #plt.savefig('trans.png')
 
     pickle.dump(m, open('gp_model.pkl', 'wb'))
     

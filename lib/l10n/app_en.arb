@@ -97,9 +97,24 @@
   "daily_allowance":"Daily Allowance",
   "add_cus":"Add custom notifications",
   "notit":"Notification title",
+  "ennotit":"Enter notification title\n",
+
   "nobod":"Notification body",
+  "ennobod":"Enter Notification body\n",
+ "no_date": "Select notification Date",
   "add": "Add",
+  "new_pass":  "New password",
+  "old_pass":   "Old password",
+  "confirm_pass":  "Confirm Password",
+  "update_pass":  "Update",
+  "logout":"Logout",
+  "len": "Please enter password with min 6 char length!",
+  "en_new_pass": "Enter new password",
+  "en_old_pass": "Enter old password",
+  "en_confirm_pass": "Enter confirmed password",
+  "pass_up":"Password updated",
+  "pass_wrong":"Password doesn't match",
+  "custom_notification": "custom notification",
+  "show_notification":"show_notification"
 
-  "logout":"Logout"
-
-  }
+}

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:sim/theme/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:telephony/telephony.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../json/json_daily.dart';
 import 'dart:developer';
 import 'package:sim/classes/language_constants.dart';
 
@@ -115,7 +113,7 @@ class _DailyPageState extends State<DailyPage> {
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-            //.or(SmsColumn.ADDRESS).equals("alinmabank")
+            .or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
             .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
