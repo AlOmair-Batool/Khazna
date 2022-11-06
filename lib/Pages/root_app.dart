@@ -25,9 +25,9 @@ class _RootAppState extends State<RootApp> {
     return IndexedStack(
       index: pageIndex,
       children:[
-        DailyPage(),
         NewPlanPage(),
         StatsPage(),
+        DailyPage(),
         ProfilePage(),
       ],
     );
@@ -35,9 +35,9 @@ class _RootAppState extends State<RootApp> {
 
   Widget getFooter() {
     List<IconData> iconItems = [
-      Icons.compare_arrows_rounded,
       Icons.receipt_long_rounded,
       Icons.bar_chart_rounded,
+      Icons.compare_arrows_rounded,
       Icons.person_outline,
     ];
     return AnimatedBottomNavigationBar(
