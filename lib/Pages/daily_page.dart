@@ -249,7 +249,7 @@ class _DailyPageState extends State<DailyPage> {
 
 
     bool stopDup = false;
-    int newCounter = 2;
+    int newCounter = 20;
     for(int i=0; i<transactionType20.length; i++){
      //if(stopDup == true) break;
      if(userID == null) break;
