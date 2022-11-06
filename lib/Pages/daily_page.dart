@@ -127,7 +127,7 @@ class _DailyPageState extends State<DailyPage> {
     );
 
 
-    var counter = 30;
+    var counter = 20;
     for (var message in messages) {
       if (counter == 0) break;
       message1 = message.body!;
@@ -249,7 +249,7 @@ class _DailyPageState extends State<DailyPage> {
 
 
     bool stopDup = false;
-    int newCounter = 2;
+    int newCounter = 19;
     for(int i=0; i<transactionType20.length; i++){
      //if(stopDup == true) break;
      if(userID == null) break;
@@ -278,13 +278,13 @@ class _DailyPageState extends State<DailyPage> {
 
     //send to firestore + all calculations////////////////////////////////////////////////////////////
     String day = "";
-    int countForFirestore = 10;
+
     int numOfSMS = 0;
     bool itIs27 = false;
     bool stopCounting = false;
     for (var message in messages) {
       //if there is any thing stored in database it will not excute the loop
-      if(countForFirestore==0) break;
+
      // if (userID != null) break;
       if (stopCounting == true) break;
       message1 = message.body!;
@@ -401,7 +401,7 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
 
 
       numOfSMS = numOfSMS + 1;
-      countForFirestore = countForFirestore - 1;
+
     }
 
     //read from database
