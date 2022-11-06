@@ -153,7 +153,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
       },
       {
         "name": translation(context).savings,
-        "price": savingPoint.toString()+ translation(context).sar,
+        "price": double.parse(savingPoint).toStringAsFixed(2)+ translation(context).sar,
         "label_percentage": translation(context).t,
         "percentage": 0.2,
         "color": blue,
@@ -165,7 +165,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
       },
       {
         "name": translation(context).cb,
-        "price": balance.toString()+translation(context).sar,
+        "price": double.parse(balance).toStringAsFixed(2)+translation(context).sar,
         "label_percentage": translation(context).o,
         "percentage": 1,
         "color": green,

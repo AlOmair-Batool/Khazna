@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sim/Pages/login_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,16 +14,15 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sim/Pages/auth_file.dart';
 import 'package:sim/Pages/local_notify_manager.dart';
+import 'package:sim/Pages/login_screen.dart';
 import 'package:sim/core/enums.dart';
 import 'package:sim/core/functions/format_date.dart';
 import 'package:sim/core/functions/validation.dart';
 import 'package:sim/core/global.dart';
 import 'package:sim/core/models/field.dart';
 import 'package:sim/theme/colors.dart';
+import 'package:sim/Pages/local_notify_manager.dart';
 import 'package:sim/classes/language_constants.dart';
-import 'package:sim/classes/language.dart';
-import 'package:sim/main.dart';
-import 'package:sim/widget/select_date_dialog.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -126,48 +126,9 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 10,
             ),
             buildAccountOptionRow(context, translation(context).change_password),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  translation(context).language,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                DropdownButton<Language>(
-                  underline: const SizedBox(),
-                  icon: const Icon(
-                    Icons.language,
-                    color: Colors.grey,
-                  ),
-                  onChanged: (language) async {
-                    if (language != null) {
-                      Locale _locale = await setLocale(language.languageCode);
-                      MyApp.setLocale(context, _locale);
-                    }
-                  },
-                  items: Language.languageList()
-                      .map<DropdownMenuItem<Language>>(
-                        (e) => DropdownMenuItem<Language>(
-                      value: e,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text(
-                            e.flag,
-                            style: const TextStyle(fontSize: 30),
-                          ),
-                          Text(e.name)
-                        ],
-                      ),
-                    ),
-                  )
-                      .toList(),
-                ),
-              ],
+            buildAccountOptionRow(context, translation(context).language),
+            const SizedBox(
+              height: 40,
             ),
             Row(
               children: [
@@ -179,8 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   width: 8,
                 ),
                  Text(
-                           translation(context).notifications
-                  ,
+                  translation(context).notifications,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500), //
                 ),
               ],
@@ -238,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         },
                       );
                     }else{
-                      return Container(height: 50,alignment: Alignment.center,child: Text(  translation(context).ncn));
+                      return Container(height: 50,alignment: Alignment.center,child: Text(translation(context).ncn));
                     }
                   }else{
                     return Container(height: 50,alignment: Alignment.center,child: CircularProgressIndicator());
@@ -253,7 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  translation(context).custom_notification,
+                  translation(context).cust,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
@@ -277,7 +237,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(color: Colors.black, width: 0.0),),
                                         isDense: true,
-                                        label:  Text(translation(context).notit)
+                                        label:  Text( translation(context).notit)
                                     ),
                                   ),
                                   const SizedBox(height: 5,),
@@ -287,19 +247,17 @@ class _SettingsPageState extends State<SettingsPage> {
                                         border: OutlineInputBorder(
                                           borderSide: BorderSide(color: Colors.black, width: 0.0),),
                                         isDense: true,
-                                        label:  Text(translation(context).nobod)
+                                        label: Text(translation(context).nobod)
                                     ),
                                   ),
                                   const SizedBox(height: 5,),
-                                  SelectDateDialog((date){
-                                    scheduleNotificationDateTime = date;
-                                  }),
+
                                   const SizedBox(height: 10,),
                                   ElevatedButton(
                                     onPressed: () async{
                                       if(await validate([
-                                        Field(field: notificationTitle.text,type: ValidationType.isEmpty,hint: translation(context).ennotit),
-                                        Field(field: notificationBody.text,type: ValidationType.isEmpty,hint: translation(context).ennobod),
+                                        Field(field: notificationTitle.text,type: ValidationType.isEmpty,hint: 'Enter notification title'),
+                                        Field(field: notificationBody.text,type: ValidationType.isEmpty,hint: 'Enter notification body'),
                                       ], context, true)){
                                         if(scheduleNotificationDateTime != null){
                                           SharedPreferences shared = await SharedPreferences.getInstance();
@@ -328,7 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
                                           });
                                         }else{
-                                          showAlertDialog(context, translation(context).no_date , false);
+                                          showAlertDialog(context, translation(context).snd , false);
                                         }
 
                                       }
@@ -385,11 +343,11 @@ class _SettingsPageState extends State<SettingsPage> {
               onChanged: (bool val) async{
                 receiveNotification = val;
                 if(val){
-                  (await SharedPreferences.getInstance()).setBool(translation(context).show_notification,true);
+                  (await SharedPreferences.getInstance()).setBool('show_notification',true);
                   showNotification = true;
                   OneSignal.shared.disablePush(false);
                 }else{
-                  (await SharedPreferences.getInstance()).setBool(translation(context).show_notification,false);
+                  (await SharedPreferences.getInstance()).setBool('show_notification',false);
                   showNotification = false;
                   OneSignal.shared.disablePush(true);
                 }
@@ -408,17 +366,17 @@ class _SettingsPageState extends State<SettingsPage> {
         TextFormField(
           validator: (val){
             if(val.length <6){
-              return translation(context).valid_pass;
+              return 'Please enter password with min 6 char length!';
             }else{
               return null;
             }
           },
           controller: oldPasswordEditingController, ///////////////////////////////////////////////////////////////////////////////
-          decoration:  InputDecoration(
+          decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black, width: 0.0),),
               isDense: true,
-              label: Text(translation(context).old_pass)
+              label: Text("Old password")
           ),
           obscureText: true,
         ),
@@ -426,36 +384,36 @@ class _SettingsPageState extends State<SettingsPage> {
         TextFormField(
           validator: (val){
             if(val.length <6){
-              return translation(context).len;
+              return 'Please enter password with min 6 char length!';
             }else{
               return null;
             }
           },
           obscureText: true,
           controller: newPasswordEditingController, ///////////////////////////////////////////////////////////////////////////////
-          decoration:  InputDecoration(
+          decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black, width: 0.0),),
               isDense: true,
-              label: Text(translation(context).new_pass)
+              label: Text("New password")
           ),
         ),
         const SizedBox(height: 5,),
         TextFormField(
           validator: (val){
             if(val.length <6){
-              return translation(context).len;
+              return 'Please enter password with min 6 char length!';
             }else{
               return null;
             }
           },
           obscureText: true,
           controller: confirmPasswordEditingController, ///////////////////////////////////////////////////////////////////////////////
-          decoration:  InputDecoration(
+          decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black, width: 0.0),),
               isDense: true,
-              label:  Text(translation(context).confirm_pass)
+              label: const Text("Confirm password")
           ),
         ),
       ],
@@ -488,7 +446,7 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (_){
               return AlertDialog(
 
-                title:  Text(translation(context).new_pass),
+                title: const Text("New Password"),
                 content: Container(
                   width: 250,
                   height: 250,
@@ -496,14 +454,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:[
                         textForm(),
-                         SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         ElevatedButton(
                           onPressed: () async{
                             if(await validate([
-                              Field(field: oldPasswordEditingController.text,type: ValidationType.isEmpty,hint: translation(context).en_old_pass),
-                              Field(field: newPasswordEditingController.text,type: ValidationType.isEmpty,hint: translation(context).en_new_pass),
-                              Field(field: newPasswordEditingController.text,type: ValidationType.isOver,overNum: 6,hint: translation(context).len),
-                              Field(field: confirmPasswordEditingController.text,type: ValidationType.isEmpty,hint: translation(context).en_confirm_pass),
+                              Field(field: oldPasswordEditingController.text,type: ValidationType.isEmpty,hint: 'Enter old password'),
+                              Field(field: newPasswordEditingController.text,type: ValidationType.isEmpty,hint: 'Enter new password'),
+                              Field(field: newPasswordEditingController.text,type: ValidationType.isOver,overNum: 6,hint: 'Please enter password with min 6 char length!'),
+                              Field(field: confirmPasswordEditingController.text,type: ValidationType.isEmpty,hint: 'Enter confirm password'),
                             ], context, true)){
                               if(newPasswordEditingController.text.trim() == confirmPasswordEditingController.text.trim()){
                                 bool result = await UserController().updatePassword(oldPasswordEditingController.text,newPasswordEditingController.text,context);
@@ -512,7 +470,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   newPasswordEditingController.clear();
                                   confirmPasswordEditingController.clear();
                                   Navigator.pop(context);
-                                  showAlertDialog(context, translation(context).pass_up , true);
+                                  showAlertDialog(context,'Password updated', true);
                                   Navigator.popUntil(context, (route) {
                                     return route.isFirst;
                                   });
@@ -523,12 +481,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
                                 }
                               }else{
-                                showAlertDialog(context,translation(context).pass_wrong, false);
+                                showAlertDialog(context,'Password doesn\'t match', false);
                               }
                             }
 
                           },
-                          child:  Text(translation(context).update_pass),
+                          child: const Text("Update"),
                         )
                       ]),
                 ),

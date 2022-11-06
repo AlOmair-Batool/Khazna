@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:email_auth/email_auth.dart';
 import 'package:get/get.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -143,12 +142,12 @@ class _UserEmailAuthState extends State<UserEmailAuth> {
                                   return null;
                                 },
                                 controller: userController.otpController,
-                                decoration:  InputDecoration(
+                                decoration: const InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.black, width: 0.0),
                                     ),
                                     isDense: true,
-                                    label: Text(translation(context).enter_otp)
+                                    label: Text("Enter OTP ")
                                 ),
                               ),
 
