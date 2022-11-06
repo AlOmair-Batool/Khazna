@@ -400,7 +400,7 @@ var remove = amountMatch2.toString().replaceAll(removeComma, "");
 
 
       numOfSMS = numOfSMS + 1;
-
+      countForFirestore = countForFirestore - 1;
     }
 
     //read from database
