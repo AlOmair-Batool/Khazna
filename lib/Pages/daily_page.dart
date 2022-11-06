@@ -109,13 +109,13 @@ class _DailyPageState extends State<DailyPage> {
       print("NONE");}
   }
 
-  //return messages from banks across Saudi
+  //return messages from banks across Saudi (11 banks)
   getAllSMS() async {
-    //11 banks
+
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-            //.or(SmsColumn.ADDRESS).equals("alinmabank")
+            .or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
             .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
@@ -127,7 +127,7 @@ class _DailyPageState extends State<DailyPage> {
     );
 
 
-    var counter = 30;
+    var counter =3;
     for (var message in messages) {
       if (counter == 0) break;
       message1 = message.body!;
@@ -138,6 +138,8 @@ class _DailyPageState extends State<DailyPage> {
       await _getType(params);
       //SMS processing after getting the type.
       String message2 = message1.toLowerCase();
+
+      //Extract date
       var date1 = DateTime.fromMillisecondsSinceEpoch(message.date!);
       epochTime20.insert(0, message.date!);
       var date2 = DateFormat('dd/MM/yyyy').format(date1);
@@ -249,7 +251,7 @@ class _DailyPageState extends State<DailyPage> {
 
 
     bool stopDup = false;
-    int newCounter = 2;
+    int newCounter = 20;
     for(int i=0; i<transactionType20.length; i++){
      //if(stopDup == true) break;
      if(userID == null) break;
@@ -278,13 +280,12 @@ class _DailyPageState extends State<DailyPage> {
 
     //send to firestore + all calculations////////////////////////////////////////////////////////////
     String day = "";
-    int countForFirestore = 10;
     int numOfSMS = 0;
     bool itIs27 = false;
     bool stopCounting = false;
     for (var message in messages) {
       //if there is any thing stored in database it will not excute the loop
-      if(countForFirestore==0) break;
+
      // if (userID != null) break;
       if (stopCounting == true) break;
       message1 = message.body!;
