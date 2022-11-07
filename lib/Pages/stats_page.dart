@@ -20,7 +20,7 @@ class _StatsPageState extends State<StatsPage> {
   bool _isLoading=false; //bool variable created
 
   int activeDay = 3;
-  double income = 0;
+  double income = 0.0;
   double totalAmount =0;
   var userID;
   //getting values from firestore
@@ -30,7 +30,7 @@ class _StatsPageState extends State<StatsPage> {
   getAllTransactions() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
-    //final uid = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
+    //final uid = "EJ19NxkmHMMLMJgLcMdP9FfKRSb2";
     final uid = user?.uid;
     userID = user?.uid;
 
@@ -42,14 +42,22 @@ class _StatsPageState extends State<StatsPage> {
       income = document['income'];
       totalAmount = document['balance'];
       }
+      else
+        income  = 0.0;
 
     });
+
+    print("income");
+    print(income);
+
   }
 
     getAllTransactionschart() async {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User? user = auth.currentUser;
       final uid = user?.uid;
+      //final uid = "EJ19NxkmHMMLMJgLcMdP9FfKRSb2";
+
       userID = user?.uid;
 
       setState(() {
@@ -89,13 +97,15 @@ class _StatsPageState extends State<StatsPage> {
     if(mean.length == 0){
         X_test = ["2022-03-09"];
         mean = [0.0];
-
+        _isLoading=true;
       }
-
-    //X_test =  X_test.reversed.toList();
-    //mean =  mean.reversed.toList();
-
+    else
       _isLoading=false;
+
+
+      X_test =  X_test.reversed.toList();
+    mean =  mean.reversed.toList();
+
 
     print("DB X_test");
     print(X_test);
@@ -115,59 +125,23 @@ class _StatsPageState extends State<StatsPage> {
     data = await fetchdata('http://159.223.227.189:7000/api');
     var decoded = jsonDecode(data);
     print("pred_output");
-  print(decoded['output']);
+  print(income/double.parse(decoded['output']).abs());
     setState(() {
       if(decoded['output'] != null)
       pred_output = double.parse(decoded['output']).abs();
-    });
-  }
-  /*model_data_2(params) async {
-    print("Check_first");
-    print(params);
-    setState(() {
-      _isLoading=true;
-    });
-
-    final response = await http.post(
-      Uri.parse("http://159.223.227.189:6000/predict_v4"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(params),
-    );
-
-    print("Check");
-    print(params);
-    print(response.body);
-
-    var decoded = jsonDecode(response.body);
-
-    setState(() {
-      _isLoading=false;
-
-      X_test = decoded["date"];
-      mean =  decoded["amount"];
-      if(mean.length == 0){
-            _isLoading=true;
-          X_test = ["2022-03-09"];
-          mean = [0.0];
-
-      }
+      else
+        pred_output = 1;
 
     });
   }
 
-
-*/
   @override
   void initState() {
 
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) =>predict());
-    // super.initState();
-    // WidgetsBinding.instance
-    //     ?.addPostFrameCallback((_) =>model_data_2({"userid":userID.toLowerCase()}));
+
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
@@ -208,7 +182,6 @@ class _StatsPageState extends State<StatsPage> {
         "icon": Icons.show_chart,
         "color": const Color(0xFF0071BC),
         "label":  translation(context).eb,
-        //"cost": ( pred_output).abs().toStringAsFixed(2) +" SAR"
         "cost": (income/pred_output).toStringAsFixed(2) +translation(context).sar
       }
     ];

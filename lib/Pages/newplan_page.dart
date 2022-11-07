@@ -22,11 +22,11 @@ class _NewPlanPageState extends State<NewPlanPage> {
   String sms2 = "";
 
   late double totalAmount = 0 ;
-  late String  savingPoint ="";
+  late String  savingPoint ="0.0";
   late double monthlyAllowance= 0;
   late double dailyAllowance = 0;
   late String  income ="";
-  late String balance = "";
+  late String balance = "0.0";
   String allData = "";
   String userID = "";
 
@@ -71,7 +71,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    //final uid = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
+    //final uid = "EJ19NxkmHMMLMJgLcMdP9FfKRSb2";
 
 
 
@@ -89,8 +89,12 @@ class _NewPlanPageState extends State<NewPlanPage> {
     int length = allData.length;
     int index = allData.indexOf("B");
     balance = allData.substring(0, index);
+    if(balance == '')
+       balance = '0.0';
     int index2 = allData.indexOf("S");
     savingPoint = allData.substring(index+1, index2);
+    if(savingPoint == '')
+      savingPoint = '0.0';
     income = allData.substring(index2+1, length);
 
 
@@ -149,14 +153,14 @@ class _NewPlanPageState extends State<NewPlanPage> {
       },
       {
         "name": translation(context).savings,
-        "price": savingPoint.toString()+ translation(context).sar,
+        "price": double.parse(savingPoint).toStringAsFixed(2)+ translation(context).sar,
         "label_percentage": translation(context).t,
         "percentage": 0.2,
         "color": blue,
       },
       {
         "name": translation(context).cb,
-        "price": balance.toString()+translation(context).sar,
+        "price": double.parse(balance).toStringAsFixed(2)+translation(context).sar,
         "label_percentage": translation(context).o,
         "percentage": 1,
         "color": green,
