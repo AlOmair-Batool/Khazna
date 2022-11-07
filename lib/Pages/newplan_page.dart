@@ -35,7 +35,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
   int activeDay = 3;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-  bool _isLoading=false; //bool variable created
+
 
 
   void initState() {
@@ -66,11 +66,12 @@ class _NewPlanPageState extends State<NewPlanPage> {
 
   getAllTransactions() async{
     setState(() {
-      _isLoading=true;
+
     });
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
+    //final uid = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
 
 
 
@@ -104,7 +105,7 @@ class _NewPlanPageState extends State<NewPlanPage> {
     newBalance = userBalance - userSavingPoint;
     dailyAllowance = newBalance / daysBetween();
     setState(() {
-      _isLoading=false;
+
     });
   }
 
@@ -145,35 +146,20 @@ class _NewPlanPageState extends State<NewPlanPage> {
         "label_percentage": translation(context).e,
         "percentage": 0.8,
         "color": red,
-        "load":const CircularProgressIndicator(
-        backgroundColor: Colors.black26,
-        valueColor: AlwaysStoppedAnimation<Color>(
-        primary //<-- SEE HERE
-        ), )
       },
       {
         "name": translation(context).savings,
-        "price": double.parse(savingPoint).toStringAsFixed(2)+ translation(context).sar,
+        "price": savingPoint.toString()+ translation(context).sar,
         "label_percentage": translation(context).t,
         "percentage": 0.2,
         "color": blue,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ), )
       },
       {
         "name": translation(context).cb,
-        "price": double.parse(balance).toStringAsFixed(2)+translation(context).sar,
+        "price": balance.toString()+translation(context).sar,
         "label_percentage": translation(context).o,
         "percentage": 1,
         "color": green,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ), )
       },
 
       {
@@ -182,11 +168,6 @@ class _NewPlanPageState extends State<NewPlanPage> {
         "label_percentage": "",
         "percentage": 1,
         "color": white,
-        "load":const CircularProgressIndicator(
-          backgroundColor: Colors.black26,
-          valueColor: AlwaysStoppedAnimation<Color>(
-              primary //<-- SEE HERE
-          ), )
       }
     ];
 
@@ -273,15 +254,13 @@ class _NewPlanPageState extends State<NewPlanPage> {
                               children: [
                                 Row(
                                   children: [
-                                    !_isLoading?
                                     Text(
                                       budget_json[index]['price'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
-                                    )
-                                        :  budget_json[index]['load'],
+                                    ),
 
                                     SizedBox(
                                       width: 8,

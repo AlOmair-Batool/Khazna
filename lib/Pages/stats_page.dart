@@ -30,43 +30,103 @@ class _StatsPageState extends State<StatsPage> {
   getAllTransactions() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
+    //final uid = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
     final uid = user?.uid;
     userID = user?.uid;
-    // userID = "ej19nxkmhmmlmjglcmdp9ffkrsb2";
 
     QuerySnapshot snap = await
     FirebaseFirestore.instance.collection("userCalculations").where('userID',isEqualTo:uid).get();
 
     snap.docs.forEach((document) {
+      if(document['income']!= null && document['balance'] !=null){
       income = document['income'];
       totalAmount = document['balance'];
+      }
 
     });
+  }
+
+    getAllTransactionschart() async {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      userID = user?.uid;
+
+      setState(() {
+        _isLoading=true;
+      });
+    QuerySnapshot snap2 = await
+    FirebaseFirestore.instance.collection("transaction").orderBy("epochTime", descending: true).where('userID',isEqualTo:uid).get();
+
+    X_test = [];
+    mean = [];
+    bool flag =true;
+    var temp ="";
+    double amount = 0.0;
+    snap2.docs.forEach((document) {
+      if(document['Type'] == "Withdrawal"){
+      var dt = document['Date'].split('/');
+      var dt_corr = dt[2]+"-"+dt[1]+"-"+dt[0];
+
+      if(flag){
+        temp = dt_corr;
+        flag  = false;}
+
+      if(dt_corr == temp){
+      temp = dt_corr;
+      amount += double.parse(document['Amount']);
+     }
+      else
+        { X_test.add(temp);
+        mean.add(amount);
+        amount= double.parse(document['Amount']);
+        temp = dt_corr;
+
+        }
+
+    }
+    });
+    if(mean.length == 0){
+        X_test = ["2022-03-09"];
+        mean = [0.0];
+
+      }
+
+    //X_test =  X_test.reversed.toList();
+    //mean =  mean.reversed.toList();
+
+      _isLoading=false;
+
+    print("DB X_test");
+    print(X_test);
+    print(mean);
+
+
   }
 
   var data;
   String output = '0 SAR';
   double pred_output = 0.0;
-  List X_test = [];
-  List mean = [];
+  List X_test = ["2022-03-09"];
+  List mean = [0.0];
   bool showAvg = false;
   // predecting GP
   predict() async {
     data = await fetchdata('http://159.223.227.189:7000/api');
     var decoded = jsonDecode(data);
-    print("pred_out");
-    print(double.parse(decoded['output']));
+    print("pred_output");
+  print(decoded['output']);
     setState(() {
-      pred_output = double.parse(decoded['output']);
-      output = double.parse(decoded['output']).toStringAsFixed(2) + " SAR";
+      if(decoded['output'] != null)
+      pred_output = double.parse(decoded['output']).abs();
     });
   }
-  model_data_2(params) async {
-
+  /*model_data_2(params) async {
+    print("Check_first");
+    print(params);
     setState(() {
       _isLoading=true;
     });
-//for demo I had use delayed method. When you integrate use your api //call here.
 
     final response = await http.post(
       Uri.parse("http://159.223.227.189:6000/predict_v4"),
@@ -83,23 +143,31 @@ class _StatsPageState extends State<StatsPage> {
     var decoded = jsonDecode(response.body);
 
     setState(() {
+      _isLoading=false;
+
       X_test = decoded["date"];
       mean =  decoded["amount"];
-      _isLoading=false;
+      if(mean.length == 0){
+            _isLoading=true;
+          X_test = ["2022-03-09"];
+          mean = [0.0];
+
+      }
+
     });
   }
 
 
-
+*/
   @override
   void initState() {
 
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) =>predict());
-    super.initState();
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) =>model_data_2({"userid":userID}));
+    // super.initState();
+    // WidgetsBinding.instance
+    //     ?.addPostFrameCallback((_) =>model_data_2({"userid":userID.toLowerCase()}));
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
@@ -111,8 +179,8 @@ class _StatsPageState extends State<StatsPage> {
     });
 
     getAllTransactions();
+    getAllTransactionschart();
     print("model_values");
-    print(output);
     print(X_test);
 
   }
@@ -141,7 +209,7 @@ class _StatsPageState extends State<StatsPage> {
         "color": const Color(0xFF0071BC),
         "label":  translation(context).eb,
         //"cost": ( pred_output).abs().toStringAsFixed(2) +" SAR"
-        "cost": (income/pred_output).abs().toStringAsFixed(2) +translation(context).sar
+        "cost": (income/pred_output).toStringAsFixed(2) +translation(context).sar
       }
     ];
 
@@ -225,8 +293,8 @@ class _StatsPageState extends State<StatsPage> {
                     Positioned(
                       top: 45,
                       bottom: 2,
-                      child:  !_isLoading
-                          ?SizedBox(
+                      child: !_isLoading?
+                      SizedBox(
                         width: (size.width - 60),
                         height: (size.height - 10),
 
