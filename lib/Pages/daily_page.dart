@@ -115,7 +115,7 @@ class _DailyPageState extends State<DailyPage> {
     messages = await telephony.getInboxSms(
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals("RiyadBank")
             .or(SmsColumn.ADDRESS).equals("FransiSMS")
-            //.or(SmsColumn.ADDRESS).equals("alinmabank")
+            .or(SmsColumn.ADDRESS).equals("alinmabank")
             .or(SmsColumn.ADDRESS).equals("BankAlbilad")
             .or(SmsColumn.ADDRESS).equals("SNB-AlAhli")
             .or(SmsColumn.ADDRESS).equals("SAIB")
@@ -127,7 +127,7 @@ class _DailyPageState extends State<DailyPage> {
     );
 
 
-    var counter = 20;
+    var counter = 10;
     for (var message in messages) {
       if (counter == 0) break;
       message1 = message.body!;
